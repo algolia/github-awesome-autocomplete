@@ -1,51 +1,65 @@
-chrome-skeleton
-===============
+# chrome-skeleton
 
-**Minimal skeleton for Chrome extension**
+## Minimal skeleton for Google Chrome extension
 
-Prepared by Daniel Prentis, based on his solution that uses RequireJS to load modules in Chrome, to comply with *Manifest v2.0 limitations*.
-See Daniel's presentation on the topic [RequireJS In Chrome Extensions](http://prezi.com/rodnyr5awftr/requirejs-in-chrome-extensions/)
+This project is an example of a Google Chrome extension, that uses RequireJS
+to load code modules and at the same time is compliant with *Manifest file v2
+limitations*. For more details on this topic, please see this
+[presentation](http://prezi.com/rodnyr5awftr/requirejs-in-chrome-extensions/)
+by Daniel Prentis.
 
-Directory structure
--------------------
+The extension demonstates the usage of background page, extension popup window
+and inserting content scripts into the target pages. Communication between the
+background window and the content scripts is implemented using messaging. Also,
+both the content script and the popup window use Mustache templates.
 
-	/html
-	/js
-	/lib
-		/modules
-			/moduleA
-			/moduleB
-		/test
-			/specs
-			/modules
+The goal of this project is to have a skeleton for Google Chrome extensions, so
+you can download it or fork it, and then develop your own extension without
+spending too much time with figuring out the basics.
+
+Should you have any comments, don't hesitate and let us know!
 
 
-*	`/html` - any html files used by the extension
+## Directory structure
 
-*	`/js` - all extension JavaScript Code
+    /code
+        /css
+        /html
+            /templates
+        /images
+        /js
+            /lib
+            /modules
+                /type_a
+                /type_b
+                /...
+                /util
+    /tests
+        /test
+            /modules
+            /specs
 
-	Default libraries are in the root: background.js, content.js, popup.js, requireConfig.js, requireContent.js
+In `code` directory you will find:
+*	`css` - any css files used by the extension
+* `html` - any html files used by the extension
+* `html/templates` - html Mustache templates used for rendering html code
+* `images` - any graphics used by the extnesion
+* `js` - code javascript files (entry point for background script, content
+script(s), and popup script
+* `js/lib` - third party libraries, see README.md file there for details
+* `js/modules` - all extension-specific code in AMD modules (can be
+organised in sub-directories, e.g. `type_a`, ...
+* `js/util` - common functionality (messaging and templates) for the
+extensions, written as AMD modules
 
-*	`/lib` - external libraries
+In `tests` directory you will find:
+*	`test` - test related JavaScript code forJasmine-node
+*	`modules` - unit test-specific utility and RequireJS configuration
+*	`specs` - unit test modules
 
-	by default it includes: backbone.js, jquery.js, require.js, underscore.js, underscore.string.js
 
-*	`/modules` - all extension-specific code in AMD modules
+## Running tests
 
-*	`/test` - test related JavaScript code forJasmine-node
-*	`/spec` - unit test modules
-*	`/modules` - unit test-specific utility and RequireJS configuration
-
-*	`manifest.json` - plug-in manifest file
-*	`package.json` - package dependencies
-
-*	`run-tests.sh` - shell script tu run tests
-
-Running tests
--------------
-
-1. Install  jasmine-node first:
-
+1. Install jasmine-node first:
 		npm install -g jasmine-node
-
-2. Run `run-tests.sh`. *(It installs required dependencies first.)*
+2. In `tests` directory run `run-tests.sh` *(it installs required dependencies first)*
