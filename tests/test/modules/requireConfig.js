@@ -7,7 +7,7 @@
 
     // synchronously read script file containing requirejsConfig
     try {
-      var data = fs.readFileSync('js/requireConfig.js', 'ascii');
+      var data = fs.readFileSync('../code/js/requireConfig.js', 'ascii');
     }
     catch(e) {
       console.error(e);
@@ -18,7 +18,7 @@
     eval(data.toString());
 
     // absolute path prefix for test suite
-    var pathPrefix = __dirname + '/../..';
+    var pathPrefix = __dirname + '/../../../code';
 
     // now we modify the config
     var rc = requirejsConfig;

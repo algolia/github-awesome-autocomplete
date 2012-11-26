@@ -2,7 +2,6 @@
   "name": "Test",
   "version": "0.0.1",
   "devDependencies": {
-    "requirejs" : "< 2.1.0",
-    "jquery" : "*"
+    "requirejs" : ">= 2.1.1"
   }
 }
