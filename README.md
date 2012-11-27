@@ -62,6 +62,6 @@ In `tests` directory you will find:
 
 1. Install jasmine-node first:
 
-    npm install -g jasmine-node
+    `npm install -g jasmine-node`
 
 2. In `tests` directory run `run-tests.sh` *(it installs required dependencies first)*
