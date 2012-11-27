@@ -18,7 +18,7 @@
     eval(data.toString());
 
     // absolute path prefix for test suite
-    var pathPrefix = __dirname + '/../../../code';
+    var pathPrefix = __dirname + '/../../code';
 
     // now we modify the config
     var rc = requirejsConfig;

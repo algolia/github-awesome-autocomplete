@@ -12,4 +12,4 @@ fi
 #
 echo "Starting test execution:"
 echo ""
-jasmine-node --verbose test/specs
+jasmine-node --verbose specs
