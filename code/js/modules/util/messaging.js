@@ -44,13 +44,13 @@ function(_,            backgroundHandlers,   contentHandlers) {
   return {
 
     backgroundInitialize: function() {
-      chrome.extension.onRequest.addListener(
+      chrome.extension.onMessage.addListener(
         makeDispatcher(backgroundHandlers)
       );
     },
 
     contentInitialize: function() {
-      chrome.extension.onRequest.addListener(
+      chrome.extension.onMessage.addListener(
         makeDispatcher(contentHandlers)
       );
     }
