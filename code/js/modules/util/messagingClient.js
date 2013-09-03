@@ -4,12 +4,12 @@ define({
 
   sendBroadcast: function(request, callback) {
     callback = callback || function() {};
-    chrome.extension.sendRequest(request, callback);
+    chrome.extension.sendMessage(request, callback);
   },
 
   sendToContentScript: function(tabId, request, callback) {
     callback = callback || function() {};
-    chrome.tabs.sendRequest(tabId, request, callback);
+    chrome.tabs.sendMessage(tabId, request, callback);
   }
 
 });
