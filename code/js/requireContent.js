@@ -6,7 +6,7 @@
     xhr.open("GET", chrome.extension.getURL(url) + '?r=' + new Date().getTime(), true);
     xhr.onreadystatechange = function (e) {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        eval.call(global, xhr.responseText);
+        eval.call(global, xhr.responseText + '\n//@ sourceURL=' + url);
         context.completeLoad(moduleName)
       }
     };
