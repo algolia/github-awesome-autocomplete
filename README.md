@@ -1,4 +1,4 @@
-# chrome-skeleton
+# chrome-extension-skeleton
 
 ## Minimal skeleton for Google Chrome extension
 
