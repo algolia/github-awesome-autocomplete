@@ -1,3 +1,6 @@
-# Ignore node modules #
-#######################
-node_modules/
+.DS_Store
+node_modules
+build/*.crx
+build/unpacked-dev
+build/unpacked-prod
+*.swp

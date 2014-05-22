@@ -1,22 +1,30 @@
-requirejs.config(requirejsConfig);
+;(function() {
 
-requirejs(['jquery', 'underscore', 'config', 'util/messaging', 'type_b/myModule'],
-function(   $,        _,            config,   messaging,        myModule) {
+  console.log('BACKGROUND SCRIPT WORKS!');
 
-  console.log('Background script (background.js):');
+  var handlers = require('./modules/handlers').create('bg');
+  // adding special background notification handlers onConnect / onDisconnect
+  function logEvent(ev, context, tabId) {
+    console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
+  }
+  handlers.onConnect = logEvent.bind(null, 'onConnect');
+  handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
+  var msg = require('./modules/msg').init('bg', handlers);
 
-  console.log('+ jQuery     loaded in version:', $.fn.jquery);
-  console.log('+ underscore loaded in version:', _.VERSION);
+  // issue `echo` command in 10 seconds after invoked,
+  // schedule next run in 5 minutes
+  function helloWorld() {
+    console.log('===== will broadcast "hello world!" in 10 seconds');
+    setTimeout(function() {
+      console.log('>>>>> broadcasting "hello world!" now');
+      msg.bcast('echo', 'hello world!', function() {
+        console.log('<<<<< broadcasting done');
+      });
+    }, 10 * 1000);
+    setTimeout(helloWorld, 5 * 60 * 1000);
+  }
 
-  console.log('+ myModule content:');
-  _.each(myModule, function(value, key) {
-    console.log('    -', key, ':', value);
-  });
+  // start broadcasting loop
+  helloWorld();
 
-  console.log('+ Configuration content:');
-  _.each(config, function(value, key) {
-    console.log('    -', key, ':', value);
-  });
-
-  messaging.backgroundInitialize();
-});
+})();

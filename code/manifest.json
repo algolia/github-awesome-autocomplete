@@ -1,37 +1,18 @@
 {
-  "name": "Chrome Extension Skeleton",
-  "version": "0.1.0",
   "manifest_version": 2,
-  "description": "Skeleton with basic libraries to use as a basis for Chrome extensions",
-  "icons": {
-    "128": "images/icon.png"
-  },
+  "icons": { "128": "images/icon.png" },
   "browser_action": {
     "default_icon": "images/icon.png",
     "default_popup": "html/popup.html"
   },
-  "background": {
-    "page": "html/background.html"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": [
-        "js/lib/require.js",
-        "js/lib/jquery.js",
-        "js/lib/underscore.js",
-        "js/requireContent.js",
-        "js/requireConfig.js",
-        "js/content.js"
-      ]
-    }
-  ],
-  "permissions": [
-  ],
-  "web_accessible_resources": [
-    "js/*",
-    "html/*",
-    "css/*",
-    "images/*"
-  ]
+  "background": { "scripts": ["js/background.js"] },
+  "content_scripts": [{
+    "matches": [ "http://*/*", "https://*/*" ],
+    "js": [ "js/content.js" ]
+  }],
+  "options_page": "html/options.html",
+  "devtools_page": "html/devtools.html",
+  "permissions": [ "tabs", "<all_urls>" ],
+  "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

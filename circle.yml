@@ -1,0 +1,9 @@
+dependencies:
+  override:
+    - npm install
+  cache_directories:
+    - node_modules
+
+test:
+  override:
+    - grunt

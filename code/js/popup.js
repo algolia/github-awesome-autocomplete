@@ -1,34 +1,10 @@
-requirejs.config(requirejsConfig);
+;(function() {
+  console.log('POPUP SCRIPT WORKS!');
 
-requirejs(['jquery', 'util/messagingClient', 'config'],
-function($, client, config) {
-  var popupData = {
-    greeting: config.greeting
-  };
-  client.sendBroadcast({ cmd: 'GetPopupStats' }, function(stats) {
-    switch (stats.counter) {
-      case 1:
-        popupData.counter = 'once';
-        break;
-      case 2:
-        popupData.counter = 'twice';
-        break;
-      default:
-        popupData.counter = '' + stats.counter + ' times';
-        break;
-    }
-    client.sendBroadcast({
-      cmd: 'GetHtml',
-      args: {
-        template: 'popup',
-        data: popupData
-      }
-    }, function(result) {
-      if (result) {
-        $(function() {
-          $(result).appendTo('body');
-        });
-      }
-    });
-  });
-});
+  var handlers = require('./modules/handlers').create('popup');
+  var msg = require('./modules/msg').init('popup', handlers);
+  var form = require('./modules/form');
+  var runner = require('./modules/runner');
+
+  form.init(runner.go.bind(runner, msg));
+})();

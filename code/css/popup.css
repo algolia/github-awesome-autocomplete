@@ -1,26 +1,4 @@
-* {
-  margin: 0px;
-  border: 0px;
-  padding: 0px;
-}
-
 body {
-  padding: 10px;
-  background-color: #333;
-  background-image: url('../images/icon.png');
-  background-repeat: no-repeat;
-  background-position: bottom right;
-  font-family: verdana;
-  color: #bbb;
-  width: 300px;
-  height: 160px;
-}
-
-div {
-  padding: 20px;
-  width: 170px;
-}
-
-p {
-  margin-top: 20px;
+  width: 400px;
+  height: 400px;
 }

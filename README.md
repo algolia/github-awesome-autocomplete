@@ -1,67 +1,90 @@
-# chrome-extension-skeleton
+## Skeleton for Google Chrome extensions
 
-## Minimal skeleton for Google Chrome extension
+* includes awesome messaging module
+* grunt-based build system
+* node.js modules
+* unit-tests in mocha
+* CircleCI friendly
 
-This project is an example of a Google Chrome extension, that uses RequireJS
-to load code modules and at the same time is compliant with *Manifest file v2
-limitations*. For more details on this topic, please see this
-[presentation](http://prezi.com/rodnyr5awftr/requirejs-in-chrome-extensions/)
-by Daniel Prentis.
+### Installation:
 
-The extension demonstates the usage of background page, extension popup window
-and inserting content scripts into the target pages. Communication between the
-background window and the content scripts is implemented using messaging. Also,
-both the content script and the popup window use Mustache templates.
+    git clone git@github.com:salsita/chrome-extension-skeleton.git
+    
+    # in case you don't have Grunt yet:
+    sudo npm install -g grunt-cli
 
-The goal of this project is to have a skeleton for Google Chrome extensions, so
-you can download it or fork it, and then develop your own extension without
-spending too much time with figuring out the basics.
+### Build instructions:
 
-Should you have any comments, don't hesitate and let us know!
+    cd chrome-extension-skeleton
+    npm install
+    grunt
 
+### Directory structure:
 
-## Directory structure
-
+    /build             # this is where your extension (.crx) will end up,
+                       # along with unpacked directories of production and
+                       # develop build (for debugging)
+    
     /code
-        /css
-        /html
-            /templates
-        /images
-        /js
-            /lib
-            /modules
-                /type_a
-                /type_b
-                /...
-                /util
-    /tests
-        /test
-            /modules
-            /specs
+        /css           # CSS files
+        /html          # HTML files
+        /images        # image resources
+    
+        /js            # entry-points for browserify, requiring node.js `modules`
+    
+            /libs      # 3rd party run-time libraries, excluded from JS-linting
+            /modules   # node.js modules (and corresponding mocha
+                       #   unit tests spec files)
+    
+        manifest.json  # skeleton manifest file, `name`, `description`
+                       #   and `version` fields copied from `package.json`
+    
+    Gruntfile.js       # grunt tasks (see below)
+    circle.yml         # integration with CircleCI
+    crxmake.sh         # official build script for packing Chromium extensions
+    extension-skeleton.pem   # certificate file
+    lint-options.json  # options for JS-linting
+    package.json       # project description file (name, version, dependencies, ...)
 
-In `code` directory you will find:
-*	`css` - any css files used by the extension
-* `html` - any html files used by the extension
-* `html/templates` - html Mustache templates used for rendering html code
-* `images` - any graphics used by the extnesion
-* `js` - code javascript files (entry point for background script, content
-script(s), and popup script
-* `js/lib` - third party libraries, see README.md file there for details
-* `js/modules` - all extension-specific code in AMD modules (can be
-organised in sub-directories, e.g. `type_a`, ...
-* `js/util` - common functionality (messaging and templates) for the
-extensions, written as AMD modules
+### Grunt tasks:
 
-In `tests` directory you will find:
-*	`test` - test related JavaScript code forJasmine-node
-*	`modules` - unit test-specific utility and RequireJS configuration
-*	`specs` - unit test modules
+* `clean`: clean `build` directory
+* `test`: JS-lint and mocha test, single run
+* `test-cont`: continuos `test` loop
+* default: `clean`, `test`, build step (copy all necessary files to `build`
+  directory, browserify JS sources, prepare production version (using uglify),
+  pack the `crx` (using official shell script), and copy the resulting `crx` to
+  CircleCI artifacts directory (only when on CircleCI))
 
+### After you clone:
 
-## Running tests
+1. In `package.json`, rename the project, description, version, add dependencies
+and any other fields necessary.
 
-1. Install jasmine-node first:
+2. Replace `extension-skeleton.pem` with your own `.pem` file, update
+`Gruntfile.js` accordingly, add your `.pem` file to `.gitignore`, so that you
+don't commit it back to git repository (in case it is public repo).
 
-    `npm install -g jasmine-node`
+3. Add content (HTML, CSS, images, JS modules), update `code/manifest.json`,
+leave only JS entry-points you use (remove the ones you don't need).
 
-2. In `tests` directory run `run-tests.sh` *(it installs required dependencies first)*
+4. When developing, write unit-tests, use `test-cont` Grunt task to check that
+your JS code passes linting tests and unit-tests.
+
+5. When ready to try out the extension in the browser, use default Grunt task to
+build it. In `build` directory you'll find develop version of the extension in
+`unpacked-dev` subdirectory (with source maps), and production (uglified)
+version in `unpacked-prod` directory. The `.crx` packed version is created from
+`unpacked-prod` sources.
+
+6. When done developing, publish the extension and enjoy it (profit!).
+
+Use any 3rd party libraries you need (both for run-time and for development /
+testing), place them either to `code/js/libs`, in case the library is not an npm
+module, or use regular npm node.js modules (that will be installed into
+`node_modules` directory). These libraries will be encapsulated in the resulting
+code and will NOT conflict even with libraries on pages where you inject the
+resulting JS scripts to (for content scripts).
+
+For more information, please check also README.md files in subdirectories.
+
