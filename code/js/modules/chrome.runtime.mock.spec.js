@@ -17,6 +17,19 @@ function createCb(scope) {
 
 var onConnect = createCb('main::onConnect');
 
+function verifyPort(port) {
+  assert('object' === typeof(port));
+  assert('myPort' === port.name);
+  assert('function' === typeof(port.disconnect));
+  assert('function' === typeof(port.postMessage));
+  assert('object' === typeof(port.onDisconnect));
+  assert('function' === typeof(port.onDisconnect.addListener));
+  assert('function' === typeof(port.onDisconnect.removeListener));
+  assert('object' === typeof(port.onMessage));
+  assert('function' === typeof(port.onMessage.addListener));
+  assert('function' === typeof(port.onMessage.removeListener));
+}
+
 describe('chrome.runtime.mock module', function() {
 
   beforeEach(function() { log = []; runtime.onConnect.addListener(onConnect); });
@@ -32,17 +45,8 @@ describe('chrome.runtime.mock module', function() {
 
   it('connect() should create Port', function() {
     var port = runtime.connect({ name: 'myPort' });
-    assert('object' === typeof(port));
-    assert('myPort' === port.name);
+    verifyPort(port);
     assert('undefined' === typeof(port.sender));
-    assert('function' === typeof(port.disconnect));
-    assert('function' === typeof(port.postMessage));
-    assert('object' === typeof(port.onDisconnect));
-    assert('function' === typeof(port.onDisconnect.addListener));
-    assert('function' === typeof(port.onDisconnect.removeListener));
-    assert('object' === typeof(port.onMessage));
-    assert('function' === typeof(port.onMessage.addListener));
-    assert('function' === typeof(port.onMessage.removeListener));
   });
 
   it('should notify onConnect handler when Port is connected', function(done) {
@@ -51,17 +55,8 @@ describe('chrome.runtime.mock module', function() {
       assert(1 === log.length);
       assert('main::onConnect' === log[0][0]);
       var port = log[0][1];
-      assert('object' === typeof(port));
-      assert('myPort' === port.name);
+      verifyPort(port);
       assert('number' === typeof(port.sender && port.sender.tab && port.sender.tab.id));
-      assert('function' === typeof(port.disconnect));
-      assert('function' === typeof(port.postMessage));
-      assert('object' === typeof(port.onDisconnect));
-      assert('function' === typeof(port.onDisconnect.addListener));
-      assert('function' === typeof(port.onDisconnect.removeListener));
-      assert('object' === typeof(port.onMessage));
-      assert('function' === typeof(port.onMessage.addListener));
-      assert('function' === typeof(port.onMessage.removeListener));
       done();
     });
   });

@@ -317,7 +317,7 @@ function selectTargets(fromBg, targTabId, targCategories, myCategory, myPortId) 
 // message handler (useb by both background and non-backound)
 function onCustomMsg(message) {
 
-  var _port, _arr, _localHandler, i;
+  var _port, _arr, _localHandler, _ref, i;
 
   // helper functions:
 
@@ -370,7 +370,8 @@ function onCustomMsg(message) {
       if ( (undefined === message.tabId) &&
            (!message.contexts || (-1 !== message.contexts.indexOf('bg'))) ) {
         // we are also interested in response from background itself
-        if (_localHandler = myHandlers[message.cmdName]) {
+        if ((_ref = myHandlers[message.cmdName]) && ('function' === typeof(_ref))) {
+          _localHandler = _ref;
           responsesNeeded++;
         }
       }
@@ -427,16 +428,16 @@ function onCustomMsg(message) {
     } else if ('updateTabId' === message.cmd) {
       var _context = message.context, _portId = message.portId;
       if ((_port = portMap[_context]) && (_port = _port[_portId])) {
-        if (myHandlers.onDisconnect) { myHandlers.onDisconnect(_context, _port.tabId); }
+        if ('function' === typeof(myHandlers.onDisconnect)) { myHandlers.onDisconnect(_context, _port.tabId); }
         _port.tabId = message.tabId;
-        if (myHandlers.onConnect) { myHandlers.onConnect(_context, _port.tabId); }
+        if ('function' === typeof(myHandlers.onConnect)) { myHandlers.onConnect(_context, _port.tabId); }
       }
     }
   } else {
     // non-background
     if ('request' === message.cmd) {
       _localHandler = myHandlers[message.cmdName];
-      if (!_localHandler) {
+      if ('function' !== typeof(_localHandler)) {
         if (message.sendResponse) {
           myPort.postMessage({
             cmd: 'response',
@@ -497,7 +498,7 @@ function onConnect(port) {
     // close all pending requests:
     closePendingReqs(portId);
     // invoke custom onDisconnect handler
-    if (myHandlers.onDisconnect) { myHandlers.onDisconnect(categName, tabId); }
+    if ('function' === typeof(myHandlers.onDisconnect)) { myHandlers.onDisconnect(categName, tabId); }
   }
   // install port handlers
   port.onMessage.addListener(onCustomMsg);
@@ -505,7 +506,7 @@ function onConnect(port) {
   // ask counter part to set its id
   port.postMessage({ cmd: 'setName', name: portId });
   // invoke custom onConnect handler
-  if (myHandlers.onConnect) { myHandlers.onConnect(categName, tabId); }
+  if ('function' === typeof(myHandlers.onConnect)) { myHandlers.onConnect(categName, tabId); }
 }
 
 // create main messaging object, hiding all the complexity from the user
