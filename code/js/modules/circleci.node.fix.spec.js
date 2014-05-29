@@ -1,0 +1,3 @@
+// node.js version on CircleCI does not contain setImmediate function yet,
+// so we need to have a workaround here...
+global.setImmediate = global.setImmediate || function(callback) { setTimeout(callback, 0); };

@@ -43,10 +43,11 @@ describe('chrome.runtime.mock module', function() {
     assert('function' === typeof(runtime.onConnect.removeListener));
   });
 
-  it('connect() should create Port', function() {
+  it('connect() should create Port', function(done) {
     var port = runtime.connect({ name: 'myPort' });
     verifyPort(port);
     assert('undefined' === typeof(port.sender));
+    setImmediate(done);  // connect writes to log asynchronously, so need to wait here
   });
 
   it('should notify onConnect handler when Port is connected', function(done) {
