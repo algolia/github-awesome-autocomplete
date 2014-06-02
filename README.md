@@ -88,3 +88,17 @@ resulting JS scripts to (for content scripts).
 
 For more information, please check also README.md files in subdirectories.
 
+### Under the hood:
+
+If you want to understand better the structure of the code and how it really
+works, please check this
+[http://prezi.com/yxj7zs7ixlmw/chrome-extension-skeleton/](prezi).
+
+### Legacy version
+
+Before this version of the skeleton, we used [http://requirejs.org/](RequireJS)
+modules, [http://jasmine.github.io/](jasmine-based) unit tests and older
+`chrome.extension.{onMessage|sendMessage}` API for message exchange between
+background and content scripts. This version is still available in
+[https://github.com/salsita/chrome-extension-skeleton/tree/legacy](legacy)
+branch here.
