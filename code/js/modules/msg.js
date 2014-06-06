@@ -202,45 +202,6 @@
 // constant for "same tab as me"
 var SAME_TAB = -1000;  // was -Infinity, but JSON.stringify() + JSON.parse() don't like that value
 
-// handlers available in given context (function lookup table), set in `init()`
-// format:
-// {
-//   (string)<functioName>: (function)<code>,
-//   ...
-// }
-var myHandlers;
-
-// id assigned by background, used in non-background contexts only
-// in background set to 'bg'
-var myId;
-
-// port used for communication with background (i.e. not used in background)
-// type: (chrome.runtime) Port
-var myPort;
-
-// callback lookup table: if request waits for response, this table holds
-// the callback function that will be invoke upon response
-// format:
-// {
-//   (int)<requestId>: (function)<callback code>,
-//   ...
-// }
-var myCbTable = {};
-
-// background table of pending requests
-// format:
-// {
-//   (string)<portId>: [ { id: (int)<requestId>, cb: (function)<callback> }, ...],
-//   ...
-// }
-var bgPendingReqs = {};
-
-// unique context id, used by background
-var uId = 1;
-
-// request id, used by all contexts
-var requestId = 1;
-
 // run-time API:
 // variable + exported function to change it, so it can be mocked in unit tests
 /* global chrome */
@@ -265,26 +226,78 @@ function forOwnProps(obj, callback) {
   return res;
 }
 
-// mapping non-background context names to objects indexed by name of the context
-// instances, holding { tab-id, (chrome.runtime.)Port } pairs,
-// used for message dispatching
-// format:
-// {
-//   (string)<category>: {
-//     (string)<id>: { tabId: (optional)<int>, port: <chrome.runtime.Port> },
-//     ...
-//   },
-//   ...
-// }
-// background-only variable
-var portMap = {};
+// we wrap the whole module functionality into isolated scope, so that later we
+// can instantiate multiple parallel scopes for unit testing.
+// The module will still seem to hold singleton object, because we'll create
+// this singleton and will export its methods as (whole) module methods.
+
+function Messaging() {
+  // handlers available in given context (function lookup table), set in `init()`
+  // format:
+  // {
+  //   (string)<functioName>: (function)<code>,
+  //   ...
+  // }
+  this.handlers = {};
+
+  // id assigned by background, used in non-background contexts only
+  // in background set to 'bg'
+  this.id = null;
+
+  // port used for communication with background (i.e. not used in background)
+  // type: (chrome.runtime) Port
+  this.port = null;
+
+  // callback lookup table: if request waits for response, this table holds
+  // the callback function that will be invoke upon response
+  // format:
+  // {
+  //   (int)<requestId>: (function)<callback code>,
+  //   ...
+  // }
+  this.cbTable = {};
+
+  // background table of pending requests
+  // format:
+  // {
+  //   (string)<portId>: [ { id: (int)<requestId>, cb: (function)<callback> }, ...],
+  //   ...
+  // }
+  this.pendingReqs = {};
+
+  // unique context id, used by background
+  this.uId = 1;
+
+  // request id, used by all contexts
+  this.requestId = 1;
+
+  // mapping non-background context names to objects indexed by name of the context
+  // instances, holding { tab-id, (chrome.runtime.)Port } pairs,
+  // used for message dispatching
+  // format:
+  // {
+  //   (string)<category>: {
+  //     (string)<id>: { tabId: (optional)<int>, port: <chrome.runtime.Port> },
+  //     ...
+  //   },
+  //   ...
+  // }
+  // background-only variable
+  this.portMap = {};
+
+  // runetime and devtools references, so that we can change it in unit tests
+  this.runtime = runtime;
+  this.devtools = devtools;
+}
 
 // background function for selecting target ports to which we broadcast the request
 // fromBg: is the request to collect targets from bacground, or based on message?
+// targ*: filter for target ports
+// src*: information about source port
 // returns array of { port: (chrome.runtime.Port), id: (string) }
-function selectTargets(fromBg, targTabId, targCategories, myCategory, myPortId) {
+Messaging.prototype.selectTargets = function(fromBg, targTabId, targCategories, srcCategory, srcPortId) {
   var res = [];
-  var _port = portMap[myCategory] && portMap[myCategory][myPortId];
+  var _port = this.portMap[srcCategory] && this.portMap[srcCategory][srcPortId];
   if (!fromBg && !_port) {
     // this should never happen, we just got request from this port!
     return [];
@@ -293,7 +306,7 @@ function selectTargets(fromBg, targTabId, targCategories, myCategory, myPortId) 
     targTabId = _port.tabId;
   }
   // iterate through portMap, pick targets:
-  forOwnProps(portMap, function(categ, portGroup) {
+  forOwnProps(this.portMap, function(categ, portGroup) {
     if (targCategories && (-1 === targCategories.indexOf(categ))) {
       // we are interested only in specified contexts,
       // and this category is not on the list
@@ -312,10 +325,10 @@ function selectTargets(fromBg, targTabId, targCategories, myCategory, myPortId) 
     });
   });
   return res;
-}
+};
 
 // message handler (useb by both background and non-backound)
-function onCustomMsg(message) {
+Messaging.prototype.onCustomMsg = function(message) {
 
   var _port, _arr, _localHandler, _ref, i;
 
@@ -324,9 +337,9 @@ function onCustomMsg(message) {
   // send response on result (non-background):
   function sendResultCb(result) {
     if (message.sendResponse) {
-      myPort.postMessage({
+      this.port.postMessage({
         cmd: 'response',
-        portId: myId,
+        portId: this.id,
         reqId: message.reqId,
         resultValid: true,
         result: result
@@ -342,15 +355,15 @@ function onCustomMsg(message) {
         results.push(result);
       }
       N--;
-      if (!N && message.sendResponse && portMap[message.category] &&
-          (_port = portMap[message.category][message.portId])) {
+      if (!N && message.sendResponse && this.portMap[message.category] &&
+          (_port = this.portMap[message.category][message.portId])) {
         _port.port.postMessage({
           cmd: 'response',
           reqId: message.reqId,
           result: message.broadcast ? results : results[0]
         });
       }
-    };
+    }.bind(this);
   }
 
   // main message processing:
@@ -358,27 +371,27 @@ function onCustomMsg(message) {
     return;
   }
   if ('setName' === message.cmd) {
-    myId = message.name;
+    this.id = message.name;
     return;
   }
-  if ('bg' === myId) {
+  if ('bg' === this.id) {
     // background
     if ('request' === message.cmd) {
-      var targetPorts = selectTargets(false, message.tabId, message.contexts,
-                                      message.category, message.portId);
+      var targetPorts = this.selectTargets(false, message.tabId, message.contexts,
+                                           message.category, message.portId);
       var responsesNeeded = targetPorts.length;
       if ( (undefined === message.tabId) &&
            (!message.contexts || (-1 !== message.contexts.indexOf('bg'))) ) {
         // we are also interested in response from background itself
-        if ((_ref = myHandlers[message.cmdName]) && ('function' === typeof(_ref))) {
+        if ((_ref = this.handlers[message.cmdName]) && ('function' === typeof(_ref))) {
           _localHandler = _ref;
           responsesNeeded++;
         }
       }
       if (!responsesNeeded) {
         // no one to answer that now
-        if (message.sendResponse && portMap[message.category] &&
-            (_port = portMap[message.category][message.portId])) {
+        if (message.sendResponse && this.portMap[message.category] &&
+            (_port = this.portMap[message.category][message.portId])) {
           _port.port.postMessage({
             cmd: 'response',
             reqId: message.reqId,
@@ -388,7 +401,7 @@ function onCustomMsg(message) {
         }
       } else {
         // some responses needed
-        var cb = createCbForMoreResults(responsesNeeded);
+        var cb = createCbForMoreResults.call(this, responsesNeeded);
         // send to target ports
         for (i = 0; i < targetPorts.length; i++) {
           _port = targetPorts[i];
@@ -397,21 +410,21 @@ function onCustomMsg(message) {
             cmdName: message.cmdName,
             sendResponse: true,
             args: message.args,
-            reqId: requestId
+            reqId: this.requestId
           });
-          _arr = bgPendingReqs[_port.id] || [];
-          _arr.push({ id: requestId, cb: cb });
-          bgPendingReqs[_port.id] = _arr;
-          requestId++;
+          _arr = this.pendingReqs[_port.id] || [];
+          _arr.push({ id: this.requestId, cb: cb });
+          this.pendingReqs[_port.id] = _arr;
+          this.requestId++;
         }
         // get local response (if background can provide it)
         if (_localHandler) {
           message.args.push(cb);
-          _localHandler.apply(myHandlers, message.args);
+          _localHandler.apply(this.handlers, message.args);
         }
       }
     } else if ('response' === message.cmd) {
-      _arr = bgPendingReqs[message.portId];
+      _arr = this.pendingReqs[message.portId];
       if (_arr) {
         // some results from given port expected, find the callback for reqId
         i = 0;
@@ -421,93 +434,94 @@ function onCustomMsg(message) {
           _arr[i].cb(message.result, message.resultValid);
           _arr.splice(i, 1);
           if (!_arr.length) {
-            delete bgPendingReqs[message.portId];
+            delete this.pendingReqs[message.portId];
           }
         }
       }
     } else if ('updateTabId' === message.cmd) {
       var _context = message.context, _portId = message.portId;
-      if ((_port = portMap[_context]) && (_port = _port[_portId])) {
-        if ('function' === typeof(myHandlers.onDisconnect)) { myHandlers.onDisconnect(_context, _port.tabId); }
+      if ((_port = this.portMap[_context]) && (_port = _port[_portId])) {
+        if ('function' === typeof(this.handlers.onDisconnect)) { this.handlers.onDisconnect(_context, _port.tabId); }
         _port.tabId = message.tabId;
-        if ('function' === typeof(myHandlers.onConnect)) { myHandlers.onConnect(_context, _port.tabId); }
+        if ('function' === typeof(this.handlers.onConnect)) { this.handlers.onConnect(_context, _port.tabId); }
       }
     }
   } else {
     // non-background
     if ('request' === message.cmd) {
-      _localHandler = myHandlers[message.cmdName];
+      _localHandler = this.handlers[message.cmdName];
       if ('function' !== typeof(_localHandler)) {
         if (message.sendResponse) {
-          myPort.postMessage({
+          this.port.postMessage({
             cmd: 'response',
-            portId: myId,
+            portId: this.id,
             reqId: message.reqId,
             resultValid: false
           });
         }
       } else {
-        message.args.push(sendResultCb);
-        _localHandler.apply(myHandlers, message.args);
+        message.args.push(sendResultCb.bind(this));
+        _localHandler.apply(this.handlers, message.args);
       }
     } else if ('response' === message.cmd) {
-      if (myCbTable[message.reqId]) {
-        myCbTable[message.reqId](message.result);
-        delete myCbTable[message.reqId];
+      if (this.cbTable[message.reqId]) {
+        this.cbTable[message.reqId](message.result);
+        delete this.cbTable[message.reqId];
       }
     }
   }
-}
+};
 
 // invoke callbacks for pending requests and remove the requests from the structure
-function closePendingReqs(portId) {
+Messaging.prototype.closePendingReqs = function(portId) {
   var _arr;
-  if (_arr = bgPendingReqs[portId]) {
+  if (_arr = this.pendingReqs[portId]) {
     for (var i = 0; i < _arr.length; i++) {
       _arr[i].cb(undefined, false);
     }
-    delete bgPendingReqs[portId];
+    delete this.pendingReqs[portId];
   }
-}
+};
 
 // backround onConnect handler
-function onConnect(port) {
+Messaging.prototype.onConnect = function(port) {
   // add to port map
   var categName = port.name || 'unknown';
-  var portId = categName + '-' + uId;
-  uId++;
-  var portCateg = portMap[categName] || {};
+  var portId = categName + '-' + this.uId;
+  this.uId++;
+  var portCateg = this.portMap[categName] || {};
   var tabId = (port.sender && port.sender.tab && port.sender.tab.id) || Infinity;
   portCateg[portId] = {
     port: port,
     tabId: tabId
   };
-  portMap[categName] = portCateg;
+  this.portMap[categName] = portCateg;
+  var _onCustomMsg,_onDisconnect;
   // on disconnect: remove listeners and delete from port map
   function onDisconnect() {
     // listeners:
-    port.onDisconnect.removeListener(onDisconnect);
-    port.onMessage.removeListener(onCustomMsg);
+    port.onDisconnect.removeListener(_onDisconnect);
+    port.onMessage.removeListener(_onCustomMsg);
     // port map:
-    portCateg = portMap[categName];
+    portCateg = this.portMap[categName];
     var _port;
     if (portCateg && (_port = portCateg[portId])) {
       tabId = _port.tabId;
       delete portCateg[portId];
     }
     // close all pending requests:
-    closePendingReqs(portId);
+    this.closePendingReqs(portId);
     // invoke custom onDisconnect handler
-    if ('function' === typeof(myHandlers.onDisconnect)) { myHandlers.onDisconnect(categName, tabId); }
+    if ('function' === typeof(this.handlers.onDisconnect)) { this.handlers.onDisconnect(categName, tabId); }
   }
   // install port handlers
-  port.onMessage.addListener(onCustomMsg);
-  port.onDisconnect.addListener(onDisconnect);
+  port.onMessage.addListener(_onCustomMsg = this.onCustomMsg.bind(this));
+  port.onDisconnect.addListener(_onDisconnect = onDisconnect.bind(this));
   // ask counter part to set its id
   port.postMessage({ cmd: 'setName', name: portId });
   // invoke custom onConnect handler
-  if ('function' === typeof(myHandlers.onConnect)) { myHandlers.onConnect(categName, tabId); }
-}
+  if ('function' === typeof(this.handlers.onConnect)) { this.handlers.onConnect(categName, tabId); }
+};
 
 // create main messaging object, hiding all the complexity from the user
 // it takes name of local context `myContextName`
@@ -546,7 +560,7 @@ function onConnect(port) {
 // arguments with ['bg'], so that the user doesn't have to write it when
 // requesting some info in non-bg context from background.
 //
-function createMsgObject(myContextName) {
+Messaging.prototype.createMsgObject = function(myContextName) {
   // generator for functions `cmd` and `bcast`
   function createFn(broadcast) {
     // helper function for invoking provided callback in background
@@ -569,8 +583,8 @@ function createMsgObject(myContextName) {
         // at least command name must be provided
         return false;
       }
-      if (!myId) {
-        // since we learn myId of non-background context in asynchronous
+      if (!this.id) {
+        // since we learn our id of non-background context in asynchronous
         // message, we may need to wait for it...
         var _ctx = this, _args = arguments;
         setTimeout(function() { _msg.apply(_ctx, _args); }, 1);
@@ -619,10 +633,10 @@ function createMsgObject(myContextName) {
         return false; // command name is mandatory
       }
       // store the callback and issue the request (message)
-      if (myId === 'bg') {
-        var targetPorts = selectTargets(true, tabId, contexts);
+      if ('bg' === this.id) {
+        var targetPorts = this.selectTargets(true, tabId, contexts);
         var responsesNeeded = targetPorts.length;
-        var cb = createCbForMoreResults(responsesNeeded, callback);
+        var cb = createCbForMoreResults.call(this, responsesNeeded, callback);
         // send to target ports
         for (var i = 0; i < targetPorts.length; i++) {
           var _port = targetPorts[i];
@@ -631,12 +645,12 @@ function createMsgObject(myContextName) {
             cmdName: cmdName,
             sendResponse: true,
             args: args,
-            reqId: requestId
+            reqId: this.requestId
           });
-          var _arr = bgPendingReqs[_port.id] || [];
-          _arr.push({ id: requestId, cb: cb });
-          bgPendingReqs[_port.id] = _arr;
-          requestId++;
+          var _arr = this.pendingReqs[_port.id] || [];
+          _arr.push({ id: this.requestId, cb: cb });
+          this.pendingReqs[_port.id] = _arr;
+          this.requestId++;
         }
         if (!targetPorts.length) {
           // no one to respond, invoke the callback (if provided) right away
@@ -644,31 +658,31 @@ function createMsgObject(myContextName) {
         }
       } else {
         if (callback) {
-          myCbTable[requestId] = callback;
+          this.cbTable[this.requestId] = callback;
         }
-        myPort.postMessage({
+        this.port.postMessage({
           cmd: 'request',
           cmdName: cmdName,
-          reqId: requestId,
+          reqId: this.requestId,
           sendResponse: (callback !== undefined),
           broadcast: broadcast,
           category: myContextName,
-          portId: myId,
+          portId: this.id,
           tabId: tabId,
           contexts: contexts,
           args: args
         });
-        requestId++;
+        this.requestId++;
       }
       // everything went OK
       return true;
-    };
+    }.bind(this);
   }
 
   // returned object:
   var res = {
-    cmd: createFn(false),
-    bcast: createFn(true)
+    cmd: createFn.call(this, false),
+    bcast: createFn.call(this, true)
   };
 
   // for more convenience (when sending request from non-bg to background only)
@@ -685,7 +699,7 @@ function createMsgObject(myContextName) {
   }
 
   return res;
-}
+};
 
 // init function, exported
 //
@@ -703,65 +717,85 @@ function createMsgObject(myContextName) {
 // for background (`context` is 'bg'): installs onConnect listener
 // for non-background context it connects to background
 //
-function init(context, handlers) {
+Messaging.prototype.init = function(context, handlers) {
   // set message handlers (optional)
-  myHandlers = handlers || {};
+  this.handlers = handlers || {};
+
+  // listener references
+  var _onDisconnect, _onCustomMsg;
 
   // helper function:
   function onDisconnect() {
-    myPort.onDisconnect.removeListener(onDisconnect);
-    myPort.onMessage.removeListener(onCustomMsg);
+    this.port.onDisconnect.removeListener(_onDisconnect);
+    this.port.onMessage.removeListener(_onCustomMsg);
   }
 
   var _tabId;
   function _updateTabId() {
-    if (!myId) {
-      setTimeout(_updateTabId, 1);
+    if (!this.id) {
+      setTimeout(_updateTabId.bind(this), 1);
       return;
     }
-    myPort.postMessage({
+    this.port.postMessage({
       cmd: 'updateTabId',
       context: context,
-      portId: myId,
+      portId: this.id,
       tabId: _tabId
     });
   }
 
   if ('bg' === context) {
     // background
-    myId = 'bg';
-    runtime.onConnect.addListener(onConnect);
+    this.id = 'bg';
+    this.runtime.onConnect.addListener(this.onConnect.bind(this));
   } else {
     // anything else than background
-    myPort = runtime.connect({ name: context });
-    myPort.onMessage.addListener(onCustomMsg);
-    myPort.onDisconnect.addListener(onDisconnect);
+    this.port = this.runtime.connect({ name: context });
+    this.port.onMessage.addListener(_onCustomMsg = this.onCustomMsg.bind(this));
+    this.port.onDisconnect.addListener(_onDisconnect = onDisconnect.bind(this));
     // tabId update for developer tools
     // unfortunately we need dedicated name for developer tools context, due to
     // this bug: https://code.google.com/p/chromium/issues/detail?id=356133
     // ... we are not able to tell if we are in DT context otherwise :(
-    if ( ('dt' === context) && devtools && (_tabId = devtools.inspectedWindow) &&
+    if ( ('dt' === context) && this.devtools && (_tabId = this.devtools.inspectedWindow) &&
          ('number' === typeof(_tabId = _tabId.tabId)) ) {
-      _updateTabId();
+      _updateTabId.call(this);
     }
   }
 
-  return createMsgObject(context);
+  return this.createMsgObject(context);
+};
+
+
+// singleton representing this module
+var singleton = new Messaging();
+
+// helper function to install methods used for unit tests
+function installUnitTestMethods(target, delegate) {
+  // setters
+  target.__setRuntime = function(rt) { delegate.runtime = rt; return target; };
+  target.__setDevTools = function(dt) { delegate.devtools = dt; return target; };
+  // getters
+  target.__getId = function() { return delegate.id; };
+  target.__getPort = function() { return delegate.port; };
+  target.__getPortMap = function() { return delegate.portMap; };
+  target.__getHandlers = function() { return delegate.handlers; };
+  target.__getPendingReqs = function() { return delegate.pendingReqs; };
 }
 
 module.exports = {
   // same tab id
   SAME_TAB: SAME_TAB,
-
   // see description for init function above
-  init: init,
-
-  // for unit-tests only:
-  __setRuntime: function(rt) { runtime = rt; }, // injecting mocked chrome.runtime API
-  __setDevTools: function(dt) { devtools = dt; }, // injecting mocked chrome.devtools API
-  __getPortMap: function() { return portMap; },
-  __getId: function() { return myId; },
-  __getPort: function() { return myPort; },
-  __getHandlers: function() { return myHandlers; },
-  __getPendingReqs: function() { return bgPendingReqs; }
+  init: singleton.init.bind(singleton),
+  // --- for unit tests ---
+  // allow unit testing of the main module:
+  __allowUnitTests: function() { installUnitTestMethods(this, singleton); },
+  // context cloning
+  __createClone: function() {
+    var clone = new Messaging();
+    clone.SAME_TAB = SAME_TAB;
+    installUnitTestMethods(clone, clone);
+    return clone;
+  }
 };

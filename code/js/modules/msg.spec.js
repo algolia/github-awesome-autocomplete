@@ -1,5 +1,3 @@
-var fs = require('fs');
-var path = require('path');
 var assert = require('assert');
 
 // mocked chrome.runtime
@@ -18,13 +16,10 @@ var bgHandlers;
 // load isolated module copies, so that we can simulate
 // multiple parallel contexts
 bgMain = require('./msg');  // for background, we can load the main module
+bgMain.__allowUnitTests();  // install unit test inspecting methods
 // non-bg copies:
-var data = fs.readFileSync(path.join(__dirname, 'msg.js'));  // tested module to clone
 for (var i = 0; i < CTX_COUNT; i++) {
-  var tmp = path.join(__dirname, '__test_msg__' + i + '.js');
-  fs.writeFileSync(tmp, data); // create clone with unique name
-  ctxMain.push(require(tmp));      // require the clone
-  fs.unlink(tmp);              // and get rid of it again
+  ctxMain.push(bgMain.__createClone().__setRuntime(runtime));
 }
 
 // stores history of handler invocations (in all contexts)
@@ -136,7 +131,6 @@ describe('messaging module', function() {
     bgMain.__setRuntime(runtime);
     var pm = bgMain.__getPortMap();
     assert.deepEqual({}, pm);
-    for (i = 0; i < CTX_COUNT; i++) { ctxMain[i].__setRuntime(runtime); }
     // background
     bg = bgMain.init('bg', bgHandlers = createHandlers('bg', 1));
     assert(typeof(bg) === 'object');
