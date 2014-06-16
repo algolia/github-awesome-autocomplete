@@ -152,10 +152,10 @@ describe('messaging module', function() {
     assert(typeof(ctx[0].bcast) === 'function');
     assert(typeof(ctx[0].bg) === 'function');
     // make sure we don't invoke onConnect background handler (it is not installed yet)
-    var counter = 10;
+    var counter = 3;
     setImmediate(function _f() {
       assert(0 === handlerLog.length);  // no onConnect invoked
-      if (counter--) { setImmediate(_f); return; }
+      if (counter--) { setTimeout(_f, 0); return; } // let dt's update their ids
       else { done(); }
     });
   });
