@@ -42,7 +42,7 @@
     Gruntfile.js       # grunt tasks (see below)
     circle.yml         # integration with CircleCI
     crxmake.sh         # official build script for packing Chromium extensions
-    extension-skeleton.pem   # certificate file
+    mykey.pem          # certificate file, YOU NEED TO GENERATE THIS FILE, see below
     lint-options.json  # options for JS-linting
     package.json       # project description file (name, version, dependencies, ...)
 
@@ -61,9 +61,13 @@
 1. In `package.json`, rename the project, description, version, add dependencies
 and any other fields necessary.
 
-2. Replace `extension-skeleton.pem` with your own `.pem` file, update
-`Gruntfile.js` accordingly, add your `.pem` file to `.gitignore`, so that you
-don't commit it back to git repository (in case it is public repo).
+2. Generate your .pem key and store it in the root as `mykey.pem` file. On
+unix / mac, the command to generate the file is:
+
+    openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt > mykey.pem
+
+Note: the generated file is in `.gitignore` file, it won't be (and should NOT
+be) commited to the repository.
 
 3. Add content (HTML, CSS, images, JS modules), update `code/manifest.json`,
 leave only JS entry-points you use (remove the ones you don't need).

@@ -69,7 +69,7 @@ module.exports = function(grunt) {
     exec: {
       crx: {
         cmd: [
-          './crxmake.sh build/unpacked-prod ./extension-skeleton.pem',
+          './crxmake.sh build/unpacked-prod ./mykey.pem',
           'mv -v ./unpacked-prod.crx build/' + pkg.name + '-' + pkg.version + '.crx'
         ].join(' && ')
       }

@@ -1,4 +1,5 @@
 .DS_Store
+mykey.pem
 node_modules
 build/*.crx
 build/unpacked-dev
