@@ -424,7 +424,7 @@ Messaging.prototype.onCustomMsg = function(message) {
         }
       }
     } else if ('response' === message.cmd) {
-      _arr = this.pendingReqs[message.portId];
+      _arr = this.pendingReqs[message.portId];  // warning: IE creates a copy here!
       if (_arr) {
         // some results from given port expected, find the callback for reqId
         i = 0;
@@ -432,8 +432,8 @@ Messaging.prototype.onCustomMsg = function(message) {
         if (i < _arr.length) {
           // callback found
           _arr[i].cb(message.result, message.resultValid);
-          _arr.splice(i, 1);
-          if (!_arr.length) {
+          this.pendingReqs[message.portId].splice(i, 1);   // need to use orig array (IE problem)
+          if (!this.pendingReqs[message.portId].length) {  // ... same here
             delete this.pendingReqs[message.portId];
           }
         }
