@@ -2,17 +2,13 @@
   "manifest_version": 2,
   "icons": { "128": "images/icon.png" },
   "browser_action": {
-    "default_icon": "images/icon.png",
-    "default_popup": "html/popup.html"
+    "default_icon": "images/icon.png"
   },
-  "background": { "scripts": ["js/background.js"] },
   "content_scripts": [{
-    "matches": [ "http://*/*", "https://*/*" ],
+    "matches": [ "https://github.com/*" ],
     "js": [ "js/content.js" ]
   }],
-  "options_page": "html/options.html",
-  "devtools_page": "html/devtools.html",
-  "permissions": [ "<all_urls>" ],
+  "permissions": [ "https://github.com/" ],
   "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],
   "content_security_policy": "script-src 'self'; object-src 'self'"
 }
