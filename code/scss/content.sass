@@ -1,3 +1,8 @@
+$gh-gray: #F5F5F5
+$gh-dark: #333333
+$gh-text-color: #888888
+$gh-highlight-color: #D6E685
+
 .awesome-autocomplete
   .twitter-typeahead
     width: 360px
@@ -20,44 +25,66 @@
     box-shadow: 0 5px 10px rgba(0,0,0,.2)
     .aa-category
       text-align: left
-      padding: 8px 5px 8px 10px
+      padding: 3px 8px
       font-weight: bold
-
+      background-color: $gh-gray
 
   .tt-suggestion
     text-align: left
-    padding: 3px 20px
-    line-height: 24px
+    padding: 10px 10px
     border-bottom: 1px solid #efefef
-    color: #666
-    a
-      color: #000
-      text-decoration: none
+    &:last-child
+      border: none
     em
-      font-weight: bold
       font-style: normal
-      background-color: rgba(255,255,140,0.5)
-    .aa-infos
-      float: right
-      font-size: 0.8em
-      color: #999
-
-    .aa-user
-      img.thumbnail
-        width: 30px
-        display: inline
-        vertical-align: middle
-        border: none
-        margin: 0px
-      .company
-        font-style: italic
-
-    .aa-repo
-      .aa-link
-        color: orange
-        font-size: 0.8em
-      .aa-description
-        font-style: italic
-        margin-left: 10px
-        font-size: 0.8em
+      background-color: $gh-highlight-color
+    a
+      &:hover
+        text-decoration: none
+      &.aa-user
+        height: 35px
+        display: block
+        .aa-thumbnail
+          position: relative
+          top: 3px
+          float: left
+          margin-right: 10px
+          width: 30px
+          height: 30px
+          border-radius: 3px
+          overflow: hidden
+          img
+            width: 100%
+        .aa-login
+          font-size: .9em
+          color: $gh-text-color
+        .aa-company
+          color: $gh-dark
+      &.aa-repo
+        .aa-description
+          width: 85%
+          height: 1.3em
+          display: block
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+          color: $gh-text-color
+      .aa-infos
+        float: right
+        line-height: 3em
+        color: $gh-text-color
+        font-size: .9em
+        i
+          font-size: 14px
+      .aa-name
+        font-size: 1.1em
+        font-weight: bold
+        margin-bottom: 8px
+        width: 85%
+        height: 1.3em
+        display: block
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+        color: $gh-text-color
 

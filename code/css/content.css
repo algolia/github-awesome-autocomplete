@@ -23,48 +23,78 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-category {
   text-align: left;
-  padding: 8px 5px 8px 10px;
+  padding: 3px 8px;
   font-weight: bold;
+  background-color: #F5F5F5;
 }
 .awesome-autocomplete .tt-suggestion {
   text-align: left;
-  padding: 3px 20px;
-  line-height: 24px;
+  padding: 10px 10px;
   border-bottom: 1px solid #efefef;
-  color: #666;
 }
-.awesome-autocomplete .tt-suggestion a {
-  color: #000;
-  text-decoration: none;
+.awesome-autocomplete .tt-suggestion:last-child {
+  border: none;
 }
 .awesome-autocomplete .tt-suggestion em {
-  font-weight: bold;
   font-style: normal;
-  background-color: rgba(255, 255, 140, 0.5);
+  background-color: #D6E685;
 }
-.awesome-autocomplete .tt-suggestion .aa-infos {
-  float: right;
-  font-size: 0.8em;
-  color: #999;
+.awesome-autocomplete .tt-suggestion a:hover {
+  text-decoration: none;
 }
-.awesome-autocomplete .tt-suggestion .aa-user img.thumbnail {
+.awesome-autocomplete .tt-suggestion a.aa-user {
+  height: 35px;
+  display: block;
+}
+.awesome-autocomplete .tt-suggestion a.aa-user .aa-thumbnail {
+  position: relative;
+  top: 3px;
+  float: left;
+  margin-right: 10px;
   width: 30px;
-  display: inline;
-  vertical-align: middle;
-  border: none;
-  margin: 0px;
+  height: 30px;
+  border-radius: 3px;
+  overflow: hidden;
 }
-.awesome-autocomplete .tt-suggestion .aa-user .company {
-  font-style: italic;
+.awesome-autocomplete .tt-suggestion a.aa-user .aa-thumbnail img {
+  width: 100%;
 }
-.awesome-autocomplete .tt-suggestion .aa-repo .aa-link {
-  color: orange;
-  font-size: 0.8em;
+.awesome-autocomplete .tt-suggestion a.aa-user .aa-login {
+  font-size: 0.9em;
+  color: #888888;
 }
-.awesome-autocomplete .tt-suggestion .aa-repo .aa-description {
-  font-style: italic;
-  margin-left: 10px;
-  font-size: 0.8em;
+.awesome-autocomplete .tt-suggestion a.aa-user .aa-company {
+  color: #333333;
+}
+.awesome-autocomplete .tt-suggestion a.aa-repo .aa-description {
+  width: 85%;
+  height: 1.3em;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #888888;
+}
+.awesome-autocomplete .tt-suggestion a .aa-infos {
+  float: right;
+  line-height: 3em;
+  color: #888888;
+  font-size: 0.9em;
+}
+.awesome-autocomplete .tt-suggestion a .aa-infos i {
+  font-size: 14px;
+}
+.awesome-autocomplete .tt-suggestion a .aa-name {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  width: 85%;
+  height: 1.3em;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #888888;
 }
 
 /*# sourceMappingURL=content.css.map */

@@ -19,28 +19,24 @@
     var users = algolia.initIndex('github_users');
 
     var templateUser = Hogan.compile('<a class="aa-user" href="https://github.com/{{ login }}">' +
-      '<div class="aa-login">' +
-        '<span class="aa-followers"><i class="octicon octicon-star"></i> {{ followers }}</span>' +
-        '<span class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /> ' +
-        '{{#name}}</span>' +
+        '<span class="aa-infos"><i class="octicon octicon-star"></i> {{ followers }}</span>' +
+        '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
+        '{{#name}}' +
         '<span class="aa-name">{{{ _highlightResult.name.value }}}</span> ' +
         '{{/name}}' +
         '<span class="aa-login">{{{ _highlightResult.login.value }}}</span> ' +
         '{{#company}}' +
         '<br><span class="aa-company">{{{ _highlightResult.company.value }}}</span>' +
         '{{/company}}' +
-      '</div>' +
     '</a>');
 
 
     var templateRepo = Hogan.compile('<a class="aa-repo" href="https://github.com/{{ full_name }}">' +
-      '<div class="aa-full_name">' +
-        '<div class="aa-infos"><i class="octicon octicon-star"></i> {{ stargazers_count }} <i class="octicon octicon-repo-forked"></i> {{ forks_count }}</div>' +
-        '{{{ _highlightResult.full_name.value }}} ' +
-        '{{#homepage}}' +
-        '<span class="aa-link">{{{ _highlightResult.homepage.value }}}</span>' +
-        '{{/homepage}}' +
-      '</div>' +
+        '<div class="aa-infos"><i class="octicon octicon-star"></i> {{ stargazers_count }}</div>' +
+        '<span class="aa-name">{{{ _highlightResult.full_name.value }}}</span>' +
+        // '{{#homepage}}' +
+        // '<span class="aa-link">{{{ _highlightResult.homepage.value }}}</span>' +
+        // '{{/homepage}}' +
       '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
     '</a>');
 
@@ -72,7 +68,7 @@
         },
         displayKey: 'repos',
         templates: {
-          header: '<div class="category"><i class="fa fa-file-text"></i> Repositories</div>',
+          header: '<div class="aa-category">Repositories</div>',
           suggestion: function(hit) { return templateRepo.render(hit); }
         }
       },
@@ -80,7 +76,7 @@
         source: users.ttAdapter({ hitsPerPage: 3, attributesToRetrieve: ['login', 'name', 'id', 'company', 'followers'] }),
         displayKey: 'users',
         templates: {
-          header: '<div class="category"><i class="fa fa-user"></i> Users</div>',
+          header: '<div class="aa-category">Users</div>',
           suggestion: function(hit) { return templateUser.render(hit); }
         }
       }
