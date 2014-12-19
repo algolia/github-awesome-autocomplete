@@ -19,7 +19,7 @@
     var users = algolia.initIndex('github_users');
 
     var templateUser = Hogan.compile('<a class="aa-user" href="https://github.com/{{ login }}">' +
-        '{{#followers}}<span class="aa-infos"><i class="octicon octicon-person"></i> {{ followers }}</span>{{/followers}}' +
+        '{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
         '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
         '{{#name}}' +
         '<span class="aa-name">{{{ _highlightResult.name.value }}}</span> ' +
@@ -36,7 +36,7 @@
     '</a>');
 
     var templateRepo = Hogan.compile('<a class="aa-repo" href="https://github.com/{{ full_name }}">' +
-        '{{#stargazers_count}}<div class="aa-infos"><i class="octicon octicon-star"></i> {{ stargazers_count }}</div>{{/stargazers_count}}' +
+        '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
         '<span class="aa-name">{{{ _highlightResult.full_name.value }}}</span>' +
       '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
     '</a>');
