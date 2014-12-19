@@ -66,16 +66,18 @@
 .awesome-autocomplete .tt-suggestion a.aa-user .aa-company {
   color: #333333;
 }
+.awesome-autocomplete .tt-suggestion a.aa-repo {
+  height: 35px;
+}
 .awesome-autocomplete .tt-suggestion a.aa-repo .aa-name {
-  width: 80%;
-  height: 1.3em;
+  width: 85%;
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .awesome-autocomplete .tt-suggestion a.aa-repo .aa-description {
-  width: 80%;
+  width: 85%;
   height: 1.3em;
   display: block;
   white-space: nowrap;
@@ -95,7 +97,6 @@
 .awesome-autocomplete .tt-suggestion a .aa-name {
   font-size: 1.1em;
   font-weight: bold;
-  margin-bottom: 8px;
 }
 
 /*# sourceMappingURL=content.css.map */
