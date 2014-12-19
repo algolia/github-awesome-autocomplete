@@ -23,7 +23,7 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-category {
   text-align: left;
-  padding: 3px 8px;
+  padding: 5px 8px;
   font-weight: bold;
   background-color: #F5F5F5;
 }
@@ -37,10 +37,13 @@
 }
 .awesome-autocomplete .tt-suggestion em {
   font-style: normal;
-  background-color: #FFFCBA;
+  background-color: #FFEFC6;
 }
 .awesome-autocomplete .tt-suggestion a:hover {
   text-decoration: none;
+}
+.awesome-autocomplete .tt-suggestion a:hover .aa-name {
+  text-decoration: underline;
 }
 .awesome-autocomplete .tt-suggestion a.aa-user {
   height: 35px;
@@ -60,11 +63,14 @@
   width: 100%;
 }
 .awesome-autocomplete .tt-suggestion a.aa-user .aa-login {
-  font-size: 0.9em;
   color: #888888;
 }
 .awesome-autocomplete .tt-suggestion a.aa-user .aa-company {
   color: #333333;
+}
+.awesome-autocomplete .tt-suggestion a.aa-user .aa-company i {
+  font-size: 14px;
+  color: #888888;
 }
 .awesome-autocomplete .tt-suggestion a.aa-repo {
   height: 35px;

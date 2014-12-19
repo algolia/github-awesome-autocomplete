@@ -19,24 +19,25 @@
     var users = algolia.initIndex('github_users');
 
     var templateUser = Hogan.compile('<a class="aa-user" href="https://github.com/{{ login }}">' +
-        '<span class="aa-infos"><i class="octicon octicon-star"></i> {{ followers }}</span>' +
+        '{{#followers}}<span class="aa-infos"><i class="octicon octicon-person"></i> {{ followers }}</span>{{/followers}}' +
         '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
         '{{#name}}' +
         '<span class="aa-name">{{{ _highlightResult.name.value }}}</span> ' +
         '{{/name}}' +
+        '{{^name}}' +
+        '<span class="aa-name">{{{ _highlightResult.login.value }}}</span> ' +
+        '{{/name}}' +
+        '{{#name}}' +
         '<span class="aa-login">{{{ _highlightResult.login.value }}}</span> ' +
+        '{{/name}}' +
         '{{#company}}' +
-        '<br><span class="aa-company">{{{ _highlightResult.company.value }}}</span>' +
+        '<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>' +
         '{{/company}}' +
     '</a>');
 
-
     var templateRepo = Hogan.compile('<a class="aa-repo" href="https://github.com/{{ full_name }}">' +
-        '<div class="aa-infos"><i class="octicon octicon-star"></i> {{ stargazers_count }}</div>' +
+        '{{#stargazers_count}}<div class="aa-infos"><i class="octicon octicon-star"></i> {{ stargazers_count }}</div>{{/stargazers_count}}' +
         '<span class="aa-name">{{{ _highlightResult.full_name.value }}}</span>' +
-        // '{{#homepage}}' +
-        // '<span class="aa-link">{{{ _highlightResult.homepage.value }}}</span>' +
-        // '{{/homepage}}' +
       '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
     '</a>');
 

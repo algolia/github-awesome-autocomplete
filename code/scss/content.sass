@@ -1,7 +1,7 @@
 $gh-gray: #F5F5F5
 $gh-dark: #333333
 $gh-text-color: #888888
-$gh-highlight-color: #FFFCBA
+$gh-highlight-color: #FFEFC6
 
 .awesome-autocomplete
   .twitter-typeahead
@@ -25,7 +25,7 @@ $gh-highlight-color: #FFFCBA
     box-shadow: 0 5px 10px rgba(0,0,0,.2)
     .aa-category
       text-align: left
-      padding: 3px 8px
+      padding: 5px 8px
       font-weight: bold
       background-color: $gh-gray
 
@@ -41,6 +41,8 @@ $gh-highlight-color: #FFFCBA
     a
       &:hover
         text-decoration: none
+        .aa-name
+          text-decoration: underline
       &.aa-user
         height: 35px
         display: block
@@ -56,10 +58,12 @@ $gh-highlight-color: #FFFCBA
           img
             width: 100%
         .aa-login
-          font-size: .9em
           color: $gh-text-color
         .aa-company
           color: $gh-dark
+          i
+            font-size: 14px
+            color: $gh-text-color
       &.aa-repo
         height: 35px
         .aa-name
