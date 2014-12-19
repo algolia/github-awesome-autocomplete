@@ -2,9 +2,7 @@
   "name": "chrome-awesome-autocomplete",
   "version": "0.0.1",
   "description": "Add an Algolia-powered auto-completion menu to various websites.",
-  "dependencies": {
-    "algoliasearch": "^2.8.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-contrib-clean": "~0.5.0",

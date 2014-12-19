@@ -6,7 +6,8 @@
   },
   "content_scripts": [{
     "matches": [ "https://github.com/*" ],
-    "js": [ "js/content.js" ]
+    "js": [ "js/content.js" ],
+    "css" : ["css/content.css"]
   }],
   "permissions": [ "https://github.com/" ],
   "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],

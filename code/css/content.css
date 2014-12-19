@@ -1,0 +1,13 @@
+.awesome-autocomplete .tt-input { padding: 4px 6px; border: 1px solid #ddd; outline: none; width: 100%; }
+.awesome-autocomplete .tt-hint { color: #999 }
+.awesome-autocomplete .tt-dropdown-menu { width: 100%; padding: 0px; background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.2); border-top: 0px; -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2); -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2); box-shadow: 0 5px 10px rgba(0,0,0,.2); }
+.awesome-autocomplete .tt-suggestion { text-align: left; padding: 3px 20px; line-height: 24px; border-bottom: 1px solid #efefef; color: #666; }
+.awesome-autocomplete .tt-suggestion.tt-cursor { background-color: #FFF9EA; }
+.awesome-autocomplete .tt-suggestion a { color: #000; text-decoration: none; }
+.awesome-autocomplete .tt-suggestion em { font-weight: bold; font-style: normal; background-color: rgba(255,255,140,0.5); }
+.awesome-autocomplete .tt-dropdown-menu .category { text-align: left; background: #efefef; padding: 10px 5px 10px 10px; font-weight: bold; }
+.awesome-autocomplete .tt-suggestion .infos { float: right; font-size: 0.8em; color: #999; }
+.awesome-autocomplete .tt-suggestion .user img.thumbnail { width: 30px; display: inline; vertical-align: middle; border: none; margin: 0px; }
+.awesome-autocomplete .tt-suggestion .user .company { font-style: italic; }
+.awesome-autocomplete .tt-suggestion .repo .link { color: green; font-size: 0.8em; }
+.awesome-autocomplete .tt-suggestion .repo .description { font-style: italic; margin-left: 10px; font-size: 0.8em; }
