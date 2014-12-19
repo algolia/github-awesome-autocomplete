@@ -1,7 +1,7 @@
 $gh-gray: #F5F5F5
 $gh-dark: #333333
 $gh-text-color: #888888
-$gh-highlight-color: #FFEFC6
+$gh-highlight-color: #FFF6CD
 
 .awesome-autocomplete
   .twitter-typeahead
@@ -21,14 +21,14 @@ $gh-highlight-color: #FFEFC6
     padding: 0px
     background-color: #fff
     border: 1px solid rgba(0, 0, 0, 0.2)
-    border-top: 0px
+    border-top: none
     box-shadow: 0 5px 10px rgba(0,0,0,.2)
     .aa-category
       text-align: left
       padding: 5px 8px
       font-weight: bold
       background-color: $gh-gray
-
+      font-size: 1.1em
   .tt-suggestion
     text-align: left
     padding: 10px 10px
@@ -43,6 +43,16 @@ $gh-highlight-color: #FFEFC6
         text-decoration: none
         .aa-name
           text-decoration: underline
+      .aa-infos
+        float: right
+        line-height: 3em
+        color: $gh-text-color
+        font-size: .9em
+        i
+          font-size: 14px
+      .aa-name
+        font-size: 1.1em
+        font-weight: bold
       &.aa-user
         height: 35px
         display: block
@@ -55,6 +65,7 @@ $gh-highlight-color: #FFEFC6
           height: 30px
           border-radius: 3px
           overflow: hidden
+          background-color: $gh-gray
           img
             width: 100%
         .aa-login
@@ -80,14 +91,5 @@ $gh-highlight-color: #FFEFC6
           overflow: hidden
           text-overflow: ellipsis
           color: $gh-text-color
-      .aa-infos
-        float: right
-        line-height: 3em
-        color: $gh-text-color
-        font-size: .9em
-        i
-          font-size: 14px
-      .aa-name
-        font-size: 1.1em
-        font-weight: bold
+
 

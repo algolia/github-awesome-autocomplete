@@ -18,7 +18,7 @@
   padding: 0px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-top: 0px;
+  border-top: none;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-category {
@@ -26,6 +26,7 @@
   padding: 5px 8px;
   font-weight: bold;
   background-color: #F5F5F5;
+  font-size: 1.1em;
 }
 .awesome-autocomplete .tt-suggestion {
   text-align: left;
@@ -37,13 +38,26 @@
 }
 .awesome-autocomplete .tt-suggestion em {
   font-style: normal;
-  background-color: #FFEFC6;
+  background-color: #FFF6CD;
 }
 .awesome-autocomplete .tt-suggestion a:hover {
   text-decoration: none;
 }
 .awesome-autocomplete .tt-suggestion a:hover .aa-name {
   text-decoration: underline;
+}
+.awesome-autocomplete .tt-suggestion a .aa-infos {
+  float: right;
+  line-height: 3em;
+  color: #888888;
+  font-size: 0.9em;
+}
+.awesome-autocomplete .tt-suggestion a .aa-infos i {
+  font-size: 14px;
+}
+.awesome-autocomplete .tt-suggestion a .aa-name {
+  font-size: 1.1em;
+  font-weight: bold;
 }
 .awesome-autocomplete .tt-suggestion a.aa-user {
   height: 35px;
@@ -58,6 +72,7 @@
   height: 30px;
   border-radius: 3px;
   overflow: hidden;
+  background-color: #F5F5F5;
 }
 .awesome-autocomplete .tt-suggestion a.aa-user .aa-thumbnail img {
   width: 100%;
@@ -90,19 +105,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #888888;
-}
-.awesome-autocomplete .tt-suggestion a .aa-infos {
-  float: right;
-  line-height: 3em;
-  color: #888888;
-  font-size: 0.9em;
-}
-.awesome-autocomplete .tt-suggestion a .aa-infos i {
-  font-size: 14px;
-}
-.awesome-autocomplete .tt-suggestion a .aa-name {
-  font-size: 1.1em;
-  font-weight: bold;
 }
 
 /*# sourceMappingURL=content.css.map */
