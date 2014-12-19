@@ -37,7 +37,7 @@
 }
 .awesome-autocomplete .tt-suggestion em {
   font-style: normal;
-  background-color: #D6E685;
+  background-color: #FFFCBA;
 }
 .awesome-autocomplete .tt-suggestion a:hover {
   text-decoration: none;
@@ -66,8 +66,16 @@
 .awesome-autocomplete .tt-suggestion a.aa-user .aa-company {
   color: #333333;
 }
+.awesome-autocomplete .tt-suggestion a.aa-repo .aa-name {
+  width: 80%;
+  height: 1.3em;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .awesome-autocomplete .tt-suggestion a.aa-repo .aa-description {
-  width: 85%;
+  width: 80%;
   height: 1.3em;
   display: block;
   white-space: nowrap;
@@ -88,13 +96,6 @@
   font-size: 1.1em;
   font-weight: bold;
   margin-bottom: 8px;
-  width: 85%;
-  height: 1.3em;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #888888;
 }
 
 /*# sourceMappingURL=content.css.map */

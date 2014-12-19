@@ -1,7 +1,7 @@
 $gh-gray: #F5F5F5
 $gh-dark: #333333
 $gh-text-color: #888888
-$gh-highlight-color: #D6E685
+$gh-highlight-color: #FFFCBA
 
 .awesome-autocomplete
   .twitter-typeahead
@@ -61,8 +61,15 @@ $gh-highlight-color: #D6E685
         .aa-company
           color: $gh-dark
       &.aa-repo
+        .aa-name
+          width: 80%
+          height: 1.3em
+          display: block
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
         .aa-description
-          width: 85%
+          width: 80%
           height: 1.3em
           display: block
           white-space: nowrap
@@ -80,11 +87,4 @@ $gh-highlight-color: #D6E685
         font-size: 1.1em
         font-weight: bold
         margin-bottom: 8px
-        width: 85%
-        height: 1.3em
-        display: block
-        white-space: nowrap
-        overflow: hidden
-        text-overflow: ellipsis
-        color: $gh-text-color
 
