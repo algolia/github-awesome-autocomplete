@@ -1,15 +1,15 @@
 ## Chrome Awesome Autocomplete Extension
 
-### Installation:
+### Installation
 
 ```sh
 $ git clone https://github.com/algolia/chrome-awesome-autocomplete.git
 
-# in case you don't have Grunt yet:
+# in case you don't have Grunt yet
 $ sudo npm install -g grunt-cli
 ```
 
-### Build instructions:
+### Build instructions
 
 ```sh
 $ cd chrome-awesome-autocomplete
@@ -30,7 +30,7 @@ When developing, write unit-tests, use `test-cont` Grunt task to check that your
 
 When ready to try out the extension in the browser, use default Grunt task to build it. In `build` directory you'll find develop version of the extension in `unpacked-dev` subdirectory (with source maps), and production (uglified) version in `unpacked-prod` directory. The `.crx` packed version is created from `unpacked-prod` sources.
 
-### Grunt tasks:
+### Grunt tasks
 
 * `clean`: clean `build` directory
 * `test`: JS-lint and mocha test, single run
