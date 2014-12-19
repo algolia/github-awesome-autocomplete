@@ -82,8 +82,19 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
-                'code/**/*.json', '!code/js/libs/*'],
-        tasks: ['test']
+                'code/**/*.json', '!code/js/libs/*', 'code/**/*.sass'],
+        tasks: ['default']
+      }
+    },
+
+    sass: {
+      dist: {
+        options: {
+          style: 'expanded'
+        },
+        files: {
+          'code/css/content.css': 'code/scss/content.sass'
+        }
       }
     }
 
@@ -98,10 +109,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-sass');
 
   //
   // custom tasks
   //
+  
 
   grunt.registerTask(
     'manifest', 'Extend manifest.json with extra fields from package.json',
@@ -135,7 +148,7 @@ module.exports = function(grunt) {
   // DEFAULT
   //
 
-  grunt.registerTask('default', ['clean', 'test', 'mkdir:unpacked', 'copy:main', 'manifest',
+  grunt.registerTask('default', ['clean', 'test', 'sass', 'mkdir:unpacked', 'copy:main', 'manifest',
     'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec', 'circleci']);
 
 };

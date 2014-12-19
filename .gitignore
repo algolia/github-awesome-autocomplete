@@ -5,3 +5,4 @@ build/*.crx
 build/unpacked-dev
 build/unpacked-prod
 *.swp
+.sass-cache

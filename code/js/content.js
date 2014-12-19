@@ -18,29 +18,30 @@
     var algolia = new window.AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3', { tld: 'net' });
     var users = algolia.initIndex('github_users');
 
-    var templateUser = Hogan.compile('<a class="user" href="https://github.com/{{ login }}">' +
-      '<div class="login">' +
-        '<div class="infos"><i class="fa fa-group"></i> {{ followers }}</div>' +
-        '<img class="thumbnail" src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /> ' +
-        '{{#name}}' +
-        '{{{ _highlightResult.name.value }}}, ' +
+    var templateUser = Hogan.compile('<a class="aa-user" href="https://github.com/{{ login }}">' +
+      '<div class="aa-login">' +
+        '<span class="aa-followers"><i class="octicon octicon-star"></i> {{ followers }}</span>' +
+        '<span class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /> ' +
+        '{{#name}}</span>' +
+        '<span class="aa-name">{{{ _highlightResult.name.value }}}</span> ' +
         '{{/name}}' +
-        '{{{ _highlightResult.login.value }}} ' +
+        '<span class="aa-login">{{{ _highlightResult.login.value }}}</span> ' +
         '{{#company}}' +
-        '(<span class="company">{{{ _highlightResult.company.value }}}</span>)' +
+        '<br><span class="aa-company">{{{ _highlightResult.company.value }}}</span>' +
         '{{/company}}' +
       '</div>' +
     '</a>');
 
-    var templateRepo = Hogan.compile('<a class="repo" href="https://github.com/{{ full_name }}">' +
-      '<div class="full_name">' +
-        '<div class="infos"><i class="fa fa-star"></i> {{ stargazers_count }} <i class="fa fa-code-fork"></i> {{ forks_count }}</div>' +
-        '{{{ _highlightResult.full_name.value }}} ' + 
+
+    var templateRepo = Hogan.compile('<a class="aa-repo" href="https://github.com/{{ full_name }}">' +
+      '<div class="aa-full_name">' +
+        '<div class="aa-infos"><i class="octicon octicon-star"></i> {{ stargazers_count }} <i class="octicon octicon-repo-forked"></i> {{ forks_count }}</div>' +
+        '{{{ _highlightResult.full_name.value }}} ' +
         '{{#homepage}}' +
-        '<span class="link">{{{ _highlightResult.homepage.value }}}</span>' +
+        '<span class="aa-link">{{{ _highlightResult.homepage.value }}}</span>' +
         '{{/homepage}}' +
       '</div>' +
-      '<div class="description">{{{ _snippetResult.description.value }}}</div>' +
+      '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
     '</a>');
 
     // typeahead.js initialization
