@@ -2,10 +2,10 @@
   width: 360px;
 }
 .awesome-autocomplete .tt-input {
-  padding: 4px 6px;
-  border: 1px solid #ddd;
-  outline: none;
   width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #D8D8D8;
+  outline: none;
 }
 .awesome-autocomplete .tt-hint {
   color: #999;
@@ -15,10 +15,10 @@
 }
 .awesome-autocomplete .tt-dropdown-menu {
   width: 100%;
-  padding: 0px;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border: 1px solid #D8D8D8;
   border-top: none;
+  background-color: white;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-query {
@@ -35,16 +35,16 @@
   vertical-align: bottom;
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-category {
-  text-align: left;
   padding: 5px 8px;
-  font-weight: bold;
-  background-color: #F5F5F5;
   font-size: 1.1em;
+  font-weight: bold;
+  text-align: left;
+  background-color: #F5F5F5;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion {
-  text-align: left;
   padding: 10px 10px;
-  border-bottom: 1px solid #efefef;
+  text-align: left;
+  border-bottom: 1px solid #EEEEEE;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion em {
   font-style: normal;
@@ -74,12 +74,12 @@
   display: block;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user .aa-thumbnail {
+  float: left;
   position: relative;
   top: 3px;
-  float: left;
-  margin-right: 10px;
   width: 30px;
   height: 30px;
+  margin-right: 10px;
   border-radius: 3px;
   overflow: hidden;
   background-color: #F5F5F5;

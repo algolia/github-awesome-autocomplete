@@ -1,5 +1,7 @@
 $gh-gray: #F5F5F5
 $gh-dark: #333333
+$gh-border-light: #EEEEEE
+$gh-border-dark: #D8D8D8
 $gh-text-color: #888888
 $gh-highlight-color: #FFF6CD
 
@@ -7,10 +9,10 @@ $gh-highlight-color: #FFF6CD
   .twitter-typeahead
     width: 360px
   .tt-input
-    padding: 4px 6px
-    border: 1px solid #ddd
-    outline: none
     width: 100%
+    padding: 4px 6px
+    border: 1px solid $gh-border-dark
+    outline: none
   .tt-hint
     color: #999
   .tt-cursor
@@ -18,11 +20,11 @@ $gh-highlight-color: #FFF6CD
 
   .tt-dropdown-menu
     width: 100%
-    padding: 0px
-    background-color: #fff
-    border: 1px solid rgba(0, 0, 0, 0.2)
+    padding: 0
+    border: 1px solid $gh-border-dark
     border-top: none
-    box-shadow: 0 5px 10px rgba(0,0,0,.2)
+    background-color: white
+    box-shadow: 0 5px 10px rgba(black, .2)
     .aa-query
       padding: 10px
     .aa-branding
@@ -34,15 +36,15 @@ $gh-highlight-color: #FFF6CD
         height: 18px
         vertical-align: bottom
     .aa-category
-      text-align: left
       padding: 5px 8px
-      font-weight: bold
-      background-color: $gh-gray
       font-size: 1.1em
-    .tt-suggestion
+      font-weight: bold
       text-align: left
+      background-color: $gh-gray
+    .tt-suggestion
       padding: 10px 10px
-      border-bottom: 1px solid #efefef
+      text-align: left
+      border-bottom: 1px solid $gh-border-light
       em
         font-style: normal
         background-color: $gh-highlight-color
@@ -65,12 +67,12 @@ $gh-highlight-color: #FFF6CD
           height: 35px
           display: block
           .aa-thumbnail
+            float: left
             position: relative
             top: 3px
-            float: left
-            margin-right: 10px
             width: 30px
             height: 30px
+            margin-right: 10px
             border-radius: 3px
             overflow: hidden
             background-color: $gh-gray
