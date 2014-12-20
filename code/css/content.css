@@ -21,6 +21,17 @@
   border-top: none;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
+.awesome-autocomplete .tt-dropdown-menu .aa-query {
+  padding: 10px;
+}
+.awesome-autocomplete .tt-dropdown-menu .aa-branding {
+  padding: 10px;
+  text-align: right;
+}
+.awesome-autocomplete .tt-dropdown-menu .aa-branding img {
+  height: 20px;
+  vertical-align: bottom;
+}
 .awesome-autocomplete .tt-dropdown-menu .aa-category {
   text-align: left;
   padding: 5px 8px;
@@ -39,10 +50,6 @@
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion em {
   font-style: normal;
   background-color: #FFF6CD;
-}
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-query em {
-  background: none;
-  font-style: italic;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion a:hover {
   text-decoration: none;

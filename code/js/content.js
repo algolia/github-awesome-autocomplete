@@ -1,4 +1,4 @@
-/*global document, window, location */
+/* global document, window, location, chrome */
 
 ;(function() {
   var handlers = require('./modules/handlers').create('ct');
@@ -98,14 +98,23 @@
           header: '<div class="aa-category">Users</div>',
           suggestion: function(hit) { return templateUser.render(hit); }
         }
+      },
+      {
+        source: function(q, cb) { cb([]); }, // force empty
+        name: 'branding',
+        templates: {
+          empty: function() {
+            return '<div class="aa-branding">' +
+              'Realtime Search by <a href="https://www.algolia.com"><img src="' + chrome.extension.getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
+              '</div>';
+          }
+        }
       }
     ]).on('typeahead:selected', function(event, suggestion, dataset) {
       if (dataset === 'users') {
         location.href = 'https://github.com/' + suggestion.login;
       } else if (dataset === 'repos') {
         location.href = 'https://github.com/' + suggestion.full_name;
-      } else if (dataset === 'default') {
-        submit(suggestion.value);
       } else {
         console.log('Unknown dataset: ' + dataset);
       }
