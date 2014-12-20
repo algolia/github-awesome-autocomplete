@@ -27,9 +27,11 @@
 .awesome-autocomplete .tt-dropdown-menu .aa-branding {
   padding: 10px;
   text-align: right;
+  font-size: 0.9em;
+  color: #888888;
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-branding img {
-  height: 20px;
+  height: 18px;
   vertical-align: bottom;
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-category {
@@ -43,9 +45,6 @@
   text-align: left;
   padding: 10px 10px;
   border-bottom: 1px solid #efefef;
-}
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion:last-child {
-  border: none;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion em {
   font-style: normal;
