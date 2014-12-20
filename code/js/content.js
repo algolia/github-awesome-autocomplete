@@ -17,25 +17,17 @@
   var users = algolia.initIndex('github_users');
 
   var templateUser = Hogan.compile('<a class="aa-user" href="https://github.com/{{ login }}">' +
-      '{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
-      '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
-      '{{#name}}' +
-      '<span class="aa-name">{{{ _highlightResult.name.value }}}</span> ' +
-      '{{/name}}' +
-      '{{^name}}' +
-      '<span class="aa-name">{{{ _highlightResult.login.value }}}</span> ' +
-      '{{/name}}' +
-      '{{#name}}' +
-      '<span class="aa-login">{{{ _highlightResult.login.value }}}</span> ' +
-      '{{/name}}' +
-      '{{#company}}' +
-      '<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>' +
-      '{{/company}}' +
+    '{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
+    '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
+    '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span>{{/name}}' +
+    '{{^name}}<span class="aa-name">{{{ _highlightResult.login.value }}}</span>{{/name}}' +
+    '{{#name}}<span class="aa-login">{{{ _highlightResult.login.value }}}</span>{{/name}}' +
+    '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
   '</a>');
 
   var templateRepo = Hogan.compile('<a class="aa-repo" href="https://github.com/{{ full_name }}/">' +
-      '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
-      '<span class="aa-name">{{{ _highlightResult.full_name.value }}}</span>' +
+    '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
+    '<span class="aa-name">{{{ _highlightResult.full_name.value }}}</span>' +
     '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
   '</a>');
 

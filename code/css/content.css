@@ -1,3 +1,44 @@
+.aa-popup .aa-popup-content {
+  padding: 20px;
+}
+.aa-popup h1 {
+  text-align: center;
+  font-size: 1em;
+  line-height: 4em;
+  border-bottom: solid 1px #EEEEEE;
+  margin: 0;
+}
+.aa-popup h2 {
+  margin-top: 2em;
+  font-size: 1.2em;
+  font-weight: 200;
+  color: #888888;
+}
+.aa-popup p {
+  font-size: 1em;
+  color: #333333;
+}
+.aa-popup button {
+  width: 100%;
+  font-size: 1.2em;
+  border-radius: 3px;
+  background-color: #3879D9;
+  border: solid 1px #2460ba;
+  color: white;
+  padding: 5px 10px;
+}
+.aa-popup button img {
+  vertical-align: bottom;
+}
+.aa-popup .aa-algolia-logo {
+  width: 100px;
+  display: block;
+  margin: 0 auto;
+}
+.aa-popup .aa-algolia-logo img {
+  width: 100%;
+}
+
 .awesome-autocomplete .twitter-typeahead {
   width: 360px;
 }
