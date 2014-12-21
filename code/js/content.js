@@ -15,7 +15,7 @@
   var NB_USERS = 3;
 
   var algolia = new window.AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
-  var users = algolia.initIndex('github_users');
+  var users = algolia.initIndex('last_1m_users');
 
   var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-your-repo">' +
     '<span class="aa-name">' +
@@ -25,14 +25,15 @@
   '</div>');
 
   var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
-    '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
-    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/"><span class="aa-owner">{{{ owner }}}</span>/<span class="aa-repo">{{{ _highlightResult.name.value }}}</span></a></span>' +
+    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ owner }}?size=30" /></div>' +
+    '<div class="aa-infos">{{ watchers }} <i class="octicon octicon-star"></i></div>' +
+    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/"><span class="aa-owner">{{{ owner }}}</span>/<span class="aa-repo-name">{{{ _highlightResult.name.value }}}</span></a></span>' +
     '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
   '</div>');
 
   var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
-    '{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
-    '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
+    //'{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
+    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ login }}?size=30" /></div>' +
     '<a href="https://github.com/{{ login }}">'+
       '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span> {{/name}}' +
       '<span class="aa-login">{{{ _highlightResult.login.value }}}</span>' +
@@ -160,10 +161,10 @@
       },
       {
         source: function(q, cb) {
-          var params = { attributesToRetrieve: ['name', 'owner', 'full_name', 'homepage', 'stargazers_count', 'forks_count'], attributesToSnippet: ['description:50'] };
+          var params = { attributesToSnippet: ['description:50'] };
           algolia.startQueriesBatch();
-          algolia.addQueryInBatch('github_repos', q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'stargazers_count>1000', restrictSearchableAttributes: 'name' }, params));
-          algolia.addQueryInBatch('github_repos', q, $.extend({ hitsPerPage: NB_REPOS }, params));
+          algolia.addQueryInBatch('top_1m_repos', q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
+          algolia.addQueryInBatch('top_1m_repos', q, $.extend({ hitsPerPage: NB_REPOS }, params));
           algolia.sendQueriesBatch(function(success, content) {
             var suggestions = [];
             if (success) {
@@ -186,7 +187,7 @@
         name: 'repos',
         displayKey: 'query',
         templates: {
-          header: '<div class="aa-category">Repositories</div>',
+          header: '<div class="aa-category">Top 1M Repositories</div>',
           suggestion: function(hit) { return templateRepo.render(hit); }
         }
       },
@@ -207,7 +208,7 @@
         name: 'users',
         displayKey: 'query',
         templates: {
-          header: '<div class="aa-category">Users</div>',
+          header: '<div class="aa-category">Last Active Users</div>',
           suggestion: function(hit) { return templateUser.render(hit); }
         }
       },

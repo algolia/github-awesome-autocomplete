@@ -108,7 +108,6 @@ $gh-primary-color: #3879D9
           font-size: 1.1em
         &.aa-user
           height: 35px
-          display: block
           .aa-thumbnail
             float: left
             position: relative
@@ -132,17 +131,27 @@ $gh-primary-color: #3879D9
               color: $gh-text-color
         &.aa-repo
           height: 3em
+          .aa-thumbnail
+            float: left
+            position: relative
+            top: 3px
+            width: 30px
+            height: 30px
+            margin-right: 10px
+            border-radius: 3px
+            overflow: hidden
+            background-color: $gh-gray
+            img
+              width: 100%
           .aa-name
-            width: 85%
             display: block
             white-space: nowrap
             overflow: hidden
             text-overflow: ellipsis
             font-weight: normal
-          .aa-repo
+          .aa-repo-name
             font-weight: bold
           .aa-description
-            width: 85%
             height: 1.3em
             display: block
             white-space: nowrap
