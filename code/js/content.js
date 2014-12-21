@@ -29,14 +29,14 @@
 
   var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
     '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
-    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/">{{{ _highlightResult.full_name.value }}}</a></span>' +
+    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/">{{{ owner }}} / {{{ _highlightResult.name.value }}}</a></span>' +
     '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
   '</div>');
 
   var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
     '<span class="aa-name">' +
       '<span class="repo-icon octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></span> ' +
-      '<a href="https://github.com/{{ full_name }}/">{{{ full_name }}}</a>' +
+      '<a href="https://github.com/{{ full_name }}/">{{{ owner }}} / {{{ name }}}</a>' +
     '</span>' +
   '</div>');
 
@@ -50,13 +50,13 @@
         var isPrivate = $(this).hasClass('private');
         var isFork = $(this).hasClass('fork');
         var owner = $(this).find('span.owner').text() || $(this).find('span.repo-and-owner').attr('title').split('/')[0];
-        var repo = $(this).find('span.repo').text();
-        var fullName = owner + '/' + repo;
+        var name = $(this).find('span.repo').text();
+        var fullName = owner + '/' + name;
         yourRepositories.push({
           organization: organization,
           full_name: fullName,
           owner: owner,
-          repo: repo,
+          name: name,
           fork: isFork,
           private: isPrivate
         });
@@ -124,7 +124,7 @@
           var matchingRepositories = [];
           for (var i = 0; i < yourRepositories.length && matchingRepositories.length < NB_MY_REPOS; ++i) {
             var hit = yourRepositories[i];
-            if (hit.repo.toLowerCase().indexOf(q.toLowerCase()) > -1) { // FIXME
+            if (hit.name.toLowerCase().indexOf(q.toLowerCase()) > -1) { // FIXME
               matchingRepositories.push(hit);
             }
           }
@@ -138,7 +138,7 @@
       },
       {
         source: function(q, cb) {
-          var params = { attributesToRetrieve: ['full_name', 'homepage', 'stargazers_count', 'forks_count'], attributesToSnippet: ['description:50'] };
+          var params = { attributesToRetrieve: ['name', 'owner', 'full_name', 'homepage', 'stargazers_count', 'forks_count'], attributesToSnippet: ['description:50'] };
           algolia.startQueriesBatch();
           algolia.addQueryInBatch('github_repos', q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'stargazers_count>1000', restrictSearchableAttributes: 'name' }, params));
           algolia.addQueryInBatch('github_repos', q, $.extend({ hitsPerPage: NB_REPOS }, params));
