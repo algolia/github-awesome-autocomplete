@@ -7,7 +7,7 @@
   var $ = require('./libs/jquery-1.11.2.min.js');
   window.jQuery = window.jQuery || $;
   var Hogan = require('./libs/hogan-3.0.1.js');
-  require('./libs/typeahead.jquery.min.js');
+  require('./libs/typeahead.bundle.min.js');
   require('./libs/algoliasearch.min.js');
 
   var NB_REPOS = 5;
@@ -36,7 +36,7 @@
   var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
     '<span class="aa-name">' +
       '<span class="repo-icon octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></span> ' +
-      '<a href="https://github.com/{{ full_name }}/">{{{ owner }}} / {{{ name }}}</a>' +
+      '<a href="https://github.com/{{ full_name }}/">{{{ owner }}} / {{{ highlightedName }}}</a>' +
     '</span>' +
   '</div>');
 
@@ -106,6 +106,13 @@
       location.href = $form.attr('action') + '?utf8=✓&q=' + encodeURIComponent(q);
     };
 
+    var tokenize = function(d) {
+      if (!d) {
+        return [];
+      }
+      return d.toLowerCase().replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z0-9]/g, ' ').replace(/ +/g, ' ').trim().split(' ');
+    };
+
     // setup auto-completion menu
     $q.typeahead({ highlight: false, hint: false }, [
       {
@@ -122,14 +129,24 @@
       },
       {
         source: function(q, cb) {
-          var matchingRepositories = [];
-          for (var i = 0; i < yourRepositories.length && matchingRepositories.length < NB_MY_REPOS; ++i) {
-            var hit = yourRepositories[i];
-            if (hit.name.toLowerCase().indexOf(q.toLowerCase()) > -1) { // FIXME
-              matchingRepositories.push(hit);
-            }
-          }
-          cb(matchingRepositories);
+          var engine = new window.Bloodhound({
+            name: 'private',
+            local: yourRepositories,
+            datumTokenizer: function(d) { return tokenize(d.name); },
+            queryTokenizer: tokenize,
+            limit: NB_MY_REPOS
+          });
+          engine.initialize().done(function() {
+            engine.get(q, function(suggestions) {
+              var queryWords = tokenize(q);
+              var re = new RegExp('(' + $.map(queryWords, function(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); }).join('|') + ')', 'ig');
+              for (var i = 0; i < suggestions.length; ++i) {
+                var sugg = suggestions[i];
+                sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
+              }
+              cb(suggestions);
+            });
+          });
         },
         name: 'private',
         templates: {
