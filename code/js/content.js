@@ -17,6 +17,19 @@
   var algolia = new window.AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('github_users');
 
+  var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-your-repo">' +
+    '<span class="aa-name">' +
+      '<i class="octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></i> ' +
+      '<a href="https://github.com/{{ full_name }}/"><span class="owner">{{{ owner }}}</span>/<span class="repo">{{{ name }}}</span></a>' +
+    '</span>' +
+  '</div>');
+
+  var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
+    '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
+    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/"><span class="aa-owner">{{{ owner }}}</span> / <span class="aa-repo">{{{ _highlightResult.name.value }}}</span></a></span>' +
+    '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
+  '</div>');
+
   var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
     '{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
     '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
@@ -25,19 +38,6 @@
       '<span class="aa-login">{{{ _highlightResult.login.value }}}</span>' +
     '</a>' +
     '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
-  '</div>');
-
-  var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
-    '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
-    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/">{{{ owner }}} / {{{ _highlightResult.name.value }}}</a></span>' +
-    '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
-  '</div>');
-
-  var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
-    '<span class="aa-name">' +
-      '<span class="repo-icon octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></span> ' +
-      '<a href="https://github.com/{{ full_name }}/">{{{ owner }}} / {{{ name }}}</a>' +
-    '</span>' +
   '</div>');
 
   var yourRepositories = [];

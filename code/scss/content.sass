@@ -4,6 +4,7 @@ $gh-border-light: #EEEEEE
 $gh-border-dark: #D8D8D8
 $gh-text-color: #888888
 $gh-highlight-color: #FFF6CD
+$gh-primary-color: #3879D9
 
 .aa-popup
   .aa-popup-content
@@ -26,7 +27,7 @@ $gh-highlight-color: #FFF6CD
     width: 100%
     font-size: 1.2em
     border-radius: 3px
-    background-color: #3879D9
+    background-color: $gh-primary-color
     border: solid 1px darken(#3879D9,10%)
     color: white
     padding: 5px 10px
@@ -61,7 +62,15 @@ $gh-highlight-color: #FFF6CD
     background-color: white
     box-shadow: 0 5px 10px rgba(black, .2)
     .aa-query
-      padding: 10px
+      padding: 8px
+      color: $gh-text-color
+      display: block
+      width: 100%
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      .aa-query-cursor strong, .aa-query-default em
+        color: $gh-dark
     .aa-branding
       padding: 10px
       text-align: right
@@ -72,7 +81,6 @@ $gh-highlight-color: #FFF6CD
         vertical-align: bottom
     .aa-category
       padding: 5px 8px
-      font-size: 1.1em
       font-weight: bold
       text-align: left
       background-color: $gh-gray
@@ -121,13 +129,18 @@ $gh-highlight-color: #FFF6CD
               font-size: 14px
               color: $gh-text-color
         &.aa-repo
-          height: 35px
+          height: 3em
           .aa-name
             width: 85%
             display: block
             white-space: nowrap
             overflow: hidden
             text-overflow: ellipsis
+            font-weight: normal
+          .aa-owner
+            //
+          .aa-repo
+            font-weight: bold
           .aa-description
             width: 85%
             height: 1.3em
@@ -136,3 +149,7 @@ $gh-highlight-color: #FFF6CD
             overflow: hidden
             text-overflow: ellipsis
             color: $gh-text-color
+        &.aa-your-repo
+          height: 1.5em
+          i
+            font-size: 14px
