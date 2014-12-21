@@ -188,7 +188,7 @@
     ]).on('typeahead:selected', function(event, suggestion, dataset) {
       if (dataset === 'users') {
         location.href = 'https://github.com/' + suggestion.login;
-      } else if (dataset === 'repos') {
+      } else if (dataset === 'repos' || dataset === 'private') {
         location.href = 'https://github.com/' + suggestion.full_name;
       } else {
         console.log('Unknown dataset: ' + dataset);
