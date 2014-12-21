@@ -105,7 +105,6 @@ $gh-primary-color: #3879D9
             font-size: 14px
         .aa-name
           font-size: 1.1em
-          font-weight: bold
         &.aa-user
           height: 35px
           display: block
@@ -121,6 +120,8 @@ $gh-primary-color: #3879D9
             background-color: $gh-gray
             img
               width: 100%
+          .aa-name
+            font-weight: bold
           .aa-login
             color: $gh-text-color
           .aa-company
@@ -151,5 +152,14 @@ $gh-primary-color: #3879D9
             color: $gh-text-color
         &.aa-your-repo
           height: 1.5em
+          .aa-name
+            width: 85%
+            display: block
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            font-weight: normal
+            .aa-repo
+              font-weight: bold
           i
             font-size: 14px

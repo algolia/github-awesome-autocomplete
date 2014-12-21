@@ -116,7 +116,6 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion .aa-name {
   font-size: 1.1em;
-  font-weight: bold;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user {
   height: 35px;
@@ -135,6 +134,9 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-thumbnail img {
   width: 100%;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-name {
+  font-weight: bold;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-login {
   color: #888888;
@@ -171,6 +173,17 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo {
   height: 1.5em;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo .aa-name {
+  width: 85%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo .aa-name .aa-repo {
+  font-weight: bold;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo i {
   font-size: 14px;
