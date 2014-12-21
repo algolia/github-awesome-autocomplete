@@ -97,7 +97,8 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion em {
   font-style: normal;
-  background-color: #FFF6CD;
+  background-color: #FFFFC6;
+  color: #333333;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion:hover {
   text-decoration: none;
