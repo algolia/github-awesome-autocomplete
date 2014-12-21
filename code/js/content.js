@@ -110,7 +110,9 @@
       if (!d) {
         return [];
       }
-      return d.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z0-9]/g, ' ').replace(/ +/g, ' ').toLowerCase().trim().split(' ');
+      var tokens = d.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z0-9]/g, ' ').replace(/ +/g, ' ').toLowerCase().trim().split(' ');
+      tokens.push(d.replace(/[^a-zA-Z0-9]/g, '').toLowerCase());
+      return tokens;
     };
 
     // setup auto-completion menu
