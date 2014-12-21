@@ -113,8 +113,9 @@
         name: 'default',
         templates: {
           empty: function(data) {
-            return '<div class="aa-query">' +
-              'Press <em>&lt;Enter&gt;</em> to search for "<em>' + $('<div />').text(data.query).html() + '</em>"' +
+            return '<div class="aa-query">Press <em>&lt;Enter&gt;</em> to ' +
+              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"</span>' +
+              '<span class="aa-query-cursor"></span>' +
               '</div>';
           }
         }
@@ -192,6 +193,16 @@
         location.href = 'https://github.com/' + suggestion.full_name;
       } else {
         console.log('Unknown dataset: ' + dataset);
+      }
+    }).on('typeahead:cursorchanged', function(event, suggestion, dataset) {
+      var $container = $('.aa-query');
+      $container.find('span').hide();
+      if (dataset === 'users') {
+        $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.login + '</strong>\'s profile').show();
+      } else if (dataset === 'repos' || dataset === 'private') {
+        $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.full_name + '</strong>').show();
+      } else {
+        $container.find('span.aa-query-default').show();
       }
     }).on('keypress', function(e) {
       if (e.keyCode === 13) { // enter
