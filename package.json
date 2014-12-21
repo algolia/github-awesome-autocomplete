@@ -1,6 +1,6 @@
 {
-  "name": "chrome-awesome-autocomplete",
-  "version": "0.0.1",
+  "name": "Awesome Autocomplete",
+  "version": "0.0.2",
   "description": "Add an Algolia-powered auto-completion menu to various websites.",
   "dependencies": {},
   "devDependencies": {
