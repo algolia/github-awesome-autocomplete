@@ -143,12 +143,14 @@
               for (var i = 0; i < suggestions.length; ++i) {
                 var sugg = suggestions[i];
                 sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
+                sugg.query = q;
               }
               cb(suggestions);
             });
           });
         },
         name: 'private',
+        displayKey: 'query',
         templates: {
           header: '<div class="aa-category">Your Repositories</div>',
           suggestion: function(hit) { return templateYourRepo.render(hit); }
@@ -171,6 +173,7 @@
                     continue;
                   }
                   dedup[hit.objectID] = true;
+                  hit.query = q;
                   suggestions.push(hit);
                 }
               }
@@ -179,14 +182,28 @@
           });
         },
         name: 'repos',
+        displayKey: 'query',
         templates: {
           header: '<div class="aa-category">Repositories</div>',
           suggestion: function(hit) { return templateRepo.render(hit); }
         }
       },
       {
-        source: users.ttAdapter({ hitsPerPage: NB_USERS, attributesToRetrieve: ['login', 'name', 'id', 'company', 'followers'] }),
+        source: function(q, cb) {
+          users.search(q, function(success, content) {
+            var hits = [];
+            if (success) {
+              for (var i = 0; i < content.hits.length; ++i) {
+                var hit = content.hits[i];
+                hit.query = q;
+                hits.push(hit);
+              }
+            }
+            cb(hits);
+          }, { hitsPerPage: NB_USERS, attributesToRetrieve: ['login', 'name', 'id', 'company', 'followers'] });
+        },
         name: 'users',
+        displayKey: 'query',
         templates: {
           header: '<div class="aa-category">Users</div>',
           suggestion: function(hit) { return templateUser.render(hit); }
