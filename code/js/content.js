@@ -11,36 +11,102 @@
   require('./libs/algoliasearch.min.js');
 
   var NB_REPOS = 5;
+  var NB_MY_REPOS = 2;
   var NB_USERS = 3;
 
   var algolia = new window.AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('github_users');
 
-  var templateUser = Hogan.compile('<a class="aa-user" href="https://github.com/{{ login }}">' +
+  var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
     '{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
     '<div class="aa-thumbnail"><img src="https://avatars2.githubusercontent.com/u/{{ id }}?v=2&s=30" /></div>' +
-    '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span>{{/name}}' +
-    '{{^name}}<span class="aa-name">{{{ _highlightResult.login.value }}}</span>{{/name}}' +
-    '{{#name}}<span class="aa-login">{{{ _highlightResult.login.value }}}</span>{{/name}}' +
+    '<a href="https://github.com/{{ login }}">'+
+      '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span> {{/name}}' +
+      '<span class="aa-login">{{{ _highlightResult.login.value }}}</span>' +
+    '</a>' +
     '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
-  '</a>');
+  '</div>');
 
-  var templateRepo = Hogan.compile('<a class="aa-repo" href="https://github.com/{{ full_name }}/">' +
+  var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
     '{{#stargazers_count}}<div class="aa-infos">{{ stargazers_count }} <i class="octicon octicon-star"></i></div>{{/stargazers_count}}' +
-    '<span class="aa-name">{{{ _highlightResult.full_name.value }}}</span>' +
+    '<span class="aa-name"><a href="https://github.com/{{ full_name }}/">{{{ _highlightResult.full_name.value }}}</a></span>' +
     '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
-  '</a>');
+  '</div>');
+
+  var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
+    '<span class="aa-name">' +
+      '<span class="repo-icon octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></span> ' +
+      '<a href="https://github.com/{{ full_name }}/">{{{ full_name }}}</a>' +
+    '</span>' +
+  '</div>');
+
+  var yourRepositories = [];
+
+  // crawl the repositories associated to a user or an organization
+  var crawlRepositories = function(url, organization) {
+    $.get(url).success(function(data) {
+      // parse HTML-based list of repositories
+      $('<ul>' + data + '</ul>').find('li').each(function() {
+        var isPrivate = $(this).hasClass('private');
+        var isFork = $(this).hasClass('fork');
+        var owner = $(this).find('span.owner').text() || $(this).find('span.repo-and-owner').attr('title').split('/')[0];
+        var repo = $(this).find('span.repo').text();
+        var fullName = owner + '/' + repo;
+        yourRepositories.push({
+          organization: organization,
+          full_name: fullName,
+          owner: owner,
+          repo: repo,
+          fork: isFork,
+          private: isPrivate
+        });
+      });
+
+      // save repositories to local storage
+      chrome.storage.local.set({ yourRepositories: yourRepositories });
+    });
+  };
+
+  window.refreshRepositories = function() {
+    console.log('Refreshing your repositories...');
+    yourRepositories = [];
+
+    // crawl your repositories
+    crawlRepositories('/dashboard/ajax_your_repos');
+
+    // get on the homepage to fetch your list of organization
+    $.ajax('/', { headers: { 'X-Requested-With' : 'fake' } }).success(function(data) {
+      $(data).find('.select-menu-list a.select-menu-item').each(function() {
+        var href = $(this).attr('href');
+        if (href.indexOf('/orgs/') === 0) {
+          // and crawl all of them
+          var organization = href.split('/')[2];
+          crawlRepositories('/organizations/' + organization + '/ajax_your_repos', organization);
+        }
+      });
+    });
+  };
 
   $(document).ready(function() {
     var $q = $('.site-search input[name="q"]');
-    var $form = $q.closest('form');
-
     $q.parent().addClass('awesome-autocomplete');
 
+    // load local repositories or refresh
+    chrome.storage.local.get('yourRepositories', function(result) {
+      if (result && result.yourRepositories) {
+        yourRepositories = result.yourRepositories;
+      } else {
+        window.refreshRepositories();
+      }
+    });
+
+    // handle <Enter> action
+    var $form = $q.closest('form');
     var submit = function(q) {
       location.href = $form.attr('action') + '?utf8=✓&q=' + encodeURIComponent(q);
     };
 
+    // setup auto-completion menu
     $q.typeahead({ highlight: false, hint: false }, [
       {
         source: function(q, cb) { cb([]); }, // force empty
@@ -51,6 +117,23 @@
               'Press <em>&lt;Enter&gt;</em> to search for "<em>' + $('<div />').text(data.query).html() + '</em>"' +
               '</div>';
           }
+        }
+      },
+      {
+        source: function(q, cb) {
+          var matchingRepositories = [];
+          for (var i = 0; i < yourRepositories.length && matchingRepositories.length < NB_MY_REPOS; ++i) {
+            var hit = yourRepositories[i];
+            if (hit.repo.toLowerCase().indexOf(q.toLowerCase()) > -1) { // FIXME
+              matchingRepositories.push(hit);
+            }
+          }
+          cb(matchingRepositories);
+        },
+        name: 'private',
+        templates: {
+          header: '<div class="aa-category">Your Repositories</div>',
+          suggestion: function(hit) { return templateYourRepo.render(hit); }
         }
       },
       {

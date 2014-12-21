@@ -1,5 +1,5 @@
 .aa-popup .aa-popup-content {
-  padding: 20px;
+  padding: 0 20px 20px 20px;
 }
 .aa-popup h1 {
   text-align: center;
@@ -91,30 +91,30 @@
   font-style: normal;
   background-color: #FFF6CD;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a:hover {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion:hover {
   text-decoration: none;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a:hover .aa-name {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion:hover .aa-name {
   text-decoration: underline;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a .aa-infos {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion .aa-infos {
   float: right;
   line-height: 3em;
   color: #888888;
   font-size: 0.9em;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a .aa-infos i {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion .aa-infos i {
   font-size: 14px;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a .aa-name {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion .aa-name {
   font-size: 1.1em;
   font-weight: bold;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user {
   height: 35px;
   display: block;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user .aa-thumbnail {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-thumbnail {
   float: left;
   position: relative;
   top: 3px;
@@ -125,30 +125,30 @@
   overflow: hidden;
   background-color: #F5F5F5;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user .aa-thumbnail img {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-thumbnail img {
   width: 100%;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user .aa-login {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-login {
   color: #888888;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user .aa-company {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-company {
   color: #333333;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-user .aa-company i {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-user .aa-company i {
   font-size: 14px;
   color: #888888;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-repo {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-repo {
   height: 35px;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-repo .aa-name {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-repo .aa-name {
   width: 85%;
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-suggestion a.aa-repo .aa-description {
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-repo .aa-description {
   width: 85%;
   height: 1.3em;
   display: block;

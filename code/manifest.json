@@ -10,7 +10,7 @@
     "js": [ "js/content.js" ],
     "css" : ["css/content.css"]
   }],
-  "permissions": [ "https://github.com/" ],
+  "permissions": [ "activeTab", "https://github.com/", "storage" ],
   "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],
   "content_security_policy": "script-src 'self'; object-src 'self'"
 }
