@@ -70,7 +70,8 @@ module.exports = function(grunt) {
       crx: {
         cmd: [
           './crxmake.sh build/unpacked-prod ./mykey.pem',
-          'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"'
+          'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
+          'zip -r "build/' + pkg.name + '-' + pkg.version + '.zip" build/unpacked-prod'
         ].join(' && ')
       }
     },
@@ -129,14 +130,6 @@ module.exports = function(grunt) {
     }
   );
 
-  grunt.registerTask(
-    'circleci', 'Store built extension as CircleCI arfitact',
-    function() {
-      if (process.env.CIRCLE_ARTIFACTS) { grunt.task.run('copy:artifact'); }
-      else { grunt.log.ok('Not on CircleCI, skipped'); }
-    }
-  );
-
   //
   // testing-related tasks
   //
@@ -149,6 +142,6 @@ module.exports = function(grunt) {
   //
 
   grunt.registerTask('default', ['clean', 'test', 'sass', 'mkdir:unpacked', 'copy:main', 'manifest',
-    'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec', 'circleci']);
+    'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec']);
 
 };
