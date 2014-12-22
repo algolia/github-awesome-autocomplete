@@ -187,7 +187,7 @@
         name: 'repos',
         displayKey: 'query',
         templates: {
-          header: '<div class="aa-category">Top 1M Repositories</div>',
+          header: '<div class="aa-category">Top Repositories</div>',
           suggestion: function(hit) { return templateRepo.render(hit); }
         }
       },
