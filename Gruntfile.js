@@ -71,7 +71,7 @@ module.exports = function(grunt) {
         cmd: [
           './crxmake.sh build/unpacked-prod ./mykey.pem',
           'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
-          'zip -r "build/' + pkg.name + '-' + pkg.version + '.zip" build/unpacked-prod'
+          '(cd build && zip -r "' + pkg.name + '-' + pkg.version + '.zip" unpacked-prod)'
         ].join(' && ')
       }
     },
