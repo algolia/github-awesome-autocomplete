@@ -9,14 +9,30 @@
   margin: 0;
 }
 .aa-popup h2 {
-  margin-top: 2em;
+  float: left;
+  width: 100%;
+  margin: 1.8em 0 0.5em;
   font-size: 1.2em;
   font-weight: 200;
   color: #888888;
 }
 .aa-popup p {
+  float: left;
   font-size: 1em;
+  line-height: 1.5em;
+  margin: 0.5em 0;
   color: #333333;
+}
+.aa-popup ul {
+  float: right;
+  list-style: none;
+  margin: 0;
+  padding: 10px 0 0;
+}
+.aa-popup ul li {
+  display: inline-block;
+  margin-left: 10px;
+  line-height: 2em;
 }
 .aa-popup button {
   width: 100%;
