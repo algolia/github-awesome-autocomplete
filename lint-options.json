@@ -16,6 +16,7 @@
     "beforeEach": true,
     "describe": true,
     "afterEach": true,
-    "it": true
+    "it": true,
+    "chrome": true
   }
 }
