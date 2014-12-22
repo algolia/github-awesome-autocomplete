@@ -1,7 +1,7 @@
 {
-  "name": "Awesome Autocomplete",
+  "name": "github-awesome-autocomplete",
   "version": "0.0.2",
-  "description": "Add an Algolia-powered auto-completion menu to various websites.",
+  "description": "Add instant search capability on GitHub.",
   "dependencies": {},
   "devDependencies": {
     "browserify": "~3.39.0",
