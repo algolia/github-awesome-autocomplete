@@ -26,9 +26,16 @@
   border: solid 1px #2460ba;
   color: white;
   padding: 5px 10px;
+  cursor: pointer;
 }
 .aa-popup button img {
   vertical-align: bottom;
+}
+.aa-popup button.loading {
+  background: red;
+}
+.aa-popup button.loading img {
+  display: none;
 }
 .aa-popup .aa-algolia-logo {
   width: 100px;
