@@ -32,12 +32,22 @@ $gh-primary-color: #3879D9
     color: white
     padding: 5px 10px
     cursor: pointer
+    &:focus
+      outline: 0 !important
+      box-shadow: none !important
     img
       vertical-align: bottom
     &.loading
-      background: red
+      border-color: darken(#E9E9E9, 7%)
+      padding-left: 32px
+      color: #888
+      background: url('../images/loading.gif') no-repeat 70px 5px #E9E9E9
       img
         display: none
+  .text-muted
+    color: #aaa
+    margin-top: 6px
+    text-align: center
   .aa-algolia-logo
     width: 100px
     display: block

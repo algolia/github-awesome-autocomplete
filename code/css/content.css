@@ -28,14 +28,26 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+.aa-popup button:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
 .aa-popup button img {
   vertical-align: bottom;
 }
 .aa-popup button.loading {
-  background: red;
+  border-color: #d7d7d7;
+  padding-left: 32px;
+  color: #888;
+  background: url("../images/loading.gif") no-repeat 70px 5px #E9E9E9;
 }
 .aa-popup button.loading img {
   display: none;
+}
+.aa-popup .text-muted {
+  color: #aaa;
+  margin-top: 6px;
+  text-align: center;
 }
 .aa-popup .aa-algolia-logo {
   width: 100px;
