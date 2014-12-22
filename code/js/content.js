@@ -90,7 +90,10 @@
 
   $(document).ready(function() {
     var $q = $('.site-search input[name="q"]');
+    
+
     $q.parent().addClass('awesome-autocomplete');
+    $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + chrome.extension.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
 
     // load local repositories or refresh
     chrome.storage.local.get('yourRepositories', function(result) {
@@ -99,6 +102,15 @@
       } else {
         window.refreshRepositories();
       }
+    });
+
+    // Clear input
+    var $clearInputIcon = $('.site-search .icon-delete');
+    $clearInputIcon.on('click touch', function(event) {
+      event.preventDefault();
+      $q.val('');
+      $clearInputIcon.removeClass('active');
+      $q.focus();
     });
 
     // handle <Enter> action
@@ -241,9 +253,18 @@
       } else {
         $container.find('span.aa-query-default').show();
       }
-    }).on('keypress', function(e) {
+    }).on('keyup', function(e) {
+      var query = $(this).val();
+
+      if (query.length > 0) {
+        $clearInputIcon.addClass('active');
+      }
+      else {
+        $clearInputIcon.removeClass('active');
+      }
+
       if (e.keyCode === 13) { // enter
-        submit($(this).val());
+        submit(query);
       }
     }).focus();
   });

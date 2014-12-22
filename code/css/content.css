@@ -235,5 +235,22 @@
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo i {
   font-size: 14px;
 }
+.awesome-autocomplete .icon-delete {
+  -webkit-transition: opacity 80ms;
+  transition: opacity 80ms;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  display: block;
+  right: 6px;
+  bottom: 6px;
+  height: 16px;
+  width: 16px;
+  z-index: 100;
+  opacity: 0;
+}
+.awesome-autocomplete .icon-delete.active {
+  opacity: 0.5;
+}
 
 /*# sourceMappingURL=content.css.map */
