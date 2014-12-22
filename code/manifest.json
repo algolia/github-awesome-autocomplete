@@ -12,7 +12,7 @@
   "page_action": {
     "default_title": "GitHub Awesome Autocomplete",
     "default_popup": "html/popup.html",
-    "default_icon" : "images/icon-19.png"
+    "default_icon" : "images/icon.png"
   },
   "content_scripts": [{
     "matches": [ "http://github.com/*", "https://github.com/*" ],
