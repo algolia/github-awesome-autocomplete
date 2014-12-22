@@ -135,7 +135,7 @@
           var engine = new window.Bloodhound({
             name: 'private',
             local: yourRepositories,
-            datumTokenizer: function(d) { return tokenize(d.name); },
+            datumTokenizer: function(d) { return tokenize(d.owner).concat(tokenize(d.name)); },
             queryTokenizer: tokenize,
             limit: NB_MY_REPOS
           });
