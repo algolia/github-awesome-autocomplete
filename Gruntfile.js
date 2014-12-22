@@ -70,7 +70,8 @@ module.exports = function(grunt) {
       crx: {
         cmd: [
           './crxmake.sh build/unpacked-prod ./mykey.pem',
-          'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"'
+          'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
+          'zip -r "build/' + pkg.name + '-' + pkg.version + '.zip" build/unpacked-prod'
         ].join(' && ')
       }
     },
