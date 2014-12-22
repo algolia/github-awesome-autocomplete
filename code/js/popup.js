@@ -10,3 +10,16 @@ button.addEventListener('click', function() {
     self.close();
   }, 1000);
 });
+
+
+var repo = document.getElementById('github-repository');
+repo.addEventListener('click', function() {
+  chrome.tabs.executeScript({ code: 'location.href="' + repo.getAttribute('href') +'"' });
+  self.close();
+});
+
+var issues = document.getElementById('github-issues');
+issues.addEventListener('click', function() {
+  chrome.tabs.executeScript({ code: 'location.href="' + issues.getAttribute('href') +'"' });
+  self.close();
+});

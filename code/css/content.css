@@ -44,10 +44,6 @@
   padding: 5px 10px;
   cursor: pointer;
 }
-.aa-popup button:focus {
-  outline: 0 !important;
-  box-shadow: none !important;
-}
 .aa-popup button img {
   vertical-align: bottom;
 }
@@ -66,12 +62,24 @@
   text-align: center;
 }
 .aa-popup .aa-algolia-logo {
+  clear: both;
   width: 100px;
   display: block;
   margin: 0 auto;
 }
 .aa-popup .aa-algolia-logo img {
   width: 100%;
+}
+.aa-popup a {
+  color: #3879D9;
+  text-decoration: none;
+}
+.aa-popup a:hover {
+  text-decoration: underline;
+}
+.aa-popup a:focus, .aa-popup button:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
 }
 
 .awesome-autocomplete .twitter-typeahead {
