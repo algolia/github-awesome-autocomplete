@@ -18,13 +18,36 @@ This Chrome extension replaces GitHub's searchbar and add auto-completion capabi
 
 ![capture](capture.png)
 
-### How it works?
+### How does it work?
 
  * We continuously retrieve most watched repositories and last active users using [GitHub Archive](http://www.githubarchive.org/) dataset
  * Users and repositories are stored in 2 [Algolia](https://www.algolia.com/) indices: `users` and `repositories`
  * The results are fetched using [Algolia's JavaScript API client](https://github.com/algolia/algoliasearch-client-js)
  * The UI uses Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/) library to display the auto-completion menu
 
+### FAQ
+
+#### Why can't I find a public repository?
+
+For now, we only index the most "popular" (most watches) repositories.
+
+#### Why can't I find a user?
+
+For now, we only index the last active (most recent public events) users.
+
+#### Are my private repositories sent somewhere?
+
+**NO**, your list of private repositories remains in your local storage.
+
+#### Is the extension collecting my private data?
+
+**NO**, the extension doesn't collect any of your private data. Your private data remains in your browser and you'll only use Algolia's API to search for public repositories and users.
+
+#### I've just created a new private repository, why is it not searchable?
+
+You need to refresh your local list of private repositories:
+
+![refresh](refresh.png)
 
 ## Development
 
