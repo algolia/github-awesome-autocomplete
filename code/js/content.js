@@ -218,7 +218,7 @@
         templates: {
           empty: function() {
             return '<div class="aa-branding">' +
-              'Realtime Search by <a href="https://www.algolia.com"><img src="' + chrome.extension.getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
+              'Realtime Search by <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + chrome.extension.getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
               '</div>';
           }
         }
