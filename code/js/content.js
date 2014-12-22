@@ -97,7 +97,7 @@
 
     // load local repositories or refresh
     chrome.storage.local.get('yourRepositories', function(result) {
-      if (result && result.yourRepositories) {
+      if (result && result.yourRepositories && result.yourRepositories.length > 0) {
         yourRepositories = result.yourRepositories;
       } else {
         window.refreshRepositories();
