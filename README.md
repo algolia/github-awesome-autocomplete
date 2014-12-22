@@ -6,17 +6,25 @@ When you work on a instant-search engine all day long, not having relevant resul
 
 ### Installation
 
-Install it from [Chrome Web Store](https://chrome.google.com/webstore/detail/chrome-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd).
+Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/chrome-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd).
 
 ### Features
 
-Basically this Chrome extension replaces GitHub's searchbar and add auto-completion capabilities on:
+This Chrome extension replaces GitHub's searchbar and add auto-completion capabilities on:
 
- * top 1M public repositories
- * last 1M active users
- * your private repositories (for now, this one is done without Algolia, the list of private repositories stays in local)
+ * top public repositories
+ * last active users
+ * your private repositories (this one is done locally without Algolia: your list of private repositories remains locally in your browser)
 
 ![capture](capture.png)
+
+### How it works?
+
+ * We continuously retrieve most watched repositories and last active users using [GitHub Archive](http://www.githubarchive.org/) dataset
+ * Users and repositories are stored in 2 [Algolia](https://www.algolia.com/) indices: `users` and `repositories`
+ * The results are fetched using [Algolia's JavaScript API client](https://github.com/algolia/algoliasearch-client-js)
+ * The UI uses Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/) library to display the auto-completion menu
+
 
 ## Development
 
