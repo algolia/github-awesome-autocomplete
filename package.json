@@ -1,6 +1,6 @@
 {
   "name": "github-awesome-autocomplete",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Add instant search capabilities to GitHub's searchbar.",
   "dependencies": {},
   "devDependencies": {
