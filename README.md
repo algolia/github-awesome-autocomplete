@@ -2,11 +2,11 @@
 
 At [Algolia](https://www.algolia.com), we're git *addicts* and love using GitHub to store every single idea or project we work on. We use it both for our private and public repositories ([12 API clients](https://www.algolia.com/doc/apiclients), [HN Search](https://github.com/algolia/hn-search) or various [d](https://github.com/algolia/instant-search-demo) [e](https://github.com/algolia/facebook-search) [m](https://github.com/algolia/linkedin-search) [o](https://github.com/algolia/meetup-search) [s](https://github.com/algolia/twitter-search)).
 
-When you work on a instant-search engine all day long, not having relevant results after a few letters in a searchbar starts making you crazy. Chrome's [Omnibox](https://support.google.com/chrome/answer/95440) works pretty well but at the end navigation in a website should not be your browser's responsibility... So we did an [Algolia-powered Chrome extension](https://chrome.google.com/webstore/detail/chrome-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd) :)
+When you work on a instant-search engine all day long, not having relevant results after a few letters in a searchbar starts making you crazy. Chrome's [Omnibox](https://support.google.com/chrome/answer/95440) works pretty well but at the end navigation in a website should not be your browser's responsibility... So we did an [Algolia-powered Chrome extension](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd) :)
 
 ### Installation
 
-Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/chrome-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd).
+Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd).
 
 ### Features
 
