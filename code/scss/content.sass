@@ -46,9 +46,6 @@ $gh-primary-color: #3879D9
     color: white
     padding: 5px 10px
     cursor: pointer
-    &:focus
-      outline: 0 !important
-      box-shadow: none !important
     img
       vertical-align: bottom
     &.loading
@@ -63,11 +60,21 @@ $gh-primary-color: #3879D9
     margin-top: 6px
     text-align: center
   .aa-algolia-logo
+    clear: both
     width: 100px
     display: block
     margin: 0 auto
     img
       width: 100%
+  a
+    color: $gh-primary-color
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+  a:focus, button:focus
+    outline: 0 !important
+    box-shadow: none !important
 
 
 .awesome-autocomplete
