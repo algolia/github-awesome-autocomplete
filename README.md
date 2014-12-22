@@ -16,7 +16,7 @@ This Chrome extension replaces GitHub's searchbar and add auto-completion capabi
  * last active users
  * your private repositories (this one is done locally without Algolia: your list of private repositories remains locally in your browser)
 
-![capture](capture.png)
+![capture](capture.gif)
 
 ### How does it work?
 
