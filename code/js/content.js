@@ -91,7 +91,6 @@
   $(document).ready(function() {
     var $searchContainer = $('.site-search');
     var $q = $('input[name="q"]', $searchContainer);
-    var isRepoPage = $searchContainer.hasClass('repo-scope');
 
     $q.parent().addClass('awesome-autocomplete');
     $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + chrome.extension.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
@@ -137,7 +136,7 @@
         templates: {
           empty: function(data) {
             return '<div class="aa-query">Press <em>&lt;Enter&gt;</em> to ' +
-              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"</span>' +
+              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"' + ($searchContainer.hasClass('repo-scope') ? ' in this repository':'') + '</span>' +
               '<span class="aa-query-cursor"></span>' +
               '</div>';
           }
@@ -146,7 +145,7 @@
       {
         source: function(q, cb) { 
           var hits = [];
-          if (isRepoPage) {
+          if (! $searchContainer.hasClass('repo-scope')) {
              hits.push({ 'query': q });
           }
           cb(hits);
@@ -154,7 +153,8 @@
         name: 'current_repo',
         templates: {
           suggestion: function(hit) { 
-            return '<div class="aa-current-repo"><span class="aa-name"><i class="octicon octicon-repo"></i>&nbsp; Search ' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></span></div>'; 
+            // return '<div class="aa-current-repo"><span class="aa-name"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></span></div>'; 
+            return hit && '<div class="aa-current-repo"><span class="aa-name">Search in this repository: Code, Issues, ...</span></div>'; 
           }
         }
       },
@@ -270,11 +270,6 @@
         $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.full_name + '</strong>').show();
       } else {
         $container.find('span.aa-query-default').show();
-      }
-    }).on('focus', function() {
-      if (isRepoPage) {
-        $('.scope-badge', $searchContainer).remove();
-        $q.css('padding-left', '8px');
       }
     }).on('keyup', function() {
       if ($(this).val().length > 0) {
