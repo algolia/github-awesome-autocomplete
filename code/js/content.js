@@ -253,7 +253,7 @@
       } else {
         $container.find('span.aa-query-default').show();
       }
-    }).on('keyup', function(e) {
+    }).on('keyup', function() {
       var query = $(this).val();
 
       if (query.length > 0) {
@@ -262,9 +262,10 @@
       else {
         $clearInputIcon.removeClass('active');
       }
-
+    })
+    .on('keypress', function(e) {
       if (e.keyCode === 13) { // enter
-        submit(query);
+        submit($(this).val());
       }
     }).focus();
   });
