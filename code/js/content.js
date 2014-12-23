@@ -263,6 +263,6 @@
       if (e.keyCode === 13) { // enter
         submit($(this).val());
       }
-    }).focus();
+    });
   });
 })();
