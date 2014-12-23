@@ -254,16 +254,12 @@
         $container.find('span.aa-query-default').show();
       }
     }).on('keyup', function() {
-      var query = $(this).val();
-
-      if (query.length > 0) {
+      if ($(this).val().length > 0) {
         $clearInputIcon.addClass('active');
-      }
-      else {
+      } else {
         $clearInputIcon.removeClass('active');
       }
-    })
-    .on('keypress', function(e) {
+    }).on('keypress', function(e) {
       if (e.keyCode === 13) { // enter
         submit($(this).val());
       }
