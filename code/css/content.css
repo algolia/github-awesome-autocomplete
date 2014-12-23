@@ -243,6 +243,14 @@
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo i {
   font-size: 14px;
 }
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-current_repo {
+  background: #444;
+  color: #fff;
+  cursor: pointer;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-current_repo .tt-suggestion.tt-cursor {
+  background: #1a1a1a;
+}
 .awesome-autocomplete .icon-delete {
   -webkit-transition: opacity 80ms;
   transition: opacity 80ms;
