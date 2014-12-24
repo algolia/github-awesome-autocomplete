@@ -137,7 +137,7 @@
         templates: {
           empty: function(data) {
             return '<div class="aa-query">Press <em>&lt;Enter&gt;</em> to ' +
-              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"' + (isRepoPage ? ' in this repository':'') + '</span>' +
+              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"</span>' +
               '<span class="aa-query-cursor"></span>' +
               '</div>';
           }
@@ -154,8 +154,7 @@
         name: 'current_repo',
         templates: {
           suggestion: function(hit) { 
-            // return '<div class="aa-current-repo"><span class="aa-name"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></span></div>'; 
-            return hit && '<div class="aa-current-repo"><span class="aa-name">Search for &nbsp;<i class="octicon octicon-code"></i> <strong>Code</strong> &nbsp;and&nbsp; <i class="octicon octicon-issue-opened"></i> <strong>Issues</strong></span></div>'; 
+            return '<div class="aa-current-repo"><span class="aa-name"><i class="octicon octicon-repo"></i>&nbsp; Search ' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></span></div>'; 
           }
         }
       },
