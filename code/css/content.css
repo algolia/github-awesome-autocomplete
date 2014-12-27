@@ -47,20 +47,6 @@
 .aa-popup button img {
   vertical-align: bottom;
 }
-.aa-popup button.loading {
-  border-color: #d7d7d7;
-  padding-left: 32px;
-  color: #888;
-  background: url("../images/loading.gif") no-repeat 70px 5px #E9E9E9;
-}
-.aa-popup button.loading img {
-  display: none;
-}
-.aa-popup .text-muted {
-  color: #aaa;
-  margin-top: 6px;
-  text-align: center;
-}
 .aa-popup .aa-algolia-logo {
   clear: both;
   width: 100px;
@@ -224,6 +210,37 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #888888;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-thumbnail {
+  float: left;
+  position: relative;
+  top: 3px;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: #F5F5F5;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-thumbnail img {
+  width: 100%;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-name {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-repo-name {
+  font-weight: bold;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-issue-number {
+  font-weight: bold;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-issue-body {
+  clear: both;
   color: #888888;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo {

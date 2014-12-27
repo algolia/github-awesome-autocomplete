@@ -23,7 +23,8 @@
     "https://github.com/*",
     "activeTab",
     "storage",
-    "declarativeContent"
+    "declarativeContent",
+    "https://github.algolia.com/*"
   ],
   "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],
   "content_security_policy": "script-src 'self'; object-src 'self'"

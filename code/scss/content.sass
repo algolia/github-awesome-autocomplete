@@ -48,17 +48,6 @@ $gh-primary-color: #3879D9
     cursor: pointer
     img
       vertical-align: bottom
-    &.loading
-      border-color: darken(#E9E9E9, 7%)
-      padding-left: 32px
-      color: #888
-      background: url('../images/loading.gif') no-repeat 70px 5px #E9E9E9
-      img
-        display: none
-  .text-muted
-    color: #aaa
-    margin-top: 6px
-    text-align: center
   .aa-algolia-logo
     clear: both
     width: 100px
@@ -193,6 +182,32 @@ $gh-primary-color: #3879D9
             white-space: nowrap
             overflow: hidden
             text-overflow: ellipsis
+            color: $gh-text-color
+        &.aa-issue
+          .aa-thumbnail
+            float: left
+            position: relative
+            top: 3px
+            width: 30px
+            height: 30px
+            margin-right: 10px
+            border-radius: 3px
+            overflow: hidden
+            background-color: $gh-gray
+            img
+              width: 100%
+          .aa-name
+            display: block
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+            font-weight: normal
+          .aa-repo-name
+            font-weight: bold
+          .aa-issue-number
+            font-weight: bold
+          .aa-issue-body
+            clear: both
             color: $gh-text-color
         &.aa-your-repo
           height: 1.5em

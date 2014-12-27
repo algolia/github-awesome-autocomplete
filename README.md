@@ -12,11 +12,15 @@ Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail
 
 ### Features
 
-This Chrome extension replaces GitHub's searchbar and add auto-completion capabilities on:
+This Chrome extension replaces GitHub's search bar and add auto-completion (instant-search & suggestion) capabilities on:
 
  * top public repositories
  * last active users
- * your private repositories (this one is done locally without Algolia: your list of private repositories remains locally in your browser)
+ * your private repositories
+   * default is without Algolia: done locally in your browser using vanilla JS search
+   * ability to use Algolia (typo-tolerant & relevance improved) through a "Connect with GitHub" (oauth2)
+ * your issues
+   * only available if you choose to "Connect with GitHub"
 
 ![capture](capture.gif)
 
@@ -39,13 +43,9 @@ For now, we only index the last active (most recent public events) users.
 
 #### Are my private repositories sent somewhere?
 
-**NO**, your list of private repositories remains in your local storage.
+By default your list of private repositories remains in your local storage. You can allow us to crawl your private repositories with a "Connect with GitHub" (oauth2) action. Your private repositories are then stored securely in our index and only you will be able to search them.
 
-#### Is the extension collecting my private data?
-
-**NO**, the extension doesn't collect any of your private data. Your private data remains in your browser and you'll only use Algolia's API to search for public repositories and users.
-
-#### I've just created a new private repository, why is it not searchable?
+#### My private repository is not searchable, what can I do?
 
 You need to refresh your local list of private repositories:
 

@@ -10,9 +10,10 @@
   require('./libs/typeahead.bundle.min.js');
   require('./libs/algoliasearch.min.js');
 
-  var NB_REPOS = 5;
+  var NB_REPOS = 3;
   var NB_MY_REPOS = 2;
   var NB_USERS = 3;
+  var NB_ISSUES = 3;
 
   var algolia = new window.AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('last_1m_users');
@@ -31,6 +32,16 @@
     '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
   '</div>');
 
+  var templateIssue = Hogan.compile('<div class="aa-suggestion aa-issue">' +
+    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ repository.owner }}?size=30" /></div>' +
+    '<div class="aa-infos"><i class="octicon octicon-comment"></i> {{ comments_count }}</div>' +
+    '<span class="aa-name">' +
+      '<span class="aa-issue-number">Issue #{{ number }}:</span> <a href="https://github.com/{{ repository.owner }}/{{ repository.name }}/issues/{{ number }}">{{{ _highlightResult.title.value }}}</a><br />' +
+      '{{ repository.owner }}/<span class="aa-repo-name">{{{ _highlightResult.repository.name.value }}}</span>' +
+    '</span>' +
+    '<div class="aa-issue-body">{{{ _snippetResult.body.value }}}</div>' +
+  '</div>');
+
   var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
     //'{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
     '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ login }}?size=30" /></div>' +
@@ -41,9 +52,8 @@
     '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
   '</div>');
 
-  var yourRepositories = [];
-
   // crawl the repositories associated to a user or an organization
+  var yourRepositories = [];
   var crawlRepositories = function(url, organization) {
     $.get(url).success(function(data) {
       // parse HTML-based list of repositories
@@ -63,19 +73,19 @@
         });
       });
 
-      // save repositories to local storage
+      // save to local storage
       chrome.storage.local.set({ yourRepositories: yourRepositories });
     });
   };
 
+  // crawl repositories (fallback)
   window.refreshRepositories = function() {
-    console.log('Refreshing your repositories...');
     yourRepositories = [];
 
     // crawl your repositories
     crawlRepositories('/dashboard/ajax_your_repos');
 
-    // get on the homepage to fetch your list of organization
+    // get the homepage to fetch your list of organization
     $.ajax('/', { headers: { 'X-Requested-With' : 'fake' } }).success(function(data) {
       $(data).find('.select-menu-list a.select-menu-item').each(function() {
         var href = $(this).attr('href');
@@ -88,21 +98,51 @@
     });
   };
 
+  // tokenization helper
+  var tokenize = function(d) {
+    if (!d) {
+      return [];
+    }
+    var tokens = d.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z0-9]/g, ' ').replace(/ +/g, ' ').toLowerCase().trim().split(' ');
+    tokens.push(d.replace(/[^a-zA-Z0-9]/g, '').toLowerCase());
+    return tokens;
+  };
+
+  // private repositories & issues
+  var privateAlgolia, privateRepositories, privateIssues;
+  function setupPrivate(data) {
+    chrome.storage.local.set({ private: data });
+    if (data && data.uid && data.api_key) {
+      privateAlgolia = new window.AlgoliaSearch('TLCDTR8BIO', data.api_key);
+      privateAlgolia.setSecurityTags('user_' + data.uid);
+      privateRepositories = privateAlgolia.initIndex('my_repositories_production');
+      privateIssues = privateAlgolia.initIndex('issues_production');
+    }
+  }
+  chrome.storage.local.get('private', function(result) {
+    if (result) {
+      setupPrivate(result.private);
+    }
+    if (!privateAlgolia) {
+      $.get('https://github.algolia.com/private?' + new Date().getTime(), function(data) {
+        setupPrivate(data);
+      });
+    }
+  });
+
+  // private repositories crawl (fallback)
+  chrome.storage.local.get('yourRepositories', function(result) {
+    if (result && result.yourRepositories && result.yourRepositories.length > 0) {
+      yourRepositories = result.yourRepositories;
+    } else {
+      window.refreshRepositories();
+    }
+  });
+
   $(document).ready(function() {
     var $q = $('.site-search input[name="q"]');
-    
-
     $q.parent().addClass('awesome-autocomplete');
     $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + chrome.extension.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
-
-    // load local repositories or refresh
-    chrome.storage.local.get('yourRepositories', function(result) {
-      if (result && result.yourRepositories && result.yourRepositories.length > 0) {
-        yourRepositories = result.yourRepositories;
-      } else {
-        window.refreshRepositories();
-      }
-    });
 
     // Clear input
     var $clearInputIcon = $('.site-search .icon-delete');
@@ -119,17 +159,9 @@
       location.href = $form.attr('action') + '?utf8=✓&q=' + encodeURIComponent(q);
     };
 
-    var tokenize = function(d) {
-      if (!d) {
-        return [];
-      }
-      var tokens = d.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z0-9]/g, ' ').replace(/ +/g, ' ').toLowerCase().trim().split(' ');
-      tokens.push(d.replace(/[^a-zA-Z0-9]/g, '').toLowerCase());
-      return tokens;
-    };
-
     // setup auto-completion menu
     $q.typeahead({ highlight: false, hint: false }, [
+      // top-menu help
       {
         source: function(q, cb) { cb([]); }, // force empty
         name: 'default',
@@ -142,35 +174,55 @@
           }
         }
       },
+      // private repositories
       {
         source: function(q, cb) {
-          var engine = new window.Bloodhound({
-            name: 'private',
-            local: yourRepositories,
-            datumTokenizer: function(d) { return tokenize(d.owner).concat(tokenize(d.name)); },
-            queryTokenizer: tokenize,
-            limit: NB_MY_REPOS
-          });
-          engine.initialize().done(function() {
-            engine.get(q, function(suggestions) {
-              var queryWords = tokenize(q);
-              var re = new RegExp('(' + $.map(queryWords, function(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); }).join('|') + ')', 'ig');
-              for (var i = 0; i < suggestions.length; ++i) {
-                var sugg = suggestions[i];
-                sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
-                sugg.query = q;
+          if (privateRepositories) {
+            privateRepositories.search(q, function(success, content) {
+              if (success) {
+                for (var i = 0; i < content.hits.length; ++i) {
+                  var hit = content.hits[i];
+                  hit.query = q;
+                  hit.watchers = hit.watchers_count;
+                }
+                cb(content.hits);
+              } else {
+                cb([]);
               }
-              cb(suggestions);
+            }, { attributesToSnippet: ['description:50'], hitsPerPage: NB_MY_REPOS });
+          } else {
+            var engine = new window.Bloodhound({
+              name: 'private',
+              local: yourRepositories,
+              datumTokenizer: function(d) { return tokenize(d.owner).concat(tokenize(d.name)); },
+              queryTokenizer: tokenize,
+              limit: NB_MY_REPOS
             });
-          });
+            engine.initialize().done(function() {
+              engine.get(q, function(suggestions) {
+                var queryWords = tokenize(q);
+                var re = new RegExp('(' + $.map(queryWords, function(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); }).join('|') + ')', 'ig');
+                for (var i = 0; i < suggestions.length; ++i) {
+                  var sugg = suggestions[i];
+                  sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
+                  sugg.query = q;
+                }
+                cb(suggestions);
+              });
+            });
+          }
         },
         name: 'private',
         displayKey: 'query',
         templates: {
           header: '<div class="aa-category">Your Repositories</div>',
-          suggestion: function(hit) { return templateYourRepo.render(hit); }
+          suggestion: function(hit) {
+            var template = privateRepositories ? templateRepo : templateYourRepo;
+            return template.render(hit);
+          }
         }
       },
+      // top repositories
       {
         source: function(q, cb) {
           var params = { attributesToSnippet: ['description:50'] };
@@ -203,6 +255,33 @@
           suggestion: function(hit) { return templateRepo.render(hit); }
         }
       },
+      // private issues
+      {
+        source: function(q, cb) {
+          if (privateIssues) {
+            privateIssues.search(q, function(success, content) {
+              if (success) {
+                for (var i = 0; i < content.hits.length; ++i) {
+                  var hit = content.hits[i];
+                  hit.query = q;
+                }
+                cb(content.hits);
+              } else {
+                cb([]);
+              }
+            }, { attributesToSnippet: ['body:20'], hitsPerPage: NB_ISSUES });
+          } else {
+            cb([]);
+          }
+        },
+        name: 'issues',
+        displayKey: 'query',
+        templates: {
+          header: '<div class="aa-category">Your Issues</div>',
+          suggestion: function(hit) { return templateIssue.render(hit); }
+        }
+      },
+      // users
       {
         source: function(q, cb) {
           users.search(q, function(success, content) {
@@ -224,6 +303,7 @@
           suggestion: function(hit) { return templateUser.render(hit); }
         }
       },
+      // branding
       {
         source: function(q, cb) { cb([]); }, // force empty
         name: 'branding',
@@ -240,6 +320,8 @@
         location.href = 'https://github.com/' + suggestion.login;
       } else if (dataset === 'repos' || dataset === 'private') {
         location.href = 'https://github.com/' + suggestion.full_name;
+      } else if (dataset === 'issues') {
+        location.href = 'https://github.com/' + suggestion.repository.owner + '/' + suggestion.repository.name + '/issues/' + suggestion.number;
       } else {
         console.log('Unknown dataset: ' + dataset);
       }
@@ -250,6 +332,8 @@
         $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.login + '</strong>\'s profile').show();
       } else if (dataset === 'repos' || dataset === 'private') {
         $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.full_name + '</strong>').show();
+      } else if (dataset === 'issues') {
+        $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.repository.owner + '/' + suggestion.repository.name + ' #' + suggestion.number + '</strong>').show();
       } else {
         $container.find('span.aa-query-default').show();
       }
