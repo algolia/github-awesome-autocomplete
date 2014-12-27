@@ -262,11 +262,10 @@
       else {
         $clearInputIcon.removeClass('active');
       }
-    })
-    .on('keypress', function(e) {
+    }).on('keypress', function(e) {
       if (e.keyCode === 13) { // enter
         submit($(this).val());
       }
-    }).focus();
+    });
   });
 })();
