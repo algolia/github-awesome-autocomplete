@@ -119,14 +119,17 @@
       privateIssues = privateAlgolia.initIndex('issues_production');
     }
   }
+  window.reloadPrivateKey = function() {
+    $.get('https://github.algolia.com/private?' + new Date().getTime(), function(data) {
+      setupPrivate(data);
+    });
+  };
   chrome.storage.local.get('private', function(result) {
     if (result) {
       setupPrivate(result.private);
     }
     if (!privateAlgolia) {
-      $.get('https://github.algolia.com/private?' + new Date().getTime(), function(data) {
-        setupPrivate(data);
-      });
+      window.reloadPrivateKey();
     }
   });
 
