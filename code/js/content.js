@@ -167,8 +167,9 @@
 
     // handle <Enter> action
     var $form = $q.closest('form');
-    var submit = function(q) {
-      location.href = $form.attr('action') + '?utf8=✓&q=' + encodeURIComponent(q);
+    var submit = function(q, action) {
+      action = action || $form.attr('action');
+      location.href = action + '?utf8=✓&q=' + encodeURIComponent(q);
     };
 
     // setup auto-completion menu
@@ -191,15 +192,15 @@
         source: function(q, cb) {
           var hits = [];
           if (isRepository && !$searchContainer.hasClass('repo-scope')) {
-             hits.push({ 'query': q });
+             hits.push({ query: q });
           }
           cb(hits);
         },
         name: 'current-repo',
+        displayKey: 'query',
         templates: {
           suggestion: function(hit) {
-            return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></div>';
-            //return '<div class="aa-query">Search in this repository: Code, Issues, ...</div>';
+            return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in this repository</div>';
           }
         }
       },
@@ -346,7 +347,7 @@
       }
     ]).on('typeahead:selected', function(event, suggestion, dataset) {
       if (dataset === 'current-repo') {
-        submit(suggestion.query);
+        submit(suggestion.query, $('.pagehead .entry-title a.js-current-repository').attr('href') + '/search');
       } else if (dataset === 'users') {
         location.href = 'https://github.com/' + suggestion.login;
       } else if (dataset === 'repos' || dataset === 'private') {
