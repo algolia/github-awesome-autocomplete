@@ -3,7 +3,7 @@
 var button = document.getElementById('refresh-button');
 button.addEventListener('click', function() {
   chrome.tabs.executeScript({ code: 'window.refreshRepositories()' });
-  chrome.tabs.executeScript({ code: 'window.reloadPrivateKey()' });
+  chrome.tabs.executeScript({ code: 'window.clearPrivateKey()' });
 
   var width = 1050;
   var height = 700;
