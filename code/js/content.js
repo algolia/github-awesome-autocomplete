@@ -149,7 +149,10 @@
   });
 
   $(document).ready(function() {
-    var $q = $('.site-search input[name="q"]');
+    var $searchContainer = $('.site-search');
+    var $q = $searchContainer.find('input[name="q"]');
+    var isRepository = $searchContainer.hasClass('repo-scope');
+
     $q.parent().addClass('awesome-autocomplete');
     $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + chrome.extension.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
 
@@ -177,9 +180,26 @@
         templates: {
           empty: function(data) {
             return '<div class="aa-query">Press <em>&lt;Enter&gt;</em> to ' +
-              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"</span>' +
+              '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"' + ($searchContainer.hasClass('repo-scope') ? ' in this repository':'') + '</span>' +
               '<span class="aa-query-cursor"></span>' +
               '</div>';
+          }
+        }
+      },
+      // this repository
+      {
+        source: function(q, cb) {
+          var hits = [];
+          if (isRepository && !$searchContainer.hasClass('repo-scope')) {
+             hits.push({ 'query': q });
+          }
+          cb(hits);
+        },
+        name: 'current-repo',
+        templates: {
+          suggestion: function(hit) {
+            return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></div>';
+            //return '<div class="aa-query">Search in this repository: Code, Issues, ...</div>';
           }
         }
       },
@@ -325,7 +345,9 @@
         }
       }
     ]).on('typeahead:selected', function(event, suggestion, dataset) {
-      if (dataset === 'users') {
+      if (dataset === 'current-repo') {
+        submit(suggestion.query);
+      } else if (dataset === 'users') {
         location.href = 'https://github.com/' + suggestion.login;
       } else if (dataset === 'repos' || dataset === 'private') {
         location.href = 'https://github.com/' + suggestion.full_name;
