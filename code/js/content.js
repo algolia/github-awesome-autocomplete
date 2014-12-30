@@ -91,6 +91,7 @@
   $(document).ready(function() {
     var $searchContainer = $('.site-search');
     var $q = $('input[name="q"]', $searchContainer);
+    var isRepository = $searchContainer.hasClass('repo-scope');
 
     $q.parent().addClass('awesome-autocomplete');
     $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + chrome.extension.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
@@ -143,18 +144,18 @@
         }
       },
       {
-        source: function(q, cb) { 
+        source: function(q, cb) {
           var hits = [];
-          if (! $searchContainer.hasClass('repo-scope')) {
+          if (isRepository && !$searchContainer.hasClass('repo-scope')) {
              hits.push({ 'query': q });
           }
           cb(hits);
         },
-        name: 'current_repo',
+        name: 'current-repo',
         templates: {
-          suggestion: function(hit) { 
-            // return '<div class="aa-current-repo"><span class="aa-name"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></span></div>'; 
-            return hit && '<div class="aa-current-repo"><span class="aa-name">Search in this repository: Code, Issues, ...</span></div>'; 
+          suggestion: function(hit) {
+            return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in <strong>this repository</strong></div>';
+            //return '<div class="aa-query">Search in this repository: Code, Issues, ...</div>';
           }
         }
       },
@@ -252,7 +253,7 @@
         }
       }
     ]).on('typeahead:selected', function(event, suggestion, dataset) {
-      if (dataset === 'current_repo') {
+      if (dataset === 'current-repo') {
         submit(suggestion.query);
       } else if (dataset === 'users') {
         location.href = 'https://github.com/' + suggestion.login;
