@@ -80,12 +80,21 @@ $gh-primary-color: #3879D9
     background-color: #FFF9EA
 
   .tt-dropdown-menu
-    width: 100%
+    width: 800px
     padding: 0
     border: 1px solid $gh-border-dark
     border-top: none
     background-color: white
     box-shadow: 0 5px 10px rgba(black, .2)
+    box-sizing: content-box
+    .tt-dataset-current-repo, .tt-dataset-private, .tt-dataset-repos, .tt-dataset-issues, .tt-dataset-users
+      margin: 0 5px
+      width: 390px
+      float: left
+    &.single-dataset
+      width: 400px
+    .tt-dataset-default, .tt-dataset-branding
+      clear: both
     .aa-query
       padding: 8px
       color: $gh-text-color
@@ -113,6 +122,8 @@ $gh-primary-color: #3879D9
       padding: 10px 10px
       text-align: left
       border-bottom: 1px solid $gh-border-light
+      &:last-child
+        border-bottom: 0
       em
         font-style: normal
         background-color: $gh-highlight-color
@@ -209,6 +220,8 @@ $gh-primary-color: #3879D9
           .aa-issue-body
             clear: both
             color: $gh-text-color
+            overflow: hidden
+            text-overflow: ellipsis
         &.aa-your-repo
           height: 1.5em
           .aa-name

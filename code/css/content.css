@@ -84,12 +84,24 @@
   background-color: #FFF9EA;
 }
 .awesome-autocomplete .tt-dropdown-menu {
-  width: 100%;
+  width: 800px;
   padding: 0;
   border: 1px solid #D8D8D8;
   border-top: none;
   background-color: white;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-sizing: content-box;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-current-repo, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-private, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-repos, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-issues, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-users {
+  margin: 0 5px;
+  width: 390px;
+  float: left;
+}
+.awesome-autocomplete .tt-dropdown-menu.single-dataset {
+  width: 400px;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-default, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-branding {
+  clear: both;
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-query {
   padding: 8px;
@@ -123,6 +135,9 @@
   padding: 10px 10px;
   text-align: left;
   border-bottom: 1px solid #EEEEEE;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-suggestion:last-child {
+  border-bottom: 0;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion em {
   font-style: normal;
@@ -242,6 +257,8 @@
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-issue .aa-issue-body {
   clear: both;
   color: #888888;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo {
   height: 1.5em;

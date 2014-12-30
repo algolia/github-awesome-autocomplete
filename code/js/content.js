@@ -172,6 +172,15 @@
       location.href = action + '?utf8=✓&q=' + encodeURIComponent(q);
     };
 
+    var hasResults = 0;
+    var resizeColumns = function() {
+      if (++hasResults === 1) {
+        $searchContainer.find('.tt-dropdown-menu').addClass('single-dataset');
+      } else {
+        $searchContainer.find('.tt-dropdown-menu').removeClass('single-dataset');
+      }
+    };
+
     // setup auto-completion menu
     $q.typeahead({ highlight: false, hint: false }, [
       // top-menu help
@@ -215,6 +224,7 @@
                   hit.query = q;
                   hit.watchers = hit.watchers_count;
                 }
+                if (content.hits.length > 0) { resizeColumns(); }
                 cb(content.hits);
               } else {
                 cb([]);
@@ -237,6 +247,7 @@
                   sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
                   sugg.query = q;
                 }
+                if (suggestions.length > 0) { resizeColumns(); }
                 cb(suggestions);
               });
             });
@@ -275,6 +286,7 @@
                 }
               }
             }
+            if (suggestions.length > 0) { resizeColumns(); }
             cb(suggestions);
           });
         },
@@ -295,6 +307,7 @@
                   var hit = content.hits[i];
                   hit.query = q;
                 }
+                if (content.hits.length > 0) { resizeColumns(); }
                 cb(content.hits);
               } else {
                 cb([]);
@@ -323,6 +336,7 @@
                 hits.push(hit);
               }
             }
+            if (hits.length > 0) { resizeColumns(); }
             cb(hits);
           }, { hitsPerPage: NB_USERS, attributesToRetrieve: ['login', 'name', 'id', 'company', 'followers'] });
         },
@@ -376,9 +390,11 @@
         $clearInputIcon.removeClass('active');
       }
     }).on('keypress', function(e) {
+      hasResults = 0;
       if (e.keyCode === 13) { // enter
         submit($(this).val());
       }
     });
+    $('.tt-dataset-current-repo, .tt-dataset-private, .tt-dataset-repos, .tt-dataset-issues, .tt-dataset-users').addClass('tt-dataset');
   });
 })();
