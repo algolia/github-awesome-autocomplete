@@ -1,9 +1,6 @@
 /* global document, window, location, chrome */
 
 ;(function() {
-  var handlers = require('./modules/handlers').create('ct');
-  require('./modules/msg').init('ct', handlers);
-
   var $ = require('./libs/jquery-1.11.2.min.js');
   window.jQuery = window.jQuery || $;
   var Hogan = require('./libs/hogan-3.0.1.js');

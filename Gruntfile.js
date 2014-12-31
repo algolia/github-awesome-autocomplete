@@ -30,11 +30,6 @@ module.exports = function(grunt) {
                    'code/**/*.json', '!code/js/libs/*'] }
     },
 
-    mochaTest: {
-      options: { colors: true, reporter: 'spec' },
-      files: ['code/**/*.spec.js']
-    },
-
     copy: {
       main: { files: [ {
         expand: true,
@@ -115,7 +110,6 @@ module.exports = function(grunt) {
   //
   // custom tasks
   //
-  
 
   grunt.registerTask(
     'manifest', 'Extend manifest.json with extra fields from package.json',
@@ -134,8 +128,8 @@ module.exports = function(grunt) {
   // testing-related tasks
   //
 
-  grunt.registerTask('test', ['jshint', 'mochaTest']);
-  grunt.registerTask('test-cont', ['test', 'watch']);
+  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('test-cont', ['default', 'watch']);
 
   //
   // DEFAULT
