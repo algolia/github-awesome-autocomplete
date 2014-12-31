@@ -2,7 +2,7 @@
   "name": "GitHub Awesome Autocomplete",
   "description": "Add instant search capability on GitHub.",
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": ["js/chrome/background.js"],
     "persistent": false
   },
   "manifest_version": 2,
@@ -16,7 +16,7 @@
   },
   "content_scripts": [{
     "matches": [ "http://github.com/*", "https://github.com/*" ],
-    "js": [ "js/content.js" ],
+    "js": [ "js/chrome/content.js", "js/content.js" ],
     "css" : ["css/content.css"]
   }],
   "permissions": [

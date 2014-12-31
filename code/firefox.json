@@ -1,0 +1,10 @@
+{
+  "id": "github-awesome-autocomplete@algolia.com",
+  "engines": {
+    "firefox": ">=33.0a1"
+  },
+  "permissions": {
+    "cross-domain-content": ["https://*.algolia.net/"]
+  },
+  "main": "index.js"
+}

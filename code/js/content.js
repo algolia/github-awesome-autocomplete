@@ -1,4 +1,4 @@
-/* global document, window, location, chrome */
+/* global document, window, location, storageSet, storageGet, getURL */
 
 ;(function() {
   var $ = require('./libs/jquery-1.11.2.min.js');
@@ -77,7 +77,7 @@
       });
 
       // save to local storage
-      chrome.storage.local.set({ yourRepositories: yourRepositories });
+      storageSet('yourRepositories', yourRepositories);
     });
   };
 
@@ -114,7 +114,7 @@
   // private repositories & issues
   var privateAlgolia, privateRepositories, privateIssues;
   function setupPrivate(data) {
-    chrome.storage.local.set({ private: data });
+    storageSet('private', data);
     if (data && data.uid && data.api_key) {
       privateAlgolia = new window.AlgoliaSearch('TLCDTR8BIO', data.api_key);
       privateAlgolia.setSecurityTags('user_' + data.uid);
@@ -126,7 +126,7 @@
     setupPrivate(null);
     privateAlgolia = privateRepositories = privateIssues = null;
   };
-  chrome.storage.local.get('private', function(result) {
+  storageGet('private', function(result) {
     if (result) {
       setupPrivate(result.private);
     }
@@ -138,7 +138,7 @@
   });
 
   // private repositories crawl (fallback)
-  chrome.storage.local.get('yourRepositories', function(result) {
+  storageGet('yourRepositories', function(result) {
     if (result && result.yourRepositories && result.yourRepositories.length > 0) {
       yourRepositories = result.yourRepositories;
     } else {
@@ -152,7 +152,7 @@
     var isRepository = $searchContainer.hasClass('repo-scope');
 
     $q.parent().addClass('awesome-autocomplete');
-    $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + chrome.extension.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
+    $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
 
     // Clear input
     var $clearInputIcon = $('.site-search .icon-delete');
@@ -352,7 +352,7 @@
         templates: {
           empty: function() {
             return '<div class="aa-branding">' +
-              'With <i class="octicon octicon-heart"></i> from <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + chrome.extension.getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
+              'With <i class="octicon octicon-heart"></i> from <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
               '</div>';
           }
         }

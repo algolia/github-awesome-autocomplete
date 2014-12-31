@@ -1,10 +1,11 @@
 module.exports = function(grunt) {
 
   var pkg = grunt.file.readJSON('package.json');
-  var mnf = grunt.file.readJSON('code/manifest.json');
+  var chrome_mnf = grunt.file.readJSON('code/chrome.json');
+  var firefox_pkg = grunt.file.readJSON('code/firefox.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
-  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js']);
+  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'chrome/*.js']);
   for (var i = 0; i < files.length; i++) {
     file = files[i];
     fileMaps.browserify['build/unpacked-dev/js/' + file] = 'code/js/' + file;
@@ -68,6 +69,19 @@ module.exports = function(grunt) {
           'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
           '(cd build && zip -r "' + pkg.name + '-' + pkg.version + '.zip" unpacked-prod)'
         ].join(' && ')
+      },
+      xpi: {
+        cmd: [
+          'cp code/js/firefox/main.js build/firefox/index.js',
+          'rm -rf build/firefox/data', 'mkdir build/firefox/data',
+          'cp -R code/js/libs build/firefox/data',
+          'cat code/js/firefox/content.js build/unpacked-dev/js/content.js > build/firefox/data/content.js',
+          'cp code/images/* build/firefox/data/',
+          'cp code/html/* build/firefox/data/',
+          'cp code/css/* build/firefox/data/',
+          '(cd build/firefox && ../../node_modules/jpm/bin/jpm xpi)',
+          'mv build/firefox/github-awesome-autocomplete@algolia.com.xpi build/'
+        ].join(' && ')
       }
     },
 
@@ -111,16 +125,29 @@ module.exports = function(grunt) {
   // custom tasks
   //
 
-  grunt.registerTask(
-    'manifest', 'Extend manifest.json with extra fields from package.json',
+  grunt.registerTask('chrome-manifest',
+    'Extend manifest.json with extra fields from package.json',
     function() {
       var fields = ['version', 'description'];
       for (var i = 0; i < fields.length; i++) {
         var field = fields[i];
-        mnf[field] = pkg[field];
+        chrome_mnf[field] = pkg[field];
       }
-      grunt.file.write('build/unpacked-dev/manifest.json', JSON.stringify(mnf, null, 4) + '\n');
-      grunt.log.ok('manifest.json generated');
+      grunt.file.write('build/unpacked-dev/manifest.json', JSON.stringify(chrome_mnf, null, 4) + '\n');
+      grunt.log.ok('chrome\'s manifest.json generated');
+    }
+  );
+
+  grunt.registerTask('firefox-package',
+    'Build Firefox\'s package.json file',
+    function() {
+      var fields = ['version', 'description', 'name', 'title', 'homepage'];
+      for (var i = 0; i < fields.length; i++) {
+        var field = fields[i];
+        firefox_pkg[field] = pkg[field];
+      }
+      grunt.file.write('build/firefox/package.json', JSON.stringify(firefox_pkg, null, 4) + '\n');
+      grunt.log.ok('firefox\'s package.json generated');
     }
   );
 
@@ -135,7 +162,7 @@ module.exports = function(grunt) {
   // DEFAULT
   //
 
-  grunt.registerTask('default', ['clean', 'test', 'sass', 'mkdir:unpacked', 'copy:main', 'manifest',
+  grunt.registerTask('default', ['clean', 'test', 'sass', 'mkdir:unpacked', 'copy:main', 'chrome-manifest', 'firefox-package',
     'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec']);
 
 };

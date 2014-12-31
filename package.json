@@ -1,7 +1,9 @@
 {
+  "title": "GitHub Awesome Autocomplete",
   "name": "github-awesome-autocomplete",
   "version": "1.0.0",
   "description": "Add instant search capabilities to GitHub's search bar.",
+  "homepage": "http://www.algolia.com",
   "dependencies": {},
   "devDependencies": {
     "browserify": "~3.39.0",
@@ -17,7 +19,8 @@
     "grunt-exec": "~0.4.5",
     "grunt-mkdir": "~0.1.1",
     "grunt-mocha-test": "~0.10.0",
-    "sinon": "~1.10.0"
+    "sinon": "~1.10.0",
+    "jpm": "0.0.21"
   },
   "engines": {
     "node": ">= 0.10.0"

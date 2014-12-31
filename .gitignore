@@ -3,6 +3,8 @@ mykey.pem
 node_modules
 build/*.crx
 build/*.zip
+build/firefox
+build/*.xpi
 build/unpacked-dev
 build/unpacked-prod
 *.swp
