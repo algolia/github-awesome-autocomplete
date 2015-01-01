@@ -17,5 +17,11 @@ self.port.on('storage', function(storage) {
 });
 
 function getURL(asset) {
-  return asset;
+  if (asset === 'images/algolia128x40.png') {
+    return self.options.logoUrl;
+  } else if (asset === 'images/close-16.png') {
+    return self.options.closeImgUrl;
+  } else {
+    return asset;
+  }
 }
