@@ -92,7 +92,7 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-sizing: content-box;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-dataset-current-repo, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-private, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-repos, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-issues, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-users {
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-private, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-repos, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-issues, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-users {
   margin: 0 5px;
   width: 390px;
   float: left;
@@ -100,7 +100,7 @@
 .awesome-autocomplete .tt-dropdown-menu.single-dataset {
   width: 400px;
 }
-.awesome-autocomplete .tt-dropdown-menu .tt-dataset-default, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-branding {
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-default, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-branding, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-current-repo {
   clear: both;
 }
 .awesome-autocomplete .tt-dropdown-menu .aa-query {
@@ -276,6 +276,9 @@
 }
 .awesome-autocomplete .tt-dropdown-menu .tt-suggestion .aa-suggestion.aa-your-repo i {
   font-size: 14px;
+}
+.awesome-autocomplete .tt-dropdown-menu .tt-dataset-current-repo .tt-suggestion {
+  padding: 0;
 }
 .awesome-autocomplete .icon-delete {
   -webkit-transition: opacity 80ms;

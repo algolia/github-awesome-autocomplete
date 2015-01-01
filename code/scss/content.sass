@@ -87,13 +87,13 @@ $gh-primary-color: #3879D9
     background-color: white
     box-shadow: 0 5px 10px rgba(black, .2)
     box-sizing: content-box
-    .tt-dataset-current-repo, .tt-dataset-private, .tt-dataset-repos, .tt-dataset-issues, .tt-dataset-users
+    .tt-dataset-private, .tt-dataset-repos, .tt-dataset-issues, .tt-dataset-users
       margin: 0 5px
       width: 390px
       float: left
     &.single-dataset
       width: 400px
-    .tt-dataset-default, .tt-dataset-branding
+    .tt-dataset-default, .tt-dataset-branding, .tt-dataset-current-repo
       clear: both
     .aa-query
       padding: 8px
@@ -235,6 +235,9 @@ $gh-primary-color: #3879D9
               font-weight: bold
           i
             font-size: 14px
+    .tt-dataset-current-repo
+      .tt-suggestion
+        padding: 0
   .icon-delete
     -webkit-transition: opacity 80ms
     transition: opacity 80ms
