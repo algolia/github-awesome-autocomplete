@@ -34,13 +34,7 @@ panel = panels.Panel({
 pageMods.PageMod({
   include: "*.github.com",
   contentStyleFile: data.url("content.css"),
-  contentScriptFile: [
-                      data.url("libs/jquery-1.11.2.min.js"),
-                      data.url("libs/hogan-3.0.1.js"),
-                      data.url("libs/typeahead.bundle.min.js"),
-                      data.url("libs/algoliasearch.min.js"),
-                      data.url("content.js")
-                    ],
+  contentScriptFile: [ data.url("content.js") ],
   contentScriptOptions: {
     logoUrl: data.url("algolia128x40.png"),
     closeImgUrl: data.url("close-16.png")
