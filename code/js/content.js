@@ -1,4 +1,4 @@
-/* global document, window, location, storageSet, storageGet, getURL */
+/* global document, window, location, self */
 
 ;(function() {
   var $ = require('./libs/jquery-1.11.2.min.js');
@@ -6,6 +6,41 @@
   var Hogan = require('./libs/hogan-3.0.1.js');
   require('./libs/typeahead.bundle.min.js');
   require('./libs/algoliasearch.min.js');
+
+  var simpleStorage = {};
+  var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
+  function storageSet(key, value) {
+    if (firefox) {
+      self.port.emit('update-storage', [key, value]);
+    } else {
+      var v = {};
+      v[key] = value;
+      chrome.storage.local.set(v);
+    }
+  }
+
+  function storageGet(key, cb) {
+    if (firefox) {
+      self.port.emit('read-storage');
+      cb(simpleStorage);
+    } else {
+      chrome.storage.local.get(key, cb);
+    }
+  }
+
+  function getURL(asset) {
+    if (firefox) {
+      if (asset === 'images/algolia128x40.png') {
+        return self.options.logoUrl;
+      } else if (asset === 'images/close-16.png') {
+        return self.options.closeImgUrl;
+      } else {
+        return asset;
+      }
+    } else {
+      return chrome.extension.getURL(asset);
+    }
+  }
 
   var NB_REPOS = 3;
   var NB_MY_REPOS = 2;

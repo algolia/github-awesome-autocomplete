@@ -75,7 +75,7 @@ module.exports = function(grunt) {
           'cp code/js/firefox/main.js build/firefox/index.js',
           'rm -rf build/firefox/data', 'mkdir build/firefox/data',
           'cp -R code/js/libs build/firefox/data',
-          'cat code/js/firefox/content.js build/unpacked-dev/js/content.js > build/firefox/data/content.js',
+          'cp build/unpacked-dev/js/content.js build/firefox/data/content.js',
           'cp code/images/* build/firefox/data/',
           'cp code/html/* build/firefox/data/',
           'cp code/css/* build/firefox/data/',
