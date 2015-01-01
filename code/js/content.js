@@ -428,6 +428,5 @@
         submit($(this).val());
       }
     });
-    $('.tt-dataset-current-repo, .tt-dataset-private, .tt-dataset-repos, .tt-dataset-issues, .tt-dataset-users').addClass('tt-dataset');
   });
 })();
