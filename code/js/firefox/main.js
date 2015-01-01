@@ -5,8 +5,8 @@ var simpleStorage = require('sdk/simple-storage');
 var panels = require("sdk/panel");
 
 var panel, button = buttons.ToggleButton({
-  id: "awesome-autocomplete",
-  label: "Github Awesome Autocomplete",
+  id: "github-awesome-autocomplete",
+  label: "GitHub Awesome Autocomplete",
   icon: {
     "16": "./icon-16.png",
     "32": "./icon-32.png",
