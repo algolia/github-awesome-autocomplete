@@ -1,12 +1,6 @@
-/* global document, window, location, self */
+/* global document, window, location, self, Hogan, $, AlgoliaSearch */
 
 ;(function() {
-  var $ = require('./libs/jquery-1.11.1.min.js');
-  window.jQuery = window.jQuery || $;
-  var Hogan = require('./libs/hogan-3.0.1.js');
-  require('./libs/typeahead.bundle.min.js');
-  require('./libs/algoliasearch.min.js');
-
   var simpleStorage = {};
   var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
   function storageSet(key, value) {
@@ -47,7 +41,7 @@
   var NB_USERS = 3;
   var NB_ISSUES = 3;
 
-  var algolia = new window.AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
+  var algolia = new AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('last_1m_users');
 
   var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-your-repo">' +
@@ -151,7 +145,7 @@
   function setupPrivate(data) {
     storageSet('private', data);
     if (data && data.uid && data.api_key) {
-      privateAlgolia = new window.AlgoliaSearch('TLCDTR8BIO', data.api_key);
+      privateAlgolia = new AlgoliaSearch('TLCDTR8BIO', data.api_key);
       privateAlgolia.setSecurityTags('user_' + data.uid);
       privateRepositories = privateAlgolia.initIndex('my_repositories_production');
       privateIssues = privateAlgolia.initIndex('issues_production');

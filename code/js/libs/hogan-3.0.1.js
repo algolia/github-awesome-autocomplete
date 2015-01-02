@@ -29,6 +29,8 @@ var Hogan = {};
     this.buf = '';
   }
 
+  window.Hogan = Hogan;
+
   Hogan.Template.prototype = {
     // render: replaced by generated code.
     r: function (context, partials, indent) { return ''; },
@@ -748,4 +750,3 @@ var Hogan = {};
     return this.cache[key] = template;
   }
 })(typeof exports !== 'undefined' ? exports : Hogan);
-

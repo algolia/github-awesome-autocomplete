@@ -5,11 +5,13 @@ module.exports = function(grunt) {
   var firefox_pkg = grunt.file.readJSON('code/firefox.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
-  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'chrome/*.js']);
+  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'libs/*.js', 'chrome/*.js']);
   for (var i = 0; i < files.length; i++) {
     file = files[i];
     fileMaps.browserify['build/unpacked-dev/js/' + file] = 'code/js/' + file;
-    fileMaps.uglify['build/unpacked-prod/js/' + file] = 'build/unpacked-dev/js/' + file;
+    if (file.indexOf('libs/') === -1) {
+      fileMaps.uglify['build/unpacked-prod/js/' + file] = 'build/unpacked-dev/js/' + file;
+    }
   }
 
   //

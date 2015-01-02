@@ -15,8 +15,14 @@
     "default_icon" : "images/icon.png"
   },
   "content_scripts": [{
-    "matches": [ "http://github.com/*", "https://github.com/*" ],
-    "js": [ "js/content.js" ],
+    "matches": [ "https://github.com/*" ],
+    "js": [
+      "js/libs/jquery-1.9.1.min.js",
+      "js/libs/hogan-3.0.1.js",
+      "js/libs/typeahead.bundle.min.js",
+      "js/libs/algoliasearch.min.js",
+      "js/content.js"
+    ],
     "css" : ["css/content.css"]
   }],
   "permissions": [
@@ -26,6 +32,6 @@
     "declarativeContent",
     "https://github.algolia.com/*"
   ],
-  "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],
+  "web_accessible_resources": [ "js/*", "js/libs/*", "html/*", "css/*", "images/*" ],
   "content_security_policy": "script-src 'self'; object-src 'self'"
 }
