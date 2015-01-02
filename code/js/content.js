@@ -1,7 +1,7 @@
 /* global document, window, location, self */
 
 ;(function() {
-  var $ = require('./libs/jquery-1.11.2.min.js');
+  var $ = require('./libs/jquery-1.11.1.min.js');
   window.jQuery = window.jQuery || $;
   var Hogan = require('./libs/hogan-3.0.1.js');
   require('./libs/typeahead.bundle.min.js');
