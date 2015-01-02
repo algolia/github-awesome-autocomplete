@@ -4,7 +4,7 @@
     "firefox": ">=33.0a1"
   },
   "permissions": {
-    "cross-domain-content": ["https://*.algolia.net/"]
+    "cross-domain-content": ["https://*.algolia.net/", "https://github.algolia.com/*"]
   },
   "main": "index.js"
 }
