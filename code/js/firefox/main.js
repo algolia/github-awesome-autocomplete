@@ -3,6 +3,7 @@ var pageMods = require("sdk/page-mod");
 var data = require("sdk/self").data;
 var simpleStorage = require('sdk/simple-storage');
 var panels = require("sdk/panel");
+var windows = require("sdk/windows").browserWindows;
 
 var panel, button = buttons.ToggleButton({
   id: "github-awesome-autocomplete",
@@ -26,12 +27,17 @@ panel = panels.Panel({
   height: 590,
   contentURL: data.url("panel.html"),
   contentStyleFile: data.url("content.css"),
+  contentScript: "var button = document.getElementById('refresh-button');" +
+    "button.addEventListener('click', function() {" +
+    "  self.port.emit('connect-with-github', {});" +
+    "  return false;" +
+    "});",
   onHide: function() {
     button.state('window', {checked: false});
   }
 });
 
-pageMods.PageMod({
+var page = pageMods.PageMod({
   include: "*.github.com",
   contentStyleFile: data.url("content.css"),
   contentScriptFile: [
@@ -53,4 +59,8 @@ pageMods.PageMod({
       simpleStorage.storage[data[0]] = data[1];
     });
   }
+});
+
+panel.port.on('connect-with-github', function() {
+  windows.open({ url: "https://github.algolia.com/signin", onClose: function() { page.port.emit('reload-private', {}); } });
 });

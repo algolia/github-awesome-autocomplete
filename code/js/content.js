@@ -156,6 +156,11 @@
       setupPrivate(data);
     });
   };
+  if (firefox) {
+    self.port.on('reload-private', function() {
+      reloadPrivate();
+    });
+  }
   window.clearPrivateKey = function() {
     setupPrivate(null);
     privateAlgolia = privateRepositories = privateIssues = null;
