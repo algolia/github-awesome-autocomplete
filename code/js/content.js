@@ -1,4 +1,4 @@
-/* global document, window, location, self, Hogan, $, AlgoliaSearch */
+/* global document, window, location, screen, self, Hogan, $, AlgoliaSearch */
 
 ;(function() {
   var simpleStorage = {};
@@ -151,6 +151,11 @@
       privateIssues = privateAlgolia.initIndex('issues_production');
     }
   }
+  var reloadPrivate = function() {
+    $.get('https://github.algolia.com/private?' + new Date().getTime(), function(data) {
+      setupPrivate(data);
+    });
+  };
   window.clearPrivateKey = function() {
     setupPrivate(null);
     privateAlgolia = privateRepositories = privateIssues = null;
@@ -160,11 +165,22 @@
       setupPrivate(result.private);
     }
     if (!privateAlgolia) {
-      $.get('https://github.algolia.com/private?' + new Date().getTime(), function(data) {
-        setupPrivate(data);
-      });
+      reloadPrivate();
     }
   });
+
+  // connect with GitHub
+  window.connectWithGitHub = function() {
+    var width = 1050;
+    var height = 700;
+    var left = (screen.width - width) / 2 - 16;
+    var top = (screen.height - height) / 2 - 50;
+    var windowFeatures = 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
+    var win = window.open("https://github.algolia.com/signin", "authPopup", windowFeatures);
+    win.onunload = function() {
+      reloadPrivate();
+    };
+  };
 
   // private repositories crawl (fallback)
   storageGet('yourRepositories', function(result) {
