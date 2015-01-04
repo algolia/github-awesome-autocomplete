@@ -1,6 +1,6 @@
 # GitHub Awesome Autocomplete
 
-By working every day on building the best search engine, we've become obsessed with our own search experience on the websites and mobile applications we use. GitHub is quite big for us, we use their search bar every day but it was not optimal for our needs: so we just re-built Github's search the way we thought it should be and we now share it with the community via this [Chrome extension](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd).
+By working every day on building the best search engine, we've become obsessed with our own search experience on the websites and mobile applications we use. GitHub is quite big for us, we use their search bar every day but it was not optimal for our needs: so we just re-built Github's search the way we thought it should be and we now share it with the community via this [Chrome](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/github-awesome-autocomplete/) extensions.
 
 Algolia provides a developer-friendly SaaS API for database search. It enables any website or mobile application to easily provide its end-users with an instant and relevant search. With Algolia's unique find as you type experience, users can find what they're looking for in just a few keystrokes. Feel free to give Algolia a try with our 14-days FREE trial at [Algolia](https://www.algolia.com).
 
@@ -8,7 +8,7 @@ At [Algolia](https://www.algolia.com), we're git *addicts* and love using GitHub
 
 ### Installation
 
-Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd).
+Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd) or the [Mozilla Add-ons Catalog](https://addons.mozilla.org/en-US/firefox/addon/github-awesome-autocomplete/).
 
 ### Features
 
@@ -26,7 +26,7 @@ This Chrome extension replaces GitHub's search bar and add auto-completion (inst
 
 ### How does it work?
 
- * We continuously retrieve most watched repositories and last active users using [GitHub Archive](http://www.githubarchive.org/) dataset
+ * We continuously retrieve most watched repositories and last active users using [GitHub Archive](http://www.githubarchive.org/)'s dataset
  * Users and repositories are stored in 2 [Algolia](https://www.algolia.com/) indices: `users` and `repositories`
  * The results are fetched using [Algolia's JavaScript API client](https://github.com/algolia/algoliasearch-client-js)
  * The UI uses Twitter's [typeahead.js](http://twitter.github.io/typeahead.js/) library to display the auto-completion menu
@@ -70,24 +70,22 @@ $ cd chrome-awesome-autocomplete
 # install dependencies
 $ npm install
 
-# generate your private key
+# generate your private key (required for Chrome)
 $ openssl genrsa 2048 | openssl pkcs8 -topk8 -nocrypt > mykey.pem
 
 # build it
 $ grunt
 ```
 
-When developing, write unit-tests, use `test-cont` Grunt task to check that your JS code passes linting tests and unit-tests.
+When developing, write unit-tests, use `dev` Grunt task to check that your JS code passes linting tests and unit-tests.
 
-When ready to try out the extension in the browser, use default Grunt task to build it. In `build` directory you'll find develop version of the extension in `unpacked-dev` subdirectory (with source maps), and production (uglified) version in `unpacked-prod` directory. The `.crx` packed version is created from `unpacked-prod` sources.
+When ready to try out the extension in the browser, use default Grunt task to build it. In `build` directory you'll find develop version of the extension in `unpacked-dev` subdirectory (with source maps), and production (uglified) version in `unpacked-prod` directory. The `.crx` packed version is created from `unpacked-prod` sources. The `xpi` archive is created from `build/firefox`.
 
 ### Grunt tasks
 
 * `clean`: clean `build` directory
 * `test`: JS-lint and mocha test, single run
-* `test-cont`: continuos `test` loop
+* `dev`: continuous `test` loop
 * default: `clean`, `test`, build step (copy all necessary files to `build`
   directory, browserify JS sources, prepare production version (using uglify),
-  pack the `crx` (using official shell script), and copy the resulting `crx` to
-  CircleCI artifacts directory (only when on CircleCI))
-
+  pack the `crx` and `xpi`

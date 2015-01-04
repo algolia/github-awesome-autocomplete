@@ -159,6 +159,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['jshint']);
   grunt.registerTask('test-cont', ['default', 'watch']);
+  grunt.registerTask('dev', ['test-cont']);
 
   //
   // DEFAULT
