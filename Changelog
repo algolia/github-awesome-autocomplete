@@ -1,0 +1,8 @@
+CHANGELOG
+
+2015-01-04  1.1.0
+      * Firefox port
+      * Private repositories & issues indexing using oauth
+
+2014-12-23  1.0.0
+      * Initial release
