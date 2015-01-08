@@ -1,5 +1,9 @@
 CHANGELOG
 
+2015-01-08  1.1.1
+      * Use non-minified sources
+      * Removed JSONP support (security purpose)
+
 2015-01-04  1.1.0
       * Firefox port
       * Private repositories & issues indexing using oauth

@@ -43,8 +43,8 @@ var page = pageMods.PageMod({
   contentScriptFile: [
     data.url("libs/jquery-1.9.1.min.js"),
     data.url("libs/hogan-3.0.1.js"),
-    data.url("libs/typeahead.bundle.min.js"),
-    data.url("libs/algoliasearch.min.js"),
+    data.url("libs/typeahead.bundle.js"),
+    data.url("libs/algoliasearch.js"),
     data.url("content.js")
   ],
   contentScriptOptions: {
