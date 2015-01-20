@@ -8,7 +8,9 @@ At [Algolia](https://www.algolia.com), we're git *addicts* and love using GitHub
 
 ### Installation
 
-Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd) or the [Mozilla Add-ons Catalog](https://addons.mozilla.org/en-US/firefox/addon/github-awesome-autocomplete/).
+Install it from the stores:
+
+[![chrome](store/chrome-extension.png)](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd) [![firefox](store/firefox-addon.png)](https://addons.mozilla.org/en-US/firefox/addon/github-awesome-autocomplete/)
 
 ### Features
 
