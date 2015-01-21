@@ -14,7 +14,7 @@ Install it from the stores:
 
 ### Features
 
-This Chrome extension replaces GitHub's search bar and add auto-completion (instant-search & suggestion) capabilities on:
+This extension replaces GitHub's search bar and add auto-completion (instant-search & suggestion) capabilities on:
 
  * top public repositories
  * last active users
