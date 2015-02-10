@@ -238,6 +238,8 @@ form#search.awesome-autocomplete .twitter-typeahead {
   height: 16px;
   width: 16px;
   z-index: 100;
-  opacity: 0; }
+  opacity: 0;
+  visibility: hidden; }
   .awesome-autocomplete .icon-delete.active {
-    opacity: 0.5; }
+    opacity: 0.5;
+    visibility: visible; }
