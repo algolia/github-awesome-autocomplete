@@ -57,6 +57,10 @@
 
 .awesome-autocomplete .twitter-typeahead {
   width: 360px; }
+
+form#search.awesome-autocomplete .twitter-typeahead {
+  width: inherit; }
+
 .awesome-autocomplete .tt-input {
   width: 100%;
   padding: 4px 6px;

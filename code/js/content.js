@@ -197,7 +197,7 @@
   });
 
   $(document).ready(function() {
-    var $searchContainer = $('.site-search');
+    var $searchContainer = $('form#search, .site-search');
     var $q = $searchContainer.find('input[name="q"]');
     var isRepository = $searchContainer.hasClass('repo-scope');
 
