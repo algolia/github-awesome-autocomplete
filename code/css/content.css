@@ -104,7 +104,8 @@ form#search.awesome-autocomplete .twitter-typeahead {
   .awesome-autocomplete .tt-dropdown-menu .tt-suggestion {
     padding: 10px 10px;
     text-align: left;
-    border-bottom: 1px solid #EEEEEE; }
+    border-bottom: 1px solid #EEEEEE;
+    cursor: pointer; }
     .awesome-autocomplete .tt-dropdown-menu .tt-suggestion:last-child {
       border-bottom: 0; }
     .awesome-autocomplete .tt-dropdown-menu .tt-suggestion em {
