@@ -71,21 +71,13 @@ form#search.awesome-autocomplete .twitter-typeahead {
 .awesome-autocomplete .tt-cursor {
   background-color: #FFF9EA; }
 .awesome-autocomplete .tt-dropdown-menu {
-  width: 800px;
+  width: 100%;
   padding: 0;
   border: 1px solid #D8D8D8;
   border-top: none;
   background-color: white;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-sizing: content-box; }
-  .awesome-autocomplete .tt-dropdown-menu .tt-dataset-private, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-repos, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-issues, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-users {
-    margin: 0 5px;
-    width: 390px;
-    float: left; }
-  .awesome-autocomplete .tt-dropdown-menu.single-dataset {
-    width: 400px; }
-  .awesome-autocomplete .tt-dropdown-menu .tt-dataset-default, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-branding, .awesome-autocomplete .tt-dropdown-menu .tt-dataset-current-repo {
-    clear: both; }
   .awesome-autocomplete .tt-dropdown-menu .aa-query {
     padding: 8px;
     color: #888888;

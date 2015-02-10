@@ -220,13 +220,31 @@
       location.href = action + '?utf8=✓&q=' + encodeURIComponent(q);
     };
 
-    var hasResults = 0;
-    var resizeColumns = function() {
-      if (++hasResults === 1) {
-        $searchContainer.find('.tt-dropdown-menu').addClass('single-dataset');
-      } else {
-        $searchContainer.find('.tt-dropdown-menu').removeClass('single-dataset');
+    // parse the DuckDuckGo-like query
+    var parseQuery = function(q) {
+      var p = {
+        q: q,
+        privateRepositories: true,
+        topRepositories: true,
+        issues: true,
+        users: true
+      };
+      if (q && q.length > 2 && q[0] === '!' && q[2] === ' ') {
+        var command = q[1];
+        if (command === 'i') {
+          p.privateRepositories = p.topRepositories = p.users = false;
+        } else if (command === 'p') {
+          p.issues = p.topRepositories = p.users = false;
+        } else if (command === 'r') {
+          p.issues = p.users = false;
+        } else if (command === 'u') {
+          p.issues = p.topRepositories = p.privateRepositories = false;
+        } else {
+          return p;
+        }
+        p.q = q.slice(3);
       }
+      return p;
     };
 
     // setup auto-completion menu
@@ -264,15 +282,19 @@
       // private repositories
       {
         source: function(q, cb) {
+          var parsedQuery = parseQuery(q);
+          if (!parsedQuery.privateRepositories) {
+            cb([]);
+            return;
+          }
           if (privateRepositories) {
-            privateRepositories.search(q, function(success, content) {
+            privateRepositories.search(parsedQuery.q, function(success, content) {
               if (success) {
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
                   hit.watchers = hit.watchers_count;
                 }
-                if (content.hits.length > 0) { resizeColumns(); }
                 cb(content.hits);
               } else {
                 cb([]);
@@ -287,15 +309,14 @@
               limit: NB_MY_REPOS
             });
             engine.initialize().done(function() {
-              engine.get(q, function(suggestions) {
-                var queryWords = tokenize(q);
+              engine.get(parsedQuery.q, function(suggestions) {
+                var queryWords = tokenize(parsedQuery.q);
                 var re = new RegExp('(' + $.map(queryWords, function(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); }).join('|') + ')', 'ig');
                 for (var i = 0; i < suggestions.length; ++i) {
                   var sugg = suggestions[i];
                   sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
                   sugg.query = q;
                 }
-                if (suggestions.length > 0) { resizeColumns(); }
                 cb(suggestions);
               });
             });
@@ -314,10 +335,15 @@
       // top repositories
       {
         source: function(q, cb) {
+          var parsedQuery = parseQuery(q);
+          if (!parsedQuery.topRepositories) {
+            cb([]);
+            return;
+          }
           var params = { attributesToSnippet: ['description:50'] };
           algolia.startQueriesBatch();
-          algolia.addQueryInBatch('top_1m_repos', q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
-          algolia.addQueryInBatch('top_1m_repos', q, $.extend({ hitsPerPage: NB_REPOS }, params));
+          algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
+          algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: NB_REPOS }, params));
           algolia.sendQueriesBatch(function(success, content) {
             var suggestions = [];
             if (success) {
@@ -334,7 +360,6 @@
                 }
               }
             }
-            if (suggestions.length > 0) { resizeColumns(); }
             cb(suggestions);
           });
         },
@@ -348,14 +373,18 @@
       // private issues
       {
         source: function(q, cb) {
+          var parsedQuery = parseQuery(q);
+          if (!parsedQuery.issues) {
+            cb([]);
+            return;
+          }
           if (privateIssues) {
-            privateIssues.search(q, function(success, content) {
+            privateIssues.search(parsedQuery.q, function(success, content) {
               if (success) {
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
                 }
-                if (content.hits.length > 0) { resizeColumns(); }
                 cb(content.hits);
               } else {
                 cb([]);
@@ -375,7 +404,12 @@
       // users
       {
         source: function(q, cb) {
-          users.search(q, function(success, content) {
+          var parsedQuery = parseQuery(q);
+          if (!parsedQuery.users) {
+            cb([]);
+            return;
+          }
+          users.search(parsedQuery.q, function(success, content) {
             var hits = [];
             if (success) {
               for (var i = 0; i < content.hits.length; ++i) {
@@ -384,7 +418,6 @@
                 hits.push(hit);
               }
             }
-            if (hits.length > 0) { resizeColumns(); }
             cb(hits);
           }, { hitsPerPage: NB_USERS, attributesToRetrieve: ['login', 'name', 'id', 'company', 'followers'] });
         },
@@ -438,7 +471,6 @@
         $clearInputIcon.removeClass('active');
       }
     }).on('keypress', function(e) {
-      hasResults = 0;
       if (e.keyCode === 13) { // enter
         submit($(this).val());
       }
