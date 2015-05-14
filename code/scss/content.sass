@@ -66,12 +66,31 @@ $gh-primary-color: #3879D9
     box-shadow: none !important
 
 
-.awesome-autocomplete
-  .twitter-typeahead
-    width: 360px
-form#search.awesome-autocomplete
-  .twitter-typeahead
-    width: inherit
+// top-menu search bar
+.site-search
+  .awesome-autocomplete
+    .twitter-typeahead
+      width: 100%
+      .tt-dropdown-menu
+        margin-top: 4px
+        width: 100%
+.site-search.repo-scope
+  .awesome-autocomplete
+    .twitter-typeahead
+      width: 230px
+      .tt-dropdown-menu
+        width: 360px
+        margin-left: -96px
+
+// results page search bar
+form#search_form
+  .awesome-autocomplete
+    .twitter-typeahead
+      width: inherit
+      .tt-dropdown-menu
+        width: 100%
+
+// common
 .awesome-autocomplete
   .tt-input
     width: 100%
@@ -84,7 +103,6 @@ form#search.awesome-autocomplete
     background-color: #FFF9EA
 
   .tt-dropdown-menu
-    width: 100%
     padding: 0
     border: 1px solid $gh-border-dark
     border-top: none
