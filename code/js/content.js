@@ -442,7 +442,7 @@
       }
     ]).on('typeahead:selected', function(event, suggestion, dataset) {
       if (dataset === 'current-repo') {
-        submit(suggestion.query, $('.pagehead .entry-title a.js-current-repository').attr('href') + '/search');
+        submit(suggestion.query, $('.js-site-search-form').data('repo-search-url') + '/search');
       } else if (dataset === 'users') {
         location.href = 'https://github.com/' + suggestion.login;
       } else if (dataset === 'repos' || dataset === 'private') {
