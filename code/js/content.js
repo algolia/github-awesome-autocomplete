@@ -1,6 +1,7 @@
-/* global document, window, location, screen, self, $, AlgoliaSearch */
+/* global document, window, location, screen, self, $ */
 
 ;(function() {
+  var algoliasearch = require('algoliasearch');
   var simpleStorage = {};
   var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
   function storageSet(key, value) {
@@ -41,7 +42,7 @@
   var NB_USERS = 3;
   var NB_ISSUES = 3;
 
-  var algolia = new AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
+  var algolia = algoliasearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('last_1m_users');
 
   var templateYourRepo = require('../templates/yourRepo.mustache');
@@ -110,7 +111,7 @@
   function setupPrivate(data) {
     storageSet('private', data);
     if (data && data.uid && data.api_key) {
-      privateAlgolia = new AlgoliaSearch('TLCDTR8BIO', data.api_key);
+      privateAlgolia = algoliasearch('TLCDTR8BIO', data.api_key);
       privateAlgolia.setSecurityTags('user_' + data.uid);
       privateRepositories = privateAlgolia.initIndex('my_repositories_production');
       privateIssues = privateAlgolia.initIndex('issues_production');
@@ -253,8 +254,8 @@
             return;
           }
           if (privateRepositories) {
-            privateRepositories.search(parsedQuery.q, function(success, content) {
-              if (success) {
+            privateRepositories.search(parsedQuery.q, {}, function(error, content) {
+              if (!error) {
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
@@ -309,9 +310,9 @@
           algolia.startQueriesBatch();
           algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
           algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: NB_REPOS }, params));
-          algolia.sendQueriesBatch(function(success, content) {
+          algolia.sendQueriesBatch(function(error, content) {
             var suggestions = [];
-            if (success) {
+            if (!error) {
               var dedup = {};
               for (var i = 0; i < content.results.length && suggestions.length < NB_REPOS; ++i) {
                 for (var j = 0; j < content.results[i].hits.length && suggestions.length < NB_REPOS; ++j) {
@@ -344,8 +345,8 @@
             return;
           }
           if (privateIssues) {
-            privateIssues.search(parsedQuery.q, function(success, content) {
-              if (success) {
+            privateIssues.search(parsedQuery.q, {}, function(error, content) {
+              if (!error) {
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
@@ -374,9 +375,9 @@
             cb([]);
             return;
           }
-          users.search(parsedQuery.q, function(success, content) {
+          users.search(parsedQuery.q, {}, function(error, content) {
             var hits = [];
-            if (success) {
+            if (!error) {
               for (var i = 0; i < content.hits.length; ++i) {
                 var hit = content.hits[i];
                 hit.query = q;

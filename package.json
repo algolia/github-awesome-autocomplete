@@ -5,10 +5,12 @@
   "description": "Add instant search capabilities to GitHub's search bar.",
   "homepage": "http://www.algolia.com",
   "dependencies": {
+    "algoliasearch": "^3.7.5",
     "hogan.js": "^3.0.2"
   },
   "devDependencies": {
     "browserify": "~3.39.0",
+    "envify": "^3.4.0",
     "eventemitter2": "^0.4.13",
     "grunt": "~0.4.4",
     "grunt-browserify": "~2.0.3",
