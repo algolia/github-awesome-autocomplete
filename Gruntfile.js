@@ -54,14 +54,19 @@ module.exports = function(grunt) {
 
     browserify: {
       options: {
-        transform: ['hoganify']
+        transform: ['hoganify'],
+        plugin: [
+          [ "browserify-derequire" ]
+        ]
       },
       build: {
         files: fileMaps.browserify,
-        options: { bundleOptions: {
-          debug: true,  // for source maps
-          standalone: pkg['export-symbol']
-        } }
+        options: {
+          browserifyOptions: {
+            debug: true,  // for source maps
+            standalone: pkg['export-symbol']
+          }
+        }
       }
     },
 
@@ -77,7 +82,7 @@ module.exports = function(grunt) {
         cmd: [
           'cp code/js/firefox/main.js build/firefox/index.js',
           'rm -rf build/firefox/data', 'mkdir build/firefox/data',
-          'cp code/js/content.js build/firefox/data/content.js',
+          'cp build/unpacked-prod/js/content.js build/firefox/data/content.js',
           'cp code/images/* build/firefox/data/',
           'cp code/html/* build/firefox/data/',
           'cp code/css/* build/firefox/data/',
