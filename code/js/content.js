@@ -1,4 +1,4 @@
-/* global document, window, location, screen, self, Hogan, $, AlgoliaSearch */
+/* global document, window, location, screen, self, $, AlgoliaSearch */
 
 ;(function() {
   var simpleStorage = {};
@@ -44,45 +44,10 @@
   var algolia = new AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('last_1m_users');
 
-  var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-your-repo">' +
-    '<span class="aa-name">' +
-      '<i class="octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></i> ' +
-      '<a href="https://github.com/{{ full_name }}/"><span class="owner">{{{ owner }}}</span>/<span class="aa-repo">{{{ highlightedName }}}</span></a>' +
-    '</span>' +
-  '</div>');
-
-  var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
-    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ owner }}?size=30" /></div>' +
-    '<div class="aa-infos">{{ watchers }} <i class="octicon octicon-star"></i></div>' +
-    '<span class="aa-name">' +
-      '{{#is_fork}}<i class="octicon octicon-repo-forked"></i>{{/is_fork}} ' +
-      '{{^is_fork}}<i class="octicon octicon-{{#is_private}}lock{{/is_private}}{{^is_private}}repo{{/is_private}}"></i>{{/is_fork}} ' +
-      '<a href="https://github.com/{{ full_name }}/"><span class="aa-owner">{{{ owner }}}</span>/<span class="aa-repo-name">{{{ _highlightResult.name.value }}}</span></a>' +
-    '</span>' +
-    '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
-  '</div>');
-
-  var templateIssue = Hogan.compile('<div class="aa-suggestion aa-issue">' +
-    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ repository.owner }}?size=30" /></div>' +
-    '<div class="aa-infos"><i class="octicon octicon-comment"></i> {{ comments_count }}</div>' +
-    '<span class="aa-name">' +
-      '<span class="aa-issue-number">Issue #{{ number }}:</span> <a href="https://github.com/{{ repository.owner }}/{{ repository.name }}/issues/{{ number }}">{{{ _highlightResult.title.value }}}</a><br />' +
-      '{{#repository.is_fork}}<i class="octicon octicon-repo-forked"></i>{{/repository.is_fork}} ' +
-      '{{^repository.is_fork}}<i class="octicon octicon-{{#repository.is_private}}lock{{/repository.is_private}}{{^repository.is_private}}repo{{/repository.is_private}}"></i>{{/repository.is_fork}} ' +
-      '{{ repository.owner }}/<span class="aa-repo-name">{{{ _highlightResult.repository.name.value }}}</span>' +
-    '</span>' +
-    '<div class="aa-issue-body">{{{ _snippetResult.body.value }}}</div>' +
-  '</div>');
-
-  var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
-    //'{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
-    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ login }}?size=30" /></div>' +
-    '<a href="https://github.com/{{ login }}">'+
-      '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span> {{/name}}' +
-      '<span class="aa-login">{{{ _highlightResult.login.value }}}</span>' +
-    '</a>' +
-    '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
-  '</div>');
+  var templateYourRepo = require('../templates/yourRepo.mustache');
+  var templateRepo = require('../templates/repo.mustache');
+  var templateIssue = require('../templates/issue.mustache');
+  var templateUser = require('../templates/user.mustache');
 
   // crawl the repositories associated to a user or an organization
   var yourRepositories = [];

@@ -55,6 +55,9 @@ module.exports = function(grunt) {
     },
 
     browserify: {
+      options: {
+        transform: ['hoganify']
+      },
       build: {
         files: fileMaps.browserify,
         options: { bundleOptions: {
