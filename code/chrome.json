@@ -17,8 +17,6 @@
   "content_scripts": [{
     "matches": [ "https://github.com/*" ],
     "js": [
-      "js/libs/jquery-1.9.1.min.js",
-      "js/libs/typeahead.bundle.js",
       "js/content.js"
     ],
     "css" : ["css/content.css"]

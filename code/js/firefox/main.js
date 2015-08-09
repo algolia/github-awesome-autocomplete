@@ -41,8 +41,6 @@ var page = pageMods.PageMod({
   include: "*.github.com",
   contentStyleFile: data.url("content.css"),
   contentScriptFile: [
-    data.url("libs/jquery-1.9.1.min.js"),
-    data.url("libs/typeahead.bundle.js"),
     data.url("content.js")
   ],
   contentScriptOptions: {

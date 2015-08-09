@@ -1,7 +1,11 @@
-/* global document, window, location, screen, self, $ */
+/* global document, window, location, screen, self */
 
 ;(function() {
   var algoliasearch = require('algoliasearch');
+  var $ = require('jquery');
+  require('typeahead.js/dist/typeahead.bundle');
+  var Bloodhound = require('typeahead.js/dist/bloodhound');
+
   var simpleStorage = {};
   var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
   function storageSet(key, value) {
@@ -233,7 +237,7 @@
         source: function(q, cb) {
           var hits = [];
           if (isRepository && !$searchContainer.hasClass('repo-scope')) {
-             hits.push({ query: q });
+             hits.push({ query: q, dataset: 'current-repo' });
           }
           cb(hits);
         },
@@ -247,10 +251,10 @@
       },
       // private repositories
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.privateRepositories) {
-            cb([]);
+            syncCb([]);
             return;
           }
           if (privateRepositories) {
@@ -260,6 +264,7 @@
                   var hit = content.hits[i];
                   hit.query = q;
                   hit.watchers = hit.watchers_count;
+                  hit.dataset = 'private';
                 }
                 cb(content.hits);
               } else {
@@ -267,7 +272,7 @@
               }
             }, { attributesToSnippet: ['description:50'], hitsPerPage: NB_MY_REPOS });
           } else {
-            var engine = new window.Bloodhound({
+            var engine = new Bloodhound({
               name: 'private',
               local: yourRepositories,
               datumTokenizer: function(d) { return tokenize(d.owner).concat(tokenize(d.name)); },
@@ -275,15 +280,16 @@
               limit: NB_MY_REPOS
             });
             engine.initialize().done(function() {
-              engine.get(parsedQuery.q, function(suggestions) {
+              engine.search(parsedQuery.q, function results(suggestions) {
                 var queryWords = tokenize(parsedQuery.q);
                 var re = new RegExp('(' + $.map(queryWords, function(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); }).join('|') + ')', 'ig');
                 for (var i = 0; i < suggestions.length; ++i) {
                   var sugg = suggestions[i];
                   sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
                   sugg.query = q;
+                  sugg.dataset = 'private';
                 }
-                cb(suggestions);
+                syncCb(suggestions);
               });
             });
           }
@@ -300,10 +306,10 @@
       },
       // top repositories
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.topRepositories) {
-            cb([]);
+            syncCb([]);
             return;
           }
           var params = { attributesToSnippet: ['description:50'] };
@@ -322,6 +328,7 @@
                   }
                   dedup[hit.objectID] = true;
                   hit.query = q;
+                  hit.dataset = 'repos';
                   suggestions.push(hit);
                 }
               }
@@ -338,10 +345,10 @@
       },
       // private issues
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.issues) {
-            cb([]);
+            syncCb([]);
             return;
           }
           if (privateIssues) {
@@ -350,6 +357,7 @@
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
+                  hit.dataset = 'issues';
                 }
                 cb(content.hits);
               } else {
@@ -357,7 +365,7 @@
               }
             }, { attributesToSnippet: ['body:20'], hitsPerPage: NB_ISSUES });
           } else {
-            cb([]);
+            syncCb([]);
           }
         },
         name: 'issues',
@@ -369,10 +377,10 @@
       },
       // users
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.users) {
-            cb([]);
+            syncCb([]);
             return;
           }
           users.search(parsedQuery.q, {}, function(error, content) {
@@ -381,6 +389,7 @@
               for (var i = 0; i < content.hits.length; ++i) {
                 var hit = content.hits[i];
                 hit.query = q;
+                hit.dataset = 'users';
                 hits.push(hit);
               }
             }
@@ -406,7 +415,9 @@
           }
         }
       }
-    ]).on('typeahead:selected', function(event, suggestion, dataset) {
+    ]).on('typeahead:select', function(event, suggestion) {
+      var dataset = suggestion.dataset;
+
       if (dataset === 'current-repo') {
         submit(suggestion.query, $('.pagehead .entry-title a.js-current-repository').attr('href') + '/search');
       } else if (dataset === 'users') {
@@ -418,8 +429,10 @@
       } else {
         console.log('Unknown dataset: ' + dataset);
       }
-    }).on('typeahead:cursorchanged', function(event, suggestion, dataset) {
+    }).on('typeahead:cursorchange', function(event, suggestion) {
+      var dataset = (suggestion || {}).dataset;
       var $container = $('.aa-query');
+
       $container.find('span').hide();
       if (dataset === 'users') {
         $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.login + '</strong>\'s profile').show();

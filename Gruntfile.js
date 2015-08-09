@@ -5,13 +5,11 @@ module.exports = function(grunt) {
   var firefox_pkg = grunt.file.readJSON('code/firefox.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
-  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'libs/*.js', 'chrome/*.js']);
+  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'chrome/*.js']);
   for (var i = 0; i < files.length; i++) {
     file = files[i];
     fileMaps.browserify['build/unpacked-dev/js/' + file] = 'code/js/' + file;
-    if (file.indexOf('libs/') === -1) {
-      fileMaps.uglify['build/unpacked-prod/js/' + file] = 'build/unpacked-dev/js/' + file;
-    }
+    fileMaps.uglify['build/unpacked-prod/js/' + file] = 'build/unpacked-dev/js/' + file;
   }
 
   //
@@ -30,7 +28,7 @@ module.exports = function(grunt) {
     jshint: {
       options: grunt.file.readJSON('lint-options.json'), // see http://www.jshint.com/docs/options/
       all: { src: ['package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
-                   'code/**/*.json', '!code/js/libs/*'] }
+                   'code/**/*.json'] }
     },
 
     copy: {
@@ -79,7 +77,6 @@ module.exports = function(grunt) {
         cmd: [
           'cp code/js/firefox/main.js build/firefox/index.js',
           'rm -rf build/firefox/data', 'mkdir build/firefox/data',
-          'cp -R code/js/libs build/firefox/data',
           'cp code/js/content.js build/firefox/data/content.js',
           'cp code/images/* build/firefox/data/',
           'cp code/html/* build/firefox/data/',
@@ -97,7 +94,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
-                'code/**/*.json', '!code/js/libs/*', 'code/**/*.sass', 'code/**/*.html'],
+                'code/**/*.json', 'code/**/*.sass', 'code/**/*.html'],
         tasks: ['default']
       }
     },
