@@ -71,14 +71,14 @@ $gh-primary-color: #3879D9
   .awesome-autocomplete
     .twitter-typeahead
       width: 100%
-      .tt-dropdown-menu
+      .tt-menu
         margin-top: 4px
         width: 100%
 .site-search.repo-scope
   .awesome-autocomplete
     .twitter-typeahead
       width: 230px
-      .tt-dropdown-menu
+      .tt-menu
         width: 360px
         margin-left: -96px
 
@@ -95,14 +95,13 @@ form#search_form
   .tt-input
     width: 100%
     padding: 4px 6px
-    border: 1px solid $gh-border-dark
     outline: none
   .tt-hint
     color: #999
   .tt-cursor
     background-color: #FFF9EA
 
-  .tt-dropdown-menu
+  .tt-menu
     padding: 0
     border: 1px solid $gh-border-dark
     border-top: none
@@ -143,7 +142,7 @@ form#search_form
         font-style: normal
         background-color: $gh-highlight-color
         color: $gh-dark
-      .aa-suggestion
+      &.aa-suggestion
         &:hover
           text-decoration: none
           .aa-name
@@ -158,7 +157,6 @@ form#search_form
         .aa-name
           font-size: 1.1em
         &.aa-user
-          height: 35px
           .aa-thumbnail
             float: left
             position: relative
@@ -181,7 +179,6 @@ form#search_form
               font-size: 14px
               color: $gh-text-color
         &.aa-repo
-          height: 3em
           .aa-thumbnail
             float: left
             position: relative
@@ -238,7 +235,6 @@ form#search_form
             overflow: hidden
             text-overflow: ellipsis
         &.aa-your-repo
-          height: 1.5em
           .aa-name
             width: 85%
             display: block
@@ -250,9 +246,6 @@ form#search_form
               font-weight: bold
           i
             font-size: 14px
-    .tt-dataset-current-repo
-      .tt-suggestion
-        padding: 0
   .icon-delete
     -webkit-transition: opacity 80ms
     transition: opacity 80ms

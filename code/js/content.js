@@ -1,6 +1,11 @@
-/* global document, window, location, screen, self, Hogan, $, AlgoliaSearch */
+/* global document, window, location, screen, self */
 
 ;(function() {
+  var algoliasearch = require('algoliasearch');
+  var $ = require('jquery');
+  require('typeahead.js/dist/typeahead.bundle');
+  var Bloodhound = require('typeahead.js/dist/bloodhound');
+
   var simpleStorage = {};
   var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
   function storageSet(key, value) {
@@ -41,48 +46,13 @@
   var NB_USERS = 3;
   var NB_ISSUES = 3;
 
-  var algolia = new AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
+  var algolia = algoliasearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
   var users = algolia.initIndex('last_1m_users');
 
-  var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-your-repo">' +
-    '<span class="aa-name">' +
-      '<i class="octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></i> ' +
-      '<a href="https://github.com/{{ full_name }}/"><span class="owner">{{{ owner }}}</span>/<span class="aa-repo">{{{ highlightedName }}}</span></a>' +
-    '</span>' +
-  '</div>');
-
-  var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
-    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ owner }}?size=30" /></div>' +
-    '<div class="aa-infos">{{ watchers }} <i class="octicon octicon-star"></i></div>' +
-    '<span class="aa-name">' +
-      '{{#is_fork}}<i class="octicon octicon-repo-forked"></i>{{/is_fork}} ' +
-      '{{^is_fork}}<i class="octicon octicon-{{#is_private}}lock{{/is_private}}{{^is_private}}repo{{/is_private}}"></i>{{/is_fork}} ' +
-      '<a href="https://github.com/{{ full_name }}/"><span class="aa-owner">{{{ owner }}}</span>/<span class="aa-repo-name">{{{ _highlightResult.name.value }}}</span></a>' +
-    '</span>' +
-    '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
-  '</div>');
-
-  var templateIssue = Hogan.compile('<div class="aa-suggestion aa-issue">' +
-    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ repository.owner }}?size=30" /></div>' +
-    '<div class="aa-infos"><i class="octicon octicon-comment"></i> {{ comments_count }}</div>' +
-    '<span class="aa-name">' +
-      '<span class="aa-issue-number">Issue #{{ number }}:</span> <a href="https://github.com/{{ repository.owner }}/{{ repository.name }}/issues/{{ number }}">{{{ _highlightResult.title.value }}}</a><br />' +
-      '{{#repository.is_fork}}<i class="octicon octicon-repo-forked"></i>{{/repository.is_fork}} ' +
-      '{{^repository.is_fork}}<i class="octicon octicon-{{#repository.is_private}}lock{{/repository.is_private}}{{^repository.is_private}}repo{{/repository.is_private}}"></i>{{/repository.is_fork}} ' +
-      '{{ repository.owner }}/<span class="aa-repo-name">{{{ _highlightResult.repository.name.value }}}</span>' +
-    '</span>' +
-    '<div class="aa-issue-body">{{{ _snippetResult.body.value }}}</div>' +
-  '</div>');
-
-  var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
-    //'{{#followers}}<span class="aa-infos">{{ followers }} <i class="octicon octicon-person"></i></span>{{/followers}}' +
-    '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ login }}?size=30" /></div>' +
-    '<a href="https://github.com/{{ login }}">'+
-      '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span> {{/name}}' +
-      '<span class="aa-login">{{{ _highlightResult.login.value }}}</span>' +
-    '</a>' +
-    '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
-  '</div>');
+  var templateYourRepo = require('../templates/yourRepo.mustache');
+  var templateRepo = require('../templates/repo.mustache');
+  var templateIssue = require('../templates/issue.mustache');
+  var templateUser = require('../templates/user.mustache');
 
   // crawl the repositories associated to a user or an organization
   var yourRepositories = [];
@@ -145,7 +115,7 @@
   function setupPrivate(data) {
     storageSet('private', data);
     if (data && data.uid && data.api_key) {
-      privateAlgolia = new AlgoliaSearch('TLCDTR8BIO', data.api_key);
+      privateAlgolia = algoliasearch('TLCDTR8BIO', data.api_key);
       privateAlgolia.setSecurityTags('user_' + data.uid);
       privateRepositories = privateAlgolia.initIndex('my_repositories_production');
       privateIssues = privateAlgolia.initIndex('issues_production');
@@ -267,7 +237,7 @@
         source: function(q, cb) {
           var hits = [];
           if (isRepository && !$searchContainer.hasClass('repo-scope')) {
-             hits.push({ query: q });
+             hits.push({ query: q, dataset: 'current-repo' });
           }
           cb(hits);
         },
@@ -281,19 +251,20 @@
       },
       // private repositories
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.privateRepositories) {
-            cb([]);
+            syncCb([]);
             return;
           }
           if (privateRepositories) {
-            privateRepositories.search(parsedQuery.q, function(success, content) {
-              if (success) {
+            privateRepositories.search(parsedQuery.q, {}, function(error, content) {
+              if (!error) {
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
                   hit.watchers = hit.watchers_count;
+                  hit.dataset = 'private';
                 }
                 cb(content.hits);
               } else {
@@ -301,7 +272,7 @@
               }
             }, { attributesToSnippet: ['description:50'], hitsPerPage: NB_MY_REPOS });
           } else {
-            var engine = new window.Bloodhound({
+            var engine = new Bloodhound({
               name: 'private',
               local: yourRepositories,
               datumTokenizer: function(d) { return tokenize(d.owner).concat(tokenize(d.name)); },
@@ -309,15 +280,16 @@
               limit: NB_MY_REPOS
             });
             engine.initialize().done(function() {
-              engine.get(parsedQuery.q, function(suggestions) {
+              engine.search(parsedQuery.q, function results(suggestions) {
                 var queryWords = tokenize(parsedQuery.q);
                 var re = new RegExp('(' + $.map(queryWords, function(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"); }).join('|') + ')', 'ig');
                 for (var i = 0; i < suggestions.length; ++i) {
                   var sugg = suggestions[i];
                   sugg.highlightedName = sugg.name.replace(re, '<em>$1</em>');
                   sugg.query = q;
+                  sugg.dataset = 'private';
                 }
-                cb(suggestions);
+                syncCb(suggestions);
               });
             });
           }
@@ -334,19 +306,19 @@
       },
       // top repositories
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.topRepositories) {
-            cb([]);
+            syncCb([]);
             return;
           }
           var params = { attributesToSnippet: ['description:50'] };
           algolia.startQueriesBatch();
           algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
           algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: NB_REPOS }, params));
-          algolia.sendQueriesBatch(function(success, content) {
+          algolia.sendQueriesBatch(function(error, content) {
             var suggestions = [];
-            if (success) {
+            if (!error) {
               var dedup = {};
               for (var i = 0; i < content.results.length && suggestions.length < NB_REPOS; ++i) {
                 for (var j = 0; j < content.results[i].hits.length && suggestions.length < NB_REPOS; ++j) {
@@ -356,6 +328,7 @@
                   }
                   dedup[hit.objectID] = true;
                   hit.query = q;
+                  hit.dataset = 'repos';
                   suggestions.push(hit);
                 }
               }
@@ -372,18 +345,19 @@
       },
       // private issues
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.issues) {
-            cb([]);
+            syncCb([]);
             return;
           }
           if (privateIssues) {
-            privateIssues.search(parsedQuery.q, function(success, content) {
-              if (success) {
+            privateIssues.search(parsedQuery.q, {}, function(error, content) {
+              if (!error) {
                 for (var i = 0; i < content.hits.length; ++i) {
                   var hit = content.hits[i];
                   hit.query = q;
+                  hit.dataset = 'issues';
                 }
                 cb(content.hits);
               } else {
@@ -391,7 +365,7 @@
               }
             }, { attributesToSnippet: ['body:20'], hitsPerPage: NB_ISSUES });
           } else {
-            cb([]);
+            syncCb([]);
           }
         },
         name: 'issues',
@@ -403,18 +377,19 @@
       },
       // users
       {
-        source: function(q, cb) {
+        source: function(q, syncCb, cb) {
           var parsedQuery = parseQuery(q);
           if (!parsedQuery.users) {
-            cb([]);
+            syncCb([]);
             return;
           }
-          users.search(parsedQuery.q, function(success, content) {
+          users.search(parsedQuery.q, {}, function(error, content) {
             var hits = [];
-            if (success) {
+            if (!error) {
               for (var i = 0; i < content.hits.length; ++i) {
                 var hit = content.hits[i];
                 hit.query = q;
+                hit.dataset = 'users';
                 hits.push(hit);
               }
             }
@@ -440,7 +415,9 @@
           }
         }
       }
-    ]).on('typeahead:selected', function(event, suggestion, dataset) {
+    ]).on('typeahead:select', function(event, suggestion) {
+      var dataset = suggestion.dataset;
+
       if (dataset === 'current-repo') {
         submit(suggestion.query, $('.js-site-search-form').data('repo-search-url') + '/search');
       } else if (dataset === 'users') {
@@ -452,8 +429,10 @@
       } else {
         console.log('Unknown dataset: ' + dataset);
       }
-    }).on('typeahead:cursorchanged', function(event, suggestion, dataset) {
+    }).on('typeahead:cursorchange', function(event, suggestion) {
+      var dataset = (suggestion || {}).dataset;
       var $container = $('.aa-query');
+
       $container.find('span').hide();
       if (dataset === 'users') {
         $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.login + '</strong>\'s profile').show();

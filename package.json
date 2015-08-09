@@ -4,12 +4,19 @@
   "version": "1.1.4",
   "description": "Add instant search capabilities to GitHub's search bar.",
   "homepage": "http://www.algolia.com",
-  "dependencies": {},
+  "dependencies": {
+    "algoliasearch": "^3.7.5",
+    "hogan.js": "^3.0.2",
+    "jquery": "^2.1.4",
+    "typeahead.js": "^0.11.1"
+  },
   "devDependencies": {
-    "browserify": "~3.39.0",
+    "browserify": "^11.0.1",
+    "browserify-derequire": "^0.9.4",
+    "envify": "^3.4.0",
     "eventemitter2": "^0.4.13",
     "grunt": "~0.4.4",
-    "grunt-browserify": "~2.0.3",
+    "grunt-browserify": "^4.0.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "~0.5.0",
     "grunt-contrib-jshint": "~0.10.0",
@@ -19,6 +26,7 @@
     "grunt-mkdir": "~0.1.1",
     "grunt-mocha-test": "~0.10.0",
     "grunt-sass": "^0.17.0",
+    "hoganify": "^0.2.0",
     "jpm": "0.0.21",
     "sinon": "~1.10.0"
   },
