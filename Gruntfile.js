@@ -24,7 +24,8 @@ module.exports = function(grunt) {
 
     mkdir: {
       unpacked: { options: { create: ['build/unpacked-dev', 'build/unpacked-prod'] } },
-      js: { options: { create: ['build/unpacked-dev/js'] } }
+      js: { options: { create: ['build/unpacked-dev/js'] } },
+      css: { options: { create: ['build/unpacked-dev/css'] } }
     },
 
     jshint: {
@@ -67,7 +68,7 @@ module.exports = function(grunt) {
     exec: {
       crx: {
         cmd: [
-          './crxmake.sh build/unpacked-prod ./mykey.pem',
+          './scripts/crxmake.sh build/unpacked-prod ./mykey.pem',
           'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
           '(cd build && zip -r "' + pkg.name + '-' + pkg.version + '.zip" unpacked-prod)'
         ].join(' && ')
@@ -80,7 +81,7 @@ module.exports = function(grunt) {
           'cp code/js/content.js build/firefox/data/content.js',
           'cp code/images/* build/firefox/data/',
           'cp code/html/* build/firefox/data/',
-          'cp code/css/* build/firefox/data/',
+          'cp build/unpacked-dev/css/* build/firefox/data/',
           '(cd build/firefox && ../../node_modules/jpm/bin/jpm xpi)',
           'mv build/firefox/github-awesome-autocomplete@algolia.com.xpi build/'
         ].join(' && ')
@@ -105,7 +106,7 @@ module.exports = function(grunt) {
           style: 'expanded'
         },
         files: {
-          'code/css/content.css': 'code/scss/content.sass'
+          'build/unpacked-dev/css/content.css': 'code/scss/content.sass'
         }
       }
     }
@@ -165,7 +166,7 @@ module.exports = function(grunt) {
   // DEFAULT
   //
 
-  grunt.registerTask('default', ['clean', 'test', 'sass', 'mkdir:unpacked', 'copy:main', 'chrome-manifest', 'firefox-package',
+  grunt.registerTask('default', ['clean', 'test', 'mkdir:css', 'sass', 'mkdir:unpacked', 'copy:main', 'chrome-manifest', 'firefox-package',
     'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec']);
 
 };
