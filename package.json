@@ -25,5 +25,10 @@
   "engines": {
     "node": ">= 0.10.0"
   },
+  "scripts": {
+    "build": "grunt",
+    "dev": "grunt dev",
+    "test": "grunt test"
+  },
   "export-symbol": "extensionSkeleton.exports"
 }
