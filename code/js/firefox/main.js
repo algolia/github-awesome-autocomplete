@@ -3,7 +3,6 @@ var pageMods = require("sdk/page-mod");
 var data = require("sdk/self").data;
 var simpleStorage = require('sdk/simple-storage');
 var panels = require("sdk/panel");
-var windows = require("sdk/windows").browserWindows;
 
 var panel, button = buttons.ToggleButton({
   id: "github-awesome-autocomplete",
@@ -37,7 +36,7 @@ panel = panels.Panel({
   }
 });
 
-var page = pageMods.PageMod({
+pageMods.PageMod({
   include: "*.github.com",
   contentStyleFile: data.url("content.css"),
   contentScriptFile: [
@@ -45,7 +44,13 @@ var page = pageMods.PageMod({
     data.url("libs/hogan-3.0.1.js"),
     data.url("libs/typeahead.bundle.js"),
     data.url("libs/algoliasearch.js"),
-    data.url("content.js")
+    data.url("templates/issue.js"),
+    data.url("templates/repo.js"),
+    data.url("templates/user.js"),
+    data.url("templates/your-repo.js"),
+    data.url("content.js"),
+    data.url("helpers.js"),
+    data.url("storage.js")
   ],
   contentScriptOptions: {
     logoUrl: data.url("algolia128x40.png"),
@@ -59,8 +64,4 @@ var page = pageMods.PageMod({
       simpleStorage.storage[data[0]] = data[1];
     });
   }
-});
-
-panel.port.on('connect-with-github', function() {
-  windows.open({ url: "https://github.algolia.com/signin", onClose: function() { page.port.emit('reload-private', {}); } });
 });

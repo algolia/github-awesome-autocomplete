@@ -58,10 +58,12 @@ module.exports = function(grunt) {
     browserify: {
       build: {
         files: fileMaps.browserify,
-        options: { bundleOptions: {
-          debug: true,  // for source maps
-          standalone: pkg['export-symbol']
-        } }
+        options: {
+          browserifyOptions: {
+            debug: true,  // for source maps
+            standalone: pkg['export-symbol']
+          }
+        }
       }
     },
 
@@ -78,12 +80,13 @@ module.exports = function(grunt) {
           'cp code/js/firefox/main.js build/firefox/index.js',
           'rm -rf build/firefox/data', 'mkdir build/firefox/data',
           'cp -R code/js/libs build/firefox/data',
-          'cp code/js/content.js build/firefox/data/content.js',
+          'cp -R code/js/templates build/firefox/data/',
+          'cp code/js/*.js build/firefox/data/',
           'cp code/images/* build/firefox/data/',
           'cp code/html/* build/firefox/data/',
           'cp build/unpacked-dev/css/* build/firefox/data/',
           '(cd build/firefox && ../../node_modules/jpm/bin/jpm xpi)',
-          'mv build/firefox/github-awesome-autocomplete@algolia.com.xpi build/'
+          'mv build/firefox/github-awesome-autocomplete@algolia.com-' + pkg.version + '.xpi build/'
         ].join(' && ')
       }
     },
