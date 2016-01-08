@@ -12,8 +12,10 @@ module.exports = {
       } else {
         return asset;
       }
-    } else {
+    } else if (typeof chrome !== 'undefined') {
       return chrome.extension.getURL(asset);
+    } else {
+      return '../' + asset;
     }
   }
 };

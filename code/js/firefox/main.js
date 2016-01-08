@@ -24,7 +24,7 @@ var panel, button = buttons.ToggleButton({
 panel = panels.Panel({
   width: 400,
   height: 590,
-  contentURL: data.url("panel.html"),
+  contentURL: data.url("firefox.html"),
   contentStyleFile: data.url("content.css"),
   contentScript: "var button = document.getElementById('refresh-button');" +
     "button.addEventListener('click', function() {" +

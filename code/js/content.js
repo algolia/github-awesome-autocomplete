@@ -1,4 +1,4 @@
-/* global document, window, location, screen, self, $, AlgoliaSearch */
+/* global document, window, location, screen, self, $, AlgoliaSearch, safari */
 
 var NB_REPOS = 3;
 var NB_MY_REPOS = 2;
@@ -120,12 +120,18 @@ storage.get('private', function(result) {
 
 if (firefox) {
   self.port.on('connect-with-github', connectWithGitHub);
-} else {
+} else if (typeof chrome !== 'undefined') {
   chrome.runtime.onMessage.addListener(function(request) {
     if (request.type === 'connect-with-github') {
       connectWithGitHub();
     }
   });
+} else if (typeof safari !== 'undefined') {
+  safari.self.addEventListener('message', function(message) {
+    if (message.name === 'connect-with-github') {
+      connectWithGitHub();
+    }
+  }, false);
 }
 
 /////////////////////////////
