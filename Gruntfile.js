@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   var firefox_pkg = grunt.file.readJSON('code/firefox.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
-  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'libs/*.js', 'chrome/*.js']);
+  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'libs/*.js', 'chrome/*.js', 'safari/*.js']);
   for (var i = 0; i < files.length; i++) {
     file = files[i];
     fileMaps.browserify['build/unpacked-dev/js/' + file] = 'code/js/' + file;
@@ -20,10 +20,10 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-    clean: ['build/unpacked-dev', 'build/unpacked-prod', 'build/*.crx'],
+    clean: ['build/unpacked-dev', 'build/unpacked-prod', 'build/*.crx', 'build/*.safariextension'],
 
     mkdir: {
-      unpacked: { options: { create: ['build/unpacked-dev', 'build/unpacked-prod'] } },
+      unpacked: { options: { create: ['build/unpacked-dev', 'build/unpacked-prod', 'build/github-awesome-autocomplete.safariextension'] } },
       js: { options: { create: ['build/unpacked-dev/js'] } },
       css: { options: { create: ['build/unpacked-dev/css'] } }
     },
@@ -38,13 +38,19 @@ module.exports = function(grunt) {
       main: { files: [ {
         expand: true,
         cwd: 'code/',
-        src: ['**', '!js/**', '!**/*.md'],
+        src: ['**', '!js/**', '!**/*.md', '!Info.plist', '!Settings.plist'],
         dest: 'build/unpacked-dev/'
+      } ] },
+      safari: { files: [ {
+        expand: true,
+        cwd: 'build/unpacked-dev/',
+        src: ['**', '!chrome.json', '!firefox.json', '!manifest.json'],
+        dest: 'build/github-awesome-autocomplete.safariextension'
       } ] },
       prod: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['**', '!js/*.js'],
+        src: ['**', '!js/*.js', '!**/*.md', '!Info.plist', '!Settings.plist'],
         dest: 'build/unpacked-prod/'
       } ] },
       artifact: { files: [ {
@@ -170,6 +176,6 @@ module.exports = function(grunt) {
   //
 
   grunt.registerTask('default', ['clean', 'test', 'mkdir:css', 'sass', 'mkdir:unpacked', 'copy:main', 'chrome-manifest', 'firefox-package',
-    'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec']);
+    'mkdir:js', 'browserify', 'copy:prod', 'copy:safari', 'uglify', 'exec']);
 
 };

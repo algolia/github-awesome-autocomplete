@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Algolia</string>
+	<key>Builder Version</key>
+	<string>10600.7.12</string>
+	<key>CFBundleDisplayName</key>
+	<string>github-awesome-autocomplete-safari</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.algolia.github-awesome-autocomplete</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>Chrome</key>
+	<dict>
+		<key>Database Quota</key>
+		<real>104857600</real>
+		<key>Popovers</key>
+		<array>
+			<dict>
+				<key>Filename</key>
+				<string>html/safari.html</string>
+				<key>Height</key>
+				<real>590</real>
+				<key>Identifier</key>
+				<string>algoliaPopover</string>
+				<key>Width</key>
+				<real>400</real>
+			</dict>
+		</array>
+		<key>Toolbar Items</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>algoliaButton</string>
+				<key>Image</key>
+				<string>images/icon.png</string>
+				<key>Label</key>
+				<string>Algolia</string>
+				<key>Palette Label</key>
+				<string>Algolia</string>
+				<key>Popover</key>
+				<string>algoliaPopover</string>
+				<key>Tool Tip</key>
+				<string>Connect Algolia with GitHub</string>
+			</dict>
+		</array>
+	</dict>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict>
+			<key>End</key>
+			<array>
+				<string>js/content.js</string>
+			</array>
+		</dict>
+		<key>Stylesheets</key>
+		<array>
+			<string>css/content.css</string>
+		</array>
+		<key>Whitelist</key>
+		<array>
+			<string>https://github.com/*</string>
+			<string>https://github.algolia.com/*</string>
+		</array>
+	</dict>
+	<key>DeveloperIdentifier</key>
+	<string>2D3X434R43</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>All</string>
+		</dict>
+	</dict>
+</dict>
+</plist>
