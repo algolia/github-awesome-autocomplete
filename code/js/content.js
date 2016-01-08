@@ -232,7 +232,7 @@ $(document).ready(function() {
       displayKey: 'query',
       templates: {
         suggestion: function(hit) {
-          return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).text() + '" in this repository</div>';
+          return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).html() + '" in this repository</div>';
         }
       }
     },
