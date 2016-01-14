@@ -38,7 +38,7 @@ module.exports = function(grunt) {
       main: { files: [ {
         expand: true,
         cwd: 'code/',
-        src: ['**', '!js/**', '!**/*.md', '!Info.plist', '!Settings.plist'],
+        src: ['**', '!js/**', '!**/*.md'],
         dest: 'build/unpacked-dev/'
       } ] },
       safari: { files: [ {
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
       prod: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['**', '!js/*.js', '!**/*.md', '!Info.plist', '!Settings.plist'],
+        src: ['**', '!js/*.js', '!**/*.md', '!Info.plist'],
         dest: 'build/unpacked-prod/'
       } ] },
       artifact: { files: [ {

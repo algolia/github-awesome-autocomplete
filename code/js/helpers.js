@@ -1,4 +1,4 @@
-/* global self, chrome */
+/* global self, chrome, safari */
 
 var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
 
@@ -14,8 +14,10 @@ module.exports = {
       }
     } else if (typeof chrome !== 'undefined') {
       return chrome.extension.getURL(asset);
+    } else if (typeof safari !== 'undefined') {
+      return safari.extension.baseURI + asset;
     } else {
-      return '../' + asset;
+      return asset;
     }
   }
 };
