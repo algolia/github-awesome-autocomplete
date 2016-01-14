@@ -103,10 +103,12 @@ function connectWithGitHub() {
   var left = (screen.width - width) / 2 - 16;
   var top = (screen.height - height) / 2 - 50;
   var windowFeatures = 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
-  var win = window.open("https://github.algolia.com/signin", "authPopup", windowFeatures);
-  win.onunload = function() {
-    reloadPrivate();
-  };
+  if (typeof safari !== 'undefined') {
+    var win = window.open("https://github.algolia.com/signin", "authPopup", windowFeatures);
+    win.onunload = function() {
+      reloadPrivate();
+    };
+  }
 }
 
 storage.get('private', function(result) {
