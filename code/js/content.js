@@ -208,7 +208,7 @@ $(document).ready(function() {
 
   // public index
   var algolia = new AlgoliaSearch('TLCDTR8BIO', '686cce2f5dd3c38130b303e1c842c3e3');
-  var users = algolia.initIndex('last_1m_users');
+  var users = algolia.initIndex('users');
 
   // setup auto-completion menu
   $q.typeahead({ highlight: false, hint: false }, [
@@ -305,8 +305,8 @@ $(document).ready(function() {
         }
         var params = { attributesToSnippet: ['description:50'] };
         algolia.startQueriesBatch();
-        algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
-        algolia.addQueryInBatch('top_1m_repos', parsedQuery.q, $.extend({ hitsPerPage: NB_REPOS }, params));
+        algolia.addQueryInBatch('repositories', parsedQuery.q, $.extend({ hitsPerPage: parseInt(NB_REPOS / 2 + 1, 10), numericFilters: 'watchers>1000', restrictSearchableAttributes: 'name' }, params));
+        algolia.addQueryInBatch('repositories', parsedQuery.q, $.extend({ hitsPerPage: NB_REPOS }, params));
         algolia.sendQueriesBatch(function(success, content) {
           var suggestions = [];
           if (success) {
