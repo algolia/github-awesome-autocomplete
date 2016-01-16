@@ -4,7 +4,7 @@ By working every day on building the best search engine, we've become obsessed w
 
 Algolia provides a developer-friendly SaaS API for database search. It enables any website or mobile application to easily provide its end-users with an instant and relevant search. With Algolia's unique find as you type experience, users can find what they're looking for in just a few keystrokes. Feel free to give Algolia a try with our 14-days FREE trial at [Algolia](https://www.algolia.com).
 
-At [Algolia](https://www.algolia.com), we're git *addicts* and love using GitHub to store every single idea or project we work on. We use it both for our private and public repositories ([12 API clients](https://www.algolia.com/doc/apiclients), [HN Search](https://github.com/algolia/hn-search) or various [d](https://github.com/algolia/instant-search-demo) [e](https://github.com/algolia/facebook-search) [m](https://github.com/algolia/linkedin-search) [o](https://github.com/algolia/meetup-search) [s](https://github.com/algolia/twitter-search)).
+At [Algolia](https://www.algolia.com), we're git *addicts* and love using GitHub to store every single idea or project we work on. We use it both for our private and public repositories ([12 API clients](https://www.algolia.com/doc), [DocSearch](https://community.algolia.com/docsearch), [HN Search](https://github.com/algolia/hn-search) or various [d](https://github.com/algolia/instant-search-demo) [e](https://community.algolia.com/instantsearch.js/examples/media/) [m](https://community.algolia.com/instantsearch.js/examples/e-commerce/) [o](https://community.algolia.com/instantsearch.js/examples/tourism/)).
 
 ### Installation
 
