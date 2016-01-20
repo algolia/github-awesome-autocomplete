@@ -142,14 +142,14 @@ if (firefox) {
 //
 /////////////////////////////
 
-var tokenize = function(d) {
+function tokenize(d) {
   if (!d) {
     return [];
   }
   var tokens = d.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[^a-zA-Z0-9]/g, ' ').replace(/ +/g, ' ').toLowerCase().trim().split(' ');
   tokens.push(d.replace(/[^a-zA-Z0-9]/g, '').toLowerCase());
   return tokens;
-};
+}
 
 // parse the DuckDuckGo-like query
 function parseQuery(q) {
@@ -176,6 +176,10 @@ function parseQuery(q) {
     p.q = q.slice(3);
   }
   return p;
+}
+
+function sanitize(text) {
+  return $('<div />').text(text).html();
 }
 
 /////////////////////////////
@@ -221,7 +225,7 @@ $(document).ready(function() {
       templates: {
         empty: function(data) {
           return '<div class="aa-query">Press <em>&lt;Enter&gt;</em> to ' +
-            '<span class="aa-query-default">search for "<em>' + $('<div />').text(data.query).html() + '</em>"' + ($searchContainer.hasClass('repo-scope') ? ' in this repository':'') + '</span>' +
+            '<span class="aa-query-default">search for "<em>' + sanitize(data.query) + '</em>"' + ($searchContainer.hasClass('repo-scope') ? ' in this repository' : '') + '</span>' +
             '<span class="aa-query-cursor"></span>' +
             '</div>';
         }
@@ -240,7 +244,7 @@ $(document).ready(function() {
       displayKey: 'query',
       templates: {
         suggestion: function(hit) {
-          return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + $('<strong />').text(hit.query).html() + '" in this repository</div>';
+          return '<div class="aa-query"><i class="octicon octicon-repo"></i>&nbsp; Search "' + sanitize(hit.query) + '" in this repository</div>';
         }
       }
     },
@@ -421,11 +425,11 @@ $(document).ready(function() {
     var $container = $('.aa-query');
     $container.find('span').hide();
     if (dataset === 'users') {
-      $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.login + '</strong>\'s profile').show();
+      $container.find('span.aa-query-cursor').html('go to <strong>' + sanitize(suggestion.login) + '</strong>\'s profile').show();
     } else if (dataset === 'repos' || dataset === 'private') {
-      $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.full_name + '</strong>').show();
+      $container.find('span.aa-query-cursor').html('go to <strong>' + sanitize(suggestion.full_name) + '</strong>').show();
     } else if (dataset === 'issues') {
-      $container.find('span.aa-query-cursor').html('go to <strong>' + suggestion.repository.owner + '/' + suggestion.repository.name + ' #' + suggestion.number + '</strong>').show();
+      $container.find('span.aa-query-cursor').html('go to <strong>' + sanitize(suggestion.repository.owner) + '/' + sanitize(suggestion.repository.name) + ' #' + sanitize(suggestion.number) + '</strong>').show();
     } else {
       $container.find('span.aa-query-default').show();
     }
