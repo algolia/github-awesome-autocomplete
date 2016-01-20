@@ -1,5 +1,9 @@
 CHANGELOG
 
+2016-01-20 1.2.1
+      * Firefox/Safari: remove remote font usage
+      * Sanitize every single inputs
+
 2016-01-14  1.2.0
       * Move to the new `users` and `repositories` indices which include projects & users created after 01/01/2015
       * Code cleanup
