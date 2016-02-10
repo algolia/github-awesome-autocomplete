@@ -1,18 +1,109 @@
-/* global document, window, location, screen, self, $, AlgoliaSearch, safari */
+/* global document, window, location, screen, self, $, AlgoliaSearch, safari, Hogan */
+
+/////////////////////////////
+//
+// VARIABLES
+//
+/////////////////////////////
 
 var NB_REPOS = 3;
 var NB_MY_REPOS = 2;
 var NB_USERS = 3;
 var NB_ISSUES = 3;
 
-var templateYourRepo = require('./templates/your-repo.js');
-var templateRepo = require('./templates/repo.js');
-var templateIssue = require('./templates/issue.js');
-var templateUser = require('./templates/user.js');
+/////////////////////////////
+//
+// TEMPLATES
+//
+/////////////////////////////
 
-var storage = require('./storage.js');
-var helpers = require('./helpers.js');
+var templateYourRepo = Hogan.compile('<div class="aa-suggestion aa-your-repo">' +
+  '<span class="aa-name">' +
+    '<i class="octicon {{#fork}}octicon-repo-forked{{/fork}}{{^fork}}{{#private}}octicon-lock{{/private}}{{^private}}octicon-repo{{/private}}{{/fork}}"></i> ' +
+    '<a href="https://github.com/{{ full_name }}/"><span class="owner">{{{ owner }}}</span>/<span class="aa-repo">{{{ highlightedName }}}</span></a>' +
+  '</span>' +
+'</div>');
+var templateRepo = Hogan.compile('<div class="aa-suggestion aa-repo">' +
+  '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ owner }}?size=30" /></div>' +
+  '<div class="aa-infos">{{ watchers }} <i class="octicon octicon-star"></i></div>' +
+  '<span class="aa-name">' +
+    '{{#is_fork}}<i class="octicon octicon-repo-forked"></i>{{/is_fork}} ' +
+    '{{^is_fork}}<i class="octicon octicon-{{#is_private}}lock{{/is_private}}{{^is_private}}repo{{/is_private}}"></i>{{/is_fork}} ' +
+    '<a href="https://github.com/{{ full_name }}/"><span class="aa-owner">{{{ owner }}}</span>/<span class="aa-repo-name">{{{ _highlightResult.name.value }}}</span></a>' +
+  '</span>' +
+  '<div class="aa-description">{{{ _snippetResult.description.value }}}</div>' +
+'</div>');
+var templateIssue = Hogan.compile('<div class="aa-suggestion aa-issue">' +
+  '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ repository.owner }}?size=30" /></div>' +
+  '<div class="aa-infos"><i class="octicon octicon-comment"></i> {{ comments_count }}</div>' +
+  '<span class="aa-name">' +
+    '<span class="aa-issue-number">Issue #{{ number }}:</span> <a href="https://github.com/{{ repository.owner }}/{{ repository.name }}/issues/{{ number }}">{{{ _highlightResult.title.value }}}</a><br />' +
+    '{{#repository.is_fork}}<i class="octicon octicon-repo-forked"></i>{{/repository.is_fork}} ' +
+    '{{^repository.is_fork}}<i class="octicon octicon-{{#repository.is_private}}lock{{/repository.is_private}}{{^repository.is_private}}repo{{/repository.is_private}}"></i>{{/repository.is_fork}} ' +
+    '{{ repository.owner }}/<span class="aa-repo-name">{{{ _highlightResult.repository.name.value }}}</span>' +
+  '</span>' +
+  '<div class="aa-issue-body">{{{ _snippetResult.body.value }}}</div>' +
+'</div>');
+var templateUser = Hogan.compile('<div class="aa-suggestion aa-user">' +
+  '<div class="aa-thumbnail"><img src="https://avatars.githubusercontent.com/{{ login }}?size=30" /></div>' +
+  '<a href="https://github.com/{{ login }}">'+
+    '{{#name}}<span class="aa-name">{{{ _highlightResult.name.value }}}</span> {{/name}}' +
+    '<span class="aa-login">{{{ _highlightResult.login.value }}}</span>' +
+  '</a>' +
+  '{{#company}}<br><span class="aa-company"><i class="octicon octicon-organization"></i> {{{ _highlightResult.company.value }}}</span>{{/company}}' +
+'</div>');
+
+/////////////////////////////
+//
+// STORAGE & IMAGES
+//
+/////////////////////////////
+
 var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
+
+function getURL(asset) {
+  if (firefox) {
+    if (asset === 'images/algolia128x40.png') {
+      return self.options.logoUrl;
+    } else if (asset === 'images/close-16.png') {
+      return self.options.closeImgUrl;
+    } else {
+      return asset;
+    }
+  } else if (typeof chrome !== 'undefined') {
+    return chrome.extension.getURL(asset);
+  } else if (typeof safari !== 'undefined') {
+    return safari.extension.baseURI + asset;
+  } else {
+    return asset;
+  }
+}
+
+var simpleStorage = {};
+var storage = {
+  set: function(key, value) {
+    if (firefox) {
+      self.port.emit('update-storage', [key, value]);
+    } else if (typeof chrome !== 'undefined') {
+      var v = {};
+      v[key] = value;
+      chrome.storage.local.set(v);
+    } else {
+      window.localStorage.setItem(key, value);
+    }
+  },
+
+  get: function(key, cb) {
+    if (firefox) {
+      self.port.emit('read-storage');
+      cb(simpleStorage);
+    } else if (typeof chrome !== 'undefined') {
+      chrome.storage.local.get(key, cb);
+    } else {
+      cb(window.localStorage.getItem(key));
+    }
+  }
+};
 
 /////////////////////////////
 //
@@ -194,7 +285,7 @@ $(document).ready(function() {
   var isRepository = $searchContainer.hasClass('repo-scope');
 
   $q.parent().addClass('awesome-autocomplete');
-  $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + helpers.getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
+  $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
 
   // clear input
   var $clearInputIcon = $('.site-search .icon-delete');
@@ -404,7 +495,7 @@ $(document).ready(function() {
       templates: {
         empty: function() {
           return '<div class="aa-branding">' +
-            'With <i class="octicon octicon-heart"></i> from <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + helpers.getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
+            'With <i class="octicon octicon-heart"></i> from <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
             '</div>';
         }
       }

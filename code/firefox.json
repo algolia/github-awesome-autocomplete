@@ -1,7 +1,7 @@
 {
   "id": "github-awesome-autocomplete@algolia.com",
   "engines": {
-    "firefox": ">=33.0a1"
+    "firefox": ">=38.0a1"
   },
   "permissions": {
     "cross-domain-content": ["https://*.algolia.net/", "https://*.algolianet.com/", "https://github.algolia.com/*"]

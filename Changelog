@@ -1,5 +1,8 @@
 CHANGELOG
 
+2016-02-10 1.2.2
+      * Cannot use `require` in the content-script on Firefox
+
 2016-01-20 1.2.1
       * Firefox/Safari: remove remote font usage
       * Sanitize every single inputs
