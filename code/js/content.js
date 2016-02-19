@@ -72,7 +72,7 @@ function getURL(asset) {
   if (firefox) {
     if (asset === 'images/algolia128x40.png') {
       return self.options.logoUrl;
-    } else if (asset === 'images/close-16.png') {
+    } else if (asset === 'images/close-32.png') {
       return self.options.closeImgUrl;
     } else {
       return asset;
@@ -292,7 +292,7 @@ $(document).ready(function() {
   var isRepository = $searchContainer.hasClass('repo-scope');
 
   $q.parent().addClass('awesome-autocomplete');
-  $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + getURL('images/close-16.png') + ') no-repeat 0 0;"></a>');
+  $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + getURL('images/close-32.png') + ') no-repeat top left / 16px 16px;"></a>');
 
   // clear input
   var $clearInputIcon = $('.site-search .icon-delete');

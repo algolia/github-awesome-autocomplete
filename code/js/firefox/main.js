@@ -54,7 +54,7 @@ pageMods.PageMod({
   ],
   contentScriptOptions: {
     logoUrl: data.url("algolia128x40.png"),
-    closeImgUrl: data.url("close-16.png")
+    closeImgUrl: data.url("close-32.png")
   },
   onAttach: function(worker) {
     worker.port.on('read-storage', function() {
