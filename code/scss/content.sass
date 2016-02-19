@@ -72,7 +72,7 @@ $gh-primary-color: #3879D9
     .twitter-typeahead
       width: 100%
       .tt-dropdown-menu
-        margin-top: 4px
+        margin-top: 6px
         width: 100%
 .site-search.repo-scope
   .awesome-autocomplete
@@ -92,11 +92,15 @@ form#search_form
 
 // common
 .awesome-autocomplete
+  border: none
+
   .tt-input
     width: 100%
-    padding: 4px 6px
+    padding: 3px 4px 3px 5px !important
     border: 1px solid $gh-border-dark
     outline: none
+    min-height: auto !important
+    vertical-align: middle !important
   .tt-hint
     color: #999
   .tt-cursor
