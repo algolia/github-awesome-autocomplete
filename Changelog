@@ -1,5 +1,8 @@
 CHANGELOG
 
+2016-02-20 1.2.3
+      * CSS fixes
+
 2016-02-10 1.2.2
       * Cannot use `require` in the content-script on Firefox
 
