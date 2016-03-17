@@ -1,5 +1,8 @@
 CHANGELOG
 
+2016-03-17 1.2.4
+      * Handle the new `.scoped-search` feature (search in "This organization" or "This repository")
+
 2016-02-20 1.2.3
       * CSS fixes
 
