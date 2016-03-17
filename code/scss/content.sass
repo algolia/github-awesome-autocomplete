@@ -74,13 +74,16 @@ $gh-primary-color: #3879D9
       .tt-dropdown-menu
         margin-top: 6px
         width: 100%
-.site-search.repo-scope
+.site-search.scoped-search
   .awesome-autocomplete
     .twitter-typeahead
       width: 230px
       .tt-dropdown-menu
         width: 360px
-        margin-left: -96px
+.site-search.repo-scope .awesome-autocomplete .twitter-typeahead .tt-dropdown-menu
+  margin-left: -96px
+.site-search.org-scope .awesome-autocomplete .twitter-typeahead .tt-dropdown-menu
+  margin-left: -109px
 
 // results page search bar
 form#search_form
