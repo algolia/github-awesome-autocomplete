@@ -289,7 +289,16 @@ function sanitize(text) {
 $(document).ready(function() {
   var $searchContainer = $('form#search_form, .site-search');
   var $q = $searchContainer.find('input[name="q"]');
-  var isRepository = $searchContainer.hasClass('repo-scope');
+  var $scopeBadge = $searchContainer.find('.scope-badge');
+  var $scopedSearch = $q.closest('.scoped-search');
+
+  function isRepository() {
+    return $scopeBadge.is(':visible') && $scopeBadge.text() === 'This repository';
+  }
+
+  function isOrganization() {
+    return $scopeBadge.is(':visible') && $scopeBadge.text() === 'This organization';
+  }
 
   $q.parent().addClass('awesome-autocomplete');
   $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + getURL('images/close-32.png') + ') no-repeat top left / 16px 16px;"></a>');
@@ -323,17 +332,20 @@ $(document).ready(function() {
       templates: {
         empty: function(data) {
           return '<div class="aa-query">Press <em>&lt;Enter&gt;</em> to ' +
-            '<span class="aa-query-default">search for "<em>' + sanitize(data.query) + '</em>"' + ($searchContainer.hasClass('repo-scope') ? ' in this repository' : '') + '</span>' +
+            '<span class="aa-query-default">search for "<em>' + sanitize(data.query) + '</em>"' +
+              (isRepository() ? ' in this repository' : '') +
+              (isOrganization() ? ' in this organization' : '') +
+            '</span>' +
             '<span class="aa-query-cursor"></span>' +
             '</div>';
         }
       }
     },
-    // this repository
+    // this repository/organization
     {
       source: function(q, cb) {
         var hits = [];
-        if (isRepository && !$searchContainer.hasClass('repo-scope')) {
+        if (isRepository() || isOrganization()) {
           hits.push({ query: q });
         }
         cb(hits);
@@ -342,7 +354,7 @@ $(document).ready(function() {
       displayKey: 'query',
       templates: {
         suggestion: function(hit) {
-          return '<div class="aa-query">' + octiconRepo + '&nbsp; Search "' + sanitize(hit.query) + '" in this repository</div>';
+          return '<div class="aa-query">' + octiconRepo + '&nbsp; Search "' + sanitize(hit.query) + '" in ' + (isRepository() ? 'this repository' : 'this organization') + '</div>';
         }
       }
     },
@@ -509,7 +521,7 @@ $(document).ready(function() {
     }
   ]).on('typeahead:selected', function(event, suggestion, dataset) {
     if (dataset === 'current-repo') {
-      submit(suggestion.query, $('.js-site-search-form').data('repo-search-url') + '/search');
+      submit(suggestion.query, $('.js-site-search-form').data('data-scoped-search-url'));
     } else if (dataset === 'users') {
       location.href = 'https://github.com/' + suggestion.login;
     } else if (dataset === 'repos' || dataset === 'private') {
@@ -538,6 +550,12 @@ $(document).ready(function() {
       $clearInputIcon.removeClass('active');
     }
   }).on('keypress', function(e) {
+    $scopedSearch.removeClass('repo-scope org-scope');
+    if (isRepository()) {
+      $scopedSearch.addClass('repo-scope');
+    } else if (isOrganization()) {
+      $scopedSearch.addClass('org-scope');
+    }
     if (e.keyCode === 13) { // enter
       submit($(this).val());
     }
