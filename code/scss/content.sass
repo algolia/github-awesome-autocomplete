@@ -1,7 +1,7 @@
 $gh-gray: #F5F5F5
 $gh-dark: #333333
 $gh-border-light: #EEEEEE
-$gh-border-dark: #D8D8D8
+$gh-border-dark: #DDDDDD
 $gh-text-color: #888888
 $gh-highlight-color: #FFFFC6
 $gh-primary-color: #3879D9
@@ -66,44 +66,13 @@ $gh-primary-color: #3879D9
     box-shadow: none !important
 
 
-// top-menu search bar
-.site-search
-  .awesome-autocomplete
-    .twitter-typeahead
-      width: 100%
-      .tt-dropdown-menu
-        margin-top: 6px
-        width: 100%
-.site-search.scoped-search
-  .awesome-autocomplete
-    .twitter-typeahead
-      width: 230px
-      .tt-dropdown-menu
-        width: 360px
-.site-search.repo-scope .awesome-autocomplete .twitter-typeahead .tt-dropdown-menu
-  margin-left: -96px
-.site-search.org-scope .awesome-autocomplete .twitter-typeahead .tt-dropdown-menu
-  margin-left: -109px
-
-// results page search bar
-form#search_form
-  .awesome-autocomplete
-    .twitter-typeahead
-      width: inherit
-      .tt-dropdown-menu
-        width: 100%
-
 // common
 .awesome-autocomplete
   border: none
 
   .tt-input
     width: 100%
-    padding: 3px 4px 3px 5px !important
-    border: 1px solid $gh-border-dark
-    outline: none
-    min-height: auto !important
-    vertical-align: middle !important
+    border: 0
   .tt-hint
     color: #999
   .tt-cursor
@@ -282,3 +251,37 @@ form#search_form
     &.active
       opacity: .5
       visibility: visible
+
+// top-menu search bar
+.js-site-search
+  .awesome-autocomplete
+    .twitter-typeahead
+      width: 100%
+      .tt-dropdown-menu
+        margin-top: 6px
+        width: 100%
+.js-site-search.scoped-search
+  .awesome-autocomplete
+    .twitter-typeahead
+      width: 236px
+      .tt-dropdown-menu
+        width: 360px
+.js-site-search .awesome-autocomplete.repo-scope .twitter-typeahead .tt-dropdown-menu
+  margin-left: -96px
+.js-site-search .awesome-autocomplete.org-scope .twitter-typeahead .tt-dropdown-menu
+  margin-left: -109px
+
+// results page search bar
+form#search_form
+  .awesome-autocomplete
+    .twitter-typeahead
+      width: inherit
+      .tt-input
+        padding: 7px 8px !important
+        border: 1px solid $gh-border-dark
+        &:focus
+          border-color: #51a7e8
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(81, 167, 232, 0.5);
+      .tt-dropdown-menu
+        width: 100%
+

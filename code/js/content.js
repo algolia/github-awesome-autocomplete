@@ -287,10 +287,10 @@ function sanitize(text) {
 /////////////////////////////
 
 $(document).ready(function() {
-  var $searchContainer = $('form#search_form, .site-search');
+  var $searchContainer = $('form#search_form, .js-site-search-form');
   var $q = $searchContainer.find('input[name="q"]');
-  var $scopeBadge = $searchContainer.find('.scope-badge');
-  var $scopedSearch = $q.closest('.scoped-search');
+  var $scopeBadge = $searchContainer.find('.header-search-scope');
+  var $scopedSearch = $q.closest('.header-search-wrapper');
 
   function isRepository() {
     return $scopeBadge.is(':visible') && $scopeBadge.text() === 'This repository';
