@@ -304,7 +304,7 @@ $(document).ready(function() {
   $q.parent().append('<a class="icon icon-delete" href="#" style="background: url(' + getURL('images/close-32.png') + ') no-repeat top left / 16px 16px;"></a>');
 
   // clear input
-  var $clearInputIcon = $('.site-search .icon-delete');
+  var $clearInputIcon = $('.awesome-autocomplete .icon-delete');
   $clearInputIcon.on('click touch', function(event) {
     event.preventDefault();
     $q.val('');
