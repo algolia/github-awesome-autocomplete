@@ -69,6 +69,7 @@ $gh-primary-color: #3879D9
 // common
 .awesome-autocomplete
   border: none
+  position: relative
 
   .tt-input
     width: 100%
@@ -242,7 +243,7 @@ $gh-primary-color: #3879D9
     margin: 0
     display: block
     right: 6px
-    bottom: 6px
+    bottom: 5px
     height: 16px
     width: 16px
     z-index: 100
@@ -251,6 +252,10 @@ $gh-primary-color: #3879D9
     &.active
       opacity: .5
       visibility: visible
+  &.flex-table-item
+    .icon-delete
+      bottom: 8px
+      right: 22px
 
 // top-menu search bar
 .js-site-search
