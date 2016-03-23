@@ -1,5 +1,8 @@
 CHANGELOG
 
+2016-03-24 1.2.5
+      * Update the code to the new GitHub CSS classes.
+
 2016-03-17 1.2.4
       * Handle the new `.scoped-search` feature (search in "This organization" or "This repository")
 
