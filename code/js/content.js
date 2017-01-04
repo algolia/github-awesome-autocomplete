@@ -201,12 +201,18 @@ function connectWithGitHub() {
   var left = (screen.width - width) / 2 - 16;
   var top = (screen.height - height) / 2 - 50;
   var windowFeatures = 'menubar=no,toolbar=no,status=no,width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
-  if (typeof safari !== 'undefined') {
+  if (typeof safari === 'undefined') {
     var win = window.open("https://github.algolia.com/signin", "authPopup", windowFeatures);
     win.onunload = function() {
       reloadPrivate();
     };
   }
+}
+
+function reset() {
+  storage.set('private', {});
+  storage.set('crawledRepositories', []);
+  $.get('https://github.algolia.com/reset');
 }
 
 storage.get('private', function(result) {
@@ -220,16 +226,21 @@ storage.get('private', function(result) {
 
 if (firefox) {
   self.port.on('connect-with-github', connectWithGitHub);
+  self.port.on('reset-login', reset);
 } else if (typeof chrome !== 'undefined') {
   chrome.runtime.onMessage.addListener(function(request) {
     if (request.type === 'connect-with-github') {
       connectWithGitHub();
+    } else if (request.type === 'reset-login') {
+      reset();
     }
   });
 } else if (typeof safari !== 'undefined') {
   safari.self.addEventListener('message', function(message) {
     if (message.name === 'connect-with-github') {
       connectWithGitHub();
+    } else if (message.name === 'reset-login') {
+      reset();
     }
   }, false);
 }

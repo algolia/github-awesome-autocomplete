@@ -26,9 +26,12 @@ panel = panels.Panel({
   height: 590,
   contentURL: data.url("firefox.html"),
   contentStyleFile: data.url("content.css"),
-  contentScript: "var button = document.getElementById('refresh-button');" +
-    "button.addEventListener('click', function() {" +
+  contentScript: "document.getElementById('refresh-button').addEventListener('click', function() {" +
     "  self.port.emit('connect-with-github', {});" +
+    "  return false;" +
+    "});" +
+    "document.getElementById('reset-login').addEventListener('click', function() {" +
+    "  self.port.emit('reset-login', {});" +
     "  return false;" +
     "});",
   onHide: function() {
