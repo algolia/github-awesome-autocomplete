@@ -6,7 +6,7 @@ var panels = require("sdk/panel");
 
 var panel, button = buttons.ToggleButton({
   id: "github-awesome-autocomplete",
-  label: "GitHub Awesome Autocomplete",
+  label: "Awesome Autocomplete for GitHub",
   icon: {
     "16": "./icon-16.png",
     "32": "./icon-32.png",
@@ -56,7 +56,7 @@ pageMods.PageMod({
     data.url("storage.js")
   ],
   contentScriptOptions: {
-    logoUrl: data.url("algolia128x40.png"),
+    logoUrl: data.url("logo.svg"),
     closeImgUrl: data.url("close-32.png")
   },
   onAttach: function(worker) {

@@ -1,6 +1,6 @@
 {
-  "name": "GitHub Awesome Autocomplete",
-  "description": "Add instant search capability on GitHub.",
+  "name": "Awesome Autocomplete for GitHub",
+  "description": "Add instant search capability to GitHub.",
   "background": {
     "scripts": ["js/chrome/background.js"],
     "persistent": false
@@ -10,7 +10,7 @@
     "128": "images/icon.png"
   },
   "page_action": {
-    "default_title": "GitHub Awesome Autocomplete",
+    "default_title": "Awesome Autocomplete for GitHub",
     "default_popup": "html/chrome.html",
     "default_icon" : "images/icon.png"
   },

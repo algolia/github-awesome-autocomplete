@@ -70,7 +70,7 @@ var firefox = typeof self !== 'undefined' && typeof self.port !== 'undefined';
 
 function getURL(asset) {
   if (firefox) {
-    if (asset === 'images/algolia128x40.png') {
+    if (asset === 'images/logo.svg') {
       return self.options.logoUrl;
     } else if (asset === 'images/close-32.png') {
       return self.options.closeImgUrl;
@@ -525,7 +525,7 @@ $(document).ready(function() {
       templates: {
         empty: function() {
           return '<div class="aa-branding">' +
-            'With <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 510 510"><path d="M255 489.6l-35.7-35.7C86.7 336.6 0 257.55 0 160.65 0 81.6 61.2 20.4 140.25 20.4c43.35 0 86.7 20.4 114.75 53.55C283.05 40.8 326.4 20.4 369.75 20.4 448.8 20.4 510 81.6 510 160.65c0 96.9-86.7 175.95-219.3 293.25L255 489.6z" fill="#D80027"/></svg> from <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + getURL('images/algolia128x40.png') + '" title="Algolia" /></a>' +
+            'With <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 510 510"><path d="M255 489.6l-35.7-35.7C86.7 336.6 0 257.55 0 160.65 0 81.6 61.2 20.4 140.25 20.4c43.35 0 86.7 20.4 114.75 53.55C283.05 40.8 326.4 20.4 369.75 20.4 448.8 20.4 510 81.6 510 160.65c0 96.9-86.7 175.95-219.3 293.25L255 489.6z" fill="#D80027"/></svg> from <a href="https://www.algolia.com/?utm_source=github-awesome-autocomplete&utm_medium=link&utm_campaign=github-awesome-autocomplete_search"><img src="' + getURL('images/logo.svg') + '" title="Algolia" /></a>' +
             '</div>';
         }
       }

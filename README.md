@@ -1,4 +1,4 @@
-# GitHub Awesome Autocomplete
+# Awesome Autocomplete for GitHub
 
 By working every day on building the best search engine, we've become obsessed with our own search experience on the websites and mobile applications we use. GitHub is quite big for us, we use their search bar every day but it was not optimal for our needs: so we just re-built Github's search the way we thought it should be and we now share it with the community via this [Chrome](https://chrome.google.com/webstore/detail/github-awesome-autocomple/djkfdjpoelphhdclfjhnffmnlnoknfnd), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/github-awesome-autocomplete/) and [Safari](https://github.algolia.com/github-awesome-autocomplete.safariextz) extensions.
 
