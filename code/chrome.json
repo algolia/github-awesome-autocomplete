@@ -17,13 +17,14 @@
   "content_scripts": [{
     "matches": [ "https://github.com/*" ],
     "js": [
-      "js/libs/jquery-1.9.1.min.js",
+      "js/libs/jquery-2.0.3.min.js",
       "js/libs/hogan-3.0.1.js",
       "js/libs/typeahead.bundle.js",
       "js/libs/algoliasearch.js",
       "js/content.js"
     ],
-    "css" : ["css/content.css"]
+    "css" : ["css/content.css"],
+    "run_at": "document_end"
   }],
   "permissions": [
     "https://github.com/*",
