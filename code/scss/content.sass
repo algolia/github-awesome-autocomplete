@@ -82,8 +82,10 @@ $gh-primary-color: #3879D9
     border: 1px solid $gh-border-dark
     border-top: none
     background-color: white
-    box-shadow: 0 5px 10px rgba(black, .2)
-    box-sizing: content-box
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15)
+    box-sizing: border-box;
+    .octicon
+      color: $gh-text-color
     .octicon.octicon-star
       vertical-align: middle
     .aa-query
@@ -111,6 +113,7 @@ $gh-primary-color: #3879D9
       font-weight: bold
       text-align: left
       background-color: $gh-gray
+      color: $gh-text-color
     .tt-suggestion
       padding: 10px 10px
       text-align: left
@@ -263,9 +266,12 @@ $gh-primary-color: #3879D9
         margin-top: 6px
         width: 100%
 .js-site-search.scoped-search
+  .header-search-wrapper
+    position: relative
   .awesome-autocomplete
     .twitter-typeahead
-      width: 190px
+      position: static 
+      width: 162px
       .tt-dropdown-menu
         width: 300px
 .site-header-nav-secondary
