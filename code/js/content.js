@@ -318,7 +318,7 @@ $(document).ready(function() {
   var $clearInputIcon = $('.awesome-autocomplete .icon-delete');
   $clearInputIcon.on('click touch', function(event) {
     event.preventDefault();
-    $q.val('');
+    $q.typeahead('val', '');
     $clearInputIcon.removeClass('active');
     $q.focus();
   });
