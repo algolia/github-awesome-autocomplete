@@ -26,7 +26,7 @@ This extension replaces GitHub's search bar and add auto-completion (instant-sea
  * your issues
    * only available if you choose to "Connect with GitHub"
 
-![capture](capture.gif)
+![algolia github awesome autocomplete](https://cloud.githubusercontent.com/assets/9317857/22865228/d0428c68-f15f-11e6-86e5-ba4afa55e8b6.gif)
 
 ### How does it work?
 
