@@ -36,19 +36,19 @@ module.exports = function(grunt) {
       main: { files: [ {
         expand: true,
         cwd: 'code/',
-        src: ['html/**', 'images/**', 'js/libs/**', 'Info.plist'],
+        src: ['html/**', 'images/**', 'js/libs/**', 'Info.plist'], // Info.plist is used for Safari
         dest: 'build/unpacked-dev/'
       } ] },
       safari: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['**', '!chrome.json', '!firefox.json', '!manifest.json'],
+        src: ['**', '!manifest.json'],
         dest: 'build/github-awesome-autocomplete.safariextension'
       } ] },
       prod: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['html/**', 'images/**', 'js/libs/**'],
+        src: ['**', '!Info.plist'],
         dest: 'build/unpacked-prod/'
       } ] },
       artifact: { files: [ {
