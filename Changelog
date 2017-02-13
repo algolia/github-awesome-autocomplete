@@ -1,5 +1,8 @@
 CHANGELOG
 
+2017-02-13 1.3.3
+      * Upgrade to jQuery 3.1.1
+
 2017-02-13 1.3.2
       * Updating style to fit GH's latest black-header design
 
