@@ -1,4 +1,4 @@
-$gh-gray: #F5F5F5
+$gh-gray: #f5f5f5
 $gh-dark: #333333
 $gh-border-light: #EEEEEE
 $gh-border-dark: #DDDDDD
@@ -82,8 +82,10 @@ $gh-primary-color: #3879D9
     border: 1px solid $gh-border-dark
     border-top: none
     background-color: white
-    box-shadow: 0 5px 10px rgba(black, .2)
-    box-sizing: content-box
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15)
+    box-sizing: border-box;
+    .octicon
+      color: $gh-text-color
     .octicon.octicon-star
       vertical-align: middle
     .aa-query
@@ -111,6 +113,7 @@ $gh-primary-color: #3879D9
       font-weight: bold
       text-align: left
       background-color: $gh-gray
+      color: $gh-text-color
     .tt-suggestion
       padding: 10px 10px
       text-align: left
@@ -263,11 +266,14 @@ $gh-primary-color: #3879D9
         margin-top: 6px
         width: 100%
 .js-site-search.scoped-search
+  .header-search-wrapper
+    position: relative
   .awesome-autocomplete
     .twitter-typeahead
-      width: 236px
+      position: static
+      width: 162px
       .tt-dropdown-menu
-        width: 360px
+        width: 300px
 .site-header-nav-secondary
   .js-site-search-form
     .awesome-autocomplete
@@ -280,9 +286,9 @@ $gh-primary-color: #3879D9
 .site-header-nav-secondary .js-site-search-form .awesome-autocomplete .twitter-typeahead .tt-dropdown-menu
   margin-left: -200px
 .js-site-search .awesome-autocomplete.repo-scope .twitter-typeahead .tt-dropdown-menu
-  margin-left: -96px
+  margin-left: -110px
 .js-site-search .awesome-autocomplete.org-scope .twitter-typeahead .tt-dropdown-menu
-  margin-left: -109px
+  margin-left: -122px
 // results page search bar
 form#search_form
   .awesome-autocomplete
