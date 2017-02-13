@@ -121,7 +121,7 @@ var storage = {
 var crawledRepositories = [];
 
 function crawlPage(url, organization) {
-  $.get(url).success(function(data) {
+  $.get(url).done(function(data) {
     // parse HTML-based list of repositories
     $('<ul>' + data + '</ul>').find('li').each(function() {
       var isPrivate = $(this).hasClass('private');
@@ -151,7 +151,7 @@ function crawlRepositories() {
   crawlPage('/dashboard/ajax_your_repos');
 
   // get the homepage to fetch your list of organization
-  $.ajax('/', { headers: { 'X-Requested-With' : 'fake' } }).success(function(data) {
+  $.ajax('/', { headers: { 'X-Requested-With' : 'fake' } }).done(function(data) {
     $(data).find('.select-menu-list a.select-menu-item').each(function() {
       var href = $(this).attr('href');
       if (href.indexOf('/orgs/') === 0) {

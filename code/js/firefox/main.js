@@ -43,7 +43,7 @@ pageMods.PageMod({
   include: "*.github.com",
   contentStyleFile: data.url("content.css"),
   contentScriptFile: [
-    data.url("libs/jquery-2.0.3.min.js"),
+    data.url("libs/jquery-3.1.1.min.js"),
     data.url("libs/hogan-3.0.1.js"),
     data.url("libs/typeahead.bundle.js"),
     data.url("libs/algoliasearch.js"),

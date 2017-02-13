@@ -59,7 +59,7 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>js/libs/jquery-2.0.3.min.js</string>
+				<string>js/libs/jquery-3.1.1.min.js</string>
 				<string>js/libs/hogan-3.0.1.js</string>
 				<string>js/libs/typeahead.bundle.js</string>
 				<string>js/libs/algoliasearch.js</string>

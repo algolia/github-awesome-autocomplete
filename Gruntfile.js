@@ -5,13 +5,11 @@ module.exports = function(grunt) {
   var firefox_pkg = grunt.file.readJSON('code/firefox.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
-  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'libs/*.js', 'chrome/*.js', 'safari/*.js']);
+  var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'chrome/*.js', 'safari/*.js']);
   for (var i = 0; i < files.length; i++) {
     file = files[i];
     fileMaps.browserify['build/unpacked-dev/js/' + file] = 'code/js/' + file;
-    if (file.indexOf('libs/') === -1) {
-      fileMaps.uglify['build/unpacked-prod/js/' + file] = 'build/unpacked-dev/js/' + file;
-    }
+    fileMaps.uglify['build/unpacked-prod/js/' + file] = 'build/unpacked-dev/js/' + file;
   }
 
   //
@@ -38,7 +36,7 @@ module.exports = function(grunt) {
       main: { files: [ {
         expand: true,
         cwd: 'code/',
-        src: ['**', '!js/**', '!**/*.md'],
+        src: ['html/**', 'images/**', 'js/libs/**', 'Info.plist'],
         dest: 'build/unpacked-dev/'
       } ] },
       safari: { files: [ {
@@ -50,7 +48,7 @@ module.exports = function(grunt) {
       prod: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['**', '!js/*.js', '!**/*.md', '!Info.plist'],
+        src: ['html/**', 'images/**', 'js/libs/**'],
         dest: 'build/unpacked-prod/'
       } ] },
       artifact: { files: [ {

@@ -17,7 +17,7 @@
   "content_scripts": [{
     "matches": [ "https://github.com/*" ],
     "js": [
-      "js/libs/jquery-2.0.3.min.js",
+      "js/libs/jquery-3.1.1.min.js",
       "js/libs/hogan-3.0.1.js",
       "js/libs/typeahead.bundle.js",
       "js/libs/algoliasearch.js",
