@@ -47,13 +47,7 @@ pageMods.PageMod({
     data.url("libs/hogan-3.0.1.js"),
     data.url("libs/typeahead.bundle.js"),
     data.url("libs/algoliasearch.js"),
-    data.url("templates/issue.js"),
-    data.url("templates/repo.js"),
-    data.url("templates/user.js"),
-    data.url("templates/your-repo.js"),
-    data.url("content.js"),
-    data.url("helpers.js"),
-    data.url("storage.js")
+    data.url("content.js")
   ],
   contentScriptOptions: {
     logoUrl: data.url("logo.svg"),
