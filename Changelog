@@ -1,5 +1,8 @@
 CHANGELOG
 
+2017-02-13 1.3.2
+      * Updating style to fit GH's latest black-header design
+
 2017-01-04 1.3.1
       * Move to jQuery 2.0 to comply with Mozilla's new policies (https://github.com/mozilla/addons-linter/blob/master/docs/third-party-libraries.md)
 
