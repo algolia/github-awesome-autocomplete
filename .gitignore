@@ -10,3 +10,4 @@ build/unpacked-prod
 build/*.safariextension
 *.swp
 .sass-cache
+CertificateSigningRequest.certSigningRequest
