@@ -1,4 +1,4 @@
-/* global document, window, location, screen, self, $, AlgoliaSearch, safari, Hogan */
+/* global document, window, location, screen, self, $, AlgoliaSearch, Bloodhound, safari, Hogan */
 
 /////////////////////////////
 //
@@ -391,7 +391,7 @@ $(document).ready(function() {
             }
           }, { attributesToSnippet: ['description:50'], hitsPerPage: NB_MY_REPOS });
         } else {
-          var engine = new window.Bloodhound({
+          var engine = new Bloodhound({
             name: 'private',
             local: crawledRepositories,
             datumTokenizer: function(d) { return tokenize(d.owner).concat(tokenize(d.name)); },
