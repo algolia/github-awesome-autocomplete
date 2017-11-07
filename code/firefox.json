@@ -1,5 +1,10 @@
 {
   "name": "Awesome Autocomplete for GitHub",
+  "applications": {
+    "gecko": {
+      "id": "github-awesome-autocomplete@algolia.com"
+    }
+  },
   "description": "Add instant search capability to GitHub.",
   "manifest_version": 2,
   "browser_action": {
