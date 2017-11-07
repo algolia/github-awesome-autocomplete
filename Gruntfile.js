@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   var pkg = grunt.file.readJSON('package.json');
   var chrome_mnf = grunt.file.readJSON('code/chrome.json');
-  var firefox_pkg = grunt.file.readJSON('code/firefox.json');
+  var firefox_mnf = grunt.file.readJSON('code/firefox.json');
 
   var fileMaps = { browserify: {}, uglify: {} };
   var file, files = grunt.file.expand({cwd:'code/js'}, ['*.js', 'chrome/*.js', 'safari/*.js']);
@@ -18,10 +18,17 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-    clean: ['build/unpacked-dev', 'build/unpacked-prod', 'build/*.crx', 'build/*.safariextension'],
+    clean: [
+      'build/unpacked-dev', 
+      'build/unpacked-prod', 
+      'build/firefox-unpacked-dev', 
+      'build/firefox-unpacked-prod', 
+      'build/*.crx', 
+      'build/*.safariextension'
+    ],
 
     mkdir: {
-      unpacked: { options: { create: ['build/unpacked-dev', 'build/unpacked-prod', 'build/github-awesome-autocomplete.safariextension'] } },
+      unpacked: { options: { create: ['build/unpacked-dev', 'build/unpacked-prod', 'build/firefox-unpacked-dev', 'build/firefox-unpacked-prod', 'build/github-awesome-autocomplete.safariextension'] } },
       js: { options: { create: ['build/unpacked-dev/js'] } },
       css: { options: { create: ['build/unpacked-dev/css'] } }
     },
@@ -39,17 +46,29 @@ module.exports = function(grunt) {
         src: ['html/**', 'images/**', 'js/libs/**', 'Info.plist'], // Info.plist is used for Safari
         dest: 'build/unpacked-dev/'
       } ] },
+      firefox: { files: [ {
+        expand: true,
+        cwd: 'build/unpacked-dev/',
+        src: ['**', '!Info.plist'],
+        dest: 'build/firefox-unpacked-dev/'
+      } ] },
       safari: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['**', '!manifest.json'],
-        dest: 'build/github-awesome-autocomplete.safariextension'
+        src: ['**'],
+        dest: 'build/github-awesome-autocomplete.safariextension/'
       } ] },
       prod: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
         src: ['**', '!Info.plist'],
         dest: 'build/unpacked-prod/'
+      } ] },
+      prodfirefox: { files: [ {
+        expand: true,
+        cwd: 'build/firefox-unpacked-dev/',
+        src: ['**'],
+        dest: 'build/firefox-unpacked-prod/'
       } ] },
       artifact: { files: [ {
         expand: true,
@@ -77,19 +96,6 @@ module.exports = function(grunt) {
           './scripts/crxmake.sh build/unpacked-prod ./mykey.pem',
           'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
           '(cd build && zip -r "' + pkg.name + '-' + pkg.version + '.zip" unpacked-prod)'
-        ].join(' && ')
-      },
-      xpi: {
-        cmd: [
-          'cp code/js/firefox/main.js build/firefox/index.js',
-          'rm -rf build/firefox/data', 'mkdir build/firefox/data',
-          'cp -R code/js/libs build/firefox/data',
-          'cp code/js/*.js build/firefox/data/',
-          'cp code/images/* build/firefox/data/',
-          'cp code/html/* build/firefox/data/',
-          'cp build/unpacked-dev/css/* build/firefox/data/',
-          '(cd build/firefox && ../../node_modules/jpm/bin/jpm xpi)',
-          'mv build/firefox/github-awesome-autocomplete@algolia.com-' + pkg.version + '.xpi build/'
         ].join(' && ')
       }
     },
@@ -134,29 +140,20 @@ module.exports = function(grunt) {
   // custom tasks
   //
 
-  grunt.registerTask('chrome-manifest',
+  grunt.registerTask('manifests',
     'Extend manifest.json with extra fields from package.json',
     function() {
       var fields = ['version', 'description'];
       for (var i = 0; i < fields.length; i++) {
         var field = fields[i];
         chrome_mnf[field] = pkg[field];
+        firefox_mnf[field] = pkg[field];
       }
       grunt.file.write('build/unpacked-dev/manifest.json', JSON.stringify(chrome_mnf, null, 4) + '\n');
-      grunt.log.ok('chrome\'s manifest.json generated');
-    }
-  );
-
-  grunt.registerTask('firefox-package',
-    'Build Firefox\'s package.json file',
-    function() {
-      var fields = ['version', 'description', 'name', 'title', 'homepage'];
-      for (var i = 0; i < fields.length; i++) {
-        var field = fields[i];
-        firefox_pkg[field] = pkg[field];
-      }
-      grunt.file.write('build/firefox/package.json', JSON.stringify(firefox_pkg, null, 4) + '\n');
-      grunt.log.ok('firefox\'s package.json generated');
+      grunt.file.write('build/unpacked-prod/manifest.json', JSON.stringify(chrome_mnf, null, 4) + '\n');
+      grunt.file.write('build/firefox-unpacked-dev/manifest.json', JSON.stringify(firefox_mnf, null, 4) + '\n');
+      grunt.file.write('build/firefox-unpacked-prod/manifest.json', JSON.stringify(firefox_mnf, null, 4) + '\n');
+      grunt.log.ok('chrome\'s & firefox manifest.json generated');
     }
   );
 
@@ -172,7 +169,7 @@ module.exports = function(grunt) {
   // DEFAULT
   //
 
-  grunt.registerTask('default', ['clean', 'test', 'mkdir:css', 'sass', 'mkdir:unpacked', 'copy:main', 'chrome-manifest', 'firefox-package',
-    'mkdir:js', 'browserify', 'copy:prod', 'copy:safari', 'uglify', 'exec']);
+  grunt.registerTask('default', ['clean', 'test', 'mkdir:css', 'sass', 'mkdir:unpacked', 'copy:main',
+    'mkdir:js', 'browserify', 'copy:prod', 'copy:firefox', 'copy:prodfirefox', 'copy:safari', 'manifests', 'uglify', 'exec']);
 
 };

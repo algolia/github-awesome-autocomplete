@@ -7,6 +7,8 @@ build/firefox
 build/*.xpi
 build/unpacked-dev
 build/unpacked-prod
+build/firefox-unpacked-dev
+build/firefox-unpacked-prod
 build/*.safariextension
 *.swp
 .sass-cache

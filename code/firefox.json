@@ -1,10 +1,35 @@
 {
-  "id": "github-awesome-autocomplete@algolia.com",
-  "engines": {
-    "firefox": ">=38.0a1"
+  "name": "Awesome Autocomplete for GitHub",
+  "description": "Add instant search capability to GitHub.",
+  "background": {
+    "scripts": ["js/chrome/background.js"]
   },
-  "permissions": {
-    "cross-domain-content": ["https://*.algolia.net/", "https://*.algolianet.com/", "https://github.algolia.com/*"]
+  "manifest_version": 2,
+  "browser_action": {
+    "default_title": "Awesome Autocomplete for GitHub",
+    "default_popup": "html/chrome.html",
+    "default_icon" : "images/icon.png"
   },
-  "main": "index.js"
+  "content_scripts": [{
+    "matches": [ "https://github.com/*" ],
+    "js": [
+      "js/libs/jquery-3.1.1.min.js",
+      "js/libs/hogan-3.0.1.js",
+      "js/libs/typeahead.bundle.js",
+      "js/libs/algoliasearch.js",
+      "js/content.js"
+    ],
+    "css" : ["css/content.css"],
+    "run_at": "document_end"
+  }],
+  "permissions": [
+    "https://github.com/*",
+    "activeTab",
+    "storage",
+    "https://github.algolia.com/*",
+    "*://*.algolia.net/*"
+  ],
+  "web_accessible_resources": [ "js/*", "js/libs/*", "html/*", "css/*", "images/*" ],
+  "content_security_policy": "script-src 'self'; object-src 'self'"
+  
 }
