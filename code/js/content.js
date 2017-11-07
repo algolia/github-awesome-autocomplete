@@ -47,7 +47,7 @@ var templateIssue = Hogan.compile('<div class="aa-suggestion aa-issue">' +
     '<span class="aa-issue-number">Issue #{{ number }}:</span> <a href="https://github.com/{{ repository.owner }}/{{ repository.name }}/issues/{{ number }}">{{{ _highlightResult.title.value }}}</a><br />' +
     '{{#repository.is_fork}}' + octiconFork + '{{/repository.is_fork}} ' +
     '{{^repository.is_fork}}{{#repository.is_private}}' + octiconLock + '{{/repository.is_private}}{{^repository.is_private}}' + octiconRepo + '{{/repository.is_private}}{{/repository.is_fork}} ' +
-    '{{ repository.owner }}/<span class="aa-repo-name">{{{ _highlightResult.repository.name.value }}}</span>' +
+    '<span class="aa-repo-name">{{{ _highlightResult.repository.full_name.value }}}</span>' +
   '</span>' +
   '<div class="aa-issue-body">{{{ _snippetResult.body.value }}}</div>' +
 '</div>');
