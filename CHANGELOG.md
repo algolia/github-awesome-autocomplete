@@ -1,3 +1,15 @@
+<a name="1.4.3"></a>
+## [1.4.3](https://github.com/algolia/github-awesome-autocomplete/compare/1.4.2...1.4.3) (2017-11-07)
+
+
+### Bug Fixes
+
+* display full repo name on issues ([f6554d1](https://github.com/algolia/github-awesome-autocomplete/commit/f6554d1))
+* limit web accessible resources to what is needed ([932d554](https://github.com/algolia/github-awesome-autocomplete/commit/932d554))
+* **style:** restore repo name color to gray in issues ([b0a9efe](https://github.com/algolia/github-awesome-autocomplete/commit/b0a9efe))
+
+
+
 CHANGELOG
 
 2017-11-07 1.4.2
