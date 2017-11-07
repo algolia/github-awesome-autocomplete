@@ -24,7 +24,8 @@ module.exports = function(grunt) {
       'build/firefox-unpacked-dev', 
       'build/firefox-unpacked-prod', 
       'build/*.crx', 
-      'build/*.safariextension'
+      'build/*.safariextension',
+      'build/*.zip'
     ],
 
     mkdir: {
@@ -97,7 +98,8 @@ module.exports = function(grunt) {
           'mv -v ./unpacked-prod.crx "build/' + pkg.name + '-' + pkg.version + '.crx"',
           '(cd build && zip -r "' + pkg.name + '-' + pkg.version + '.zip" unpacked-prod)'
         ].join(' && ')
-      }
+      },
+      zip_firefox_extension: 'cd build/firefox-unpacked-prod && zip -r firefox-' + pkg.version + '.zip . && mv firefox-' + pkg.version + '.zip ../'
     },
 
     uglify: {
