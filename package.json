@@ -20,7 +20,8 @@
     "grunt-mocha-test": "~0.12.7",
     "grunt-sass": "^1.1.0",
     "jpm": "1.0.4",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "web-ext": "^2.2.2"
   },
   "engines": {
     "node": ">= 0.10.0"
