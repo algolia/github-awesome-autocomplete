@@ -31,7 +31,7 @@
     "https://github.algolia.com/*",
     "*://*.algolia.net/*"
   ],
-  "web_accessible_resources": [ "js/*", "js/libs/*", "html/*", "css/*", "images/*" ],
+  "web_accessible_resources": [ "images/*" ],
   "content_security_policy": "script-src 'self'; object-src 'self'"
   
 }
