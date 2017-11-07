@@ -1,7 +1,7 @@
 {
   "title": "Awesome Autocomplete for GitHub",
   "name": "github-awesome-autocomplete",
-  "version": "1.3.4",
+  "version": "1.4.0",
   "description": "Add instant search capabilities to GitHub's search bar.",
   "homepage": "http://www.algolia.com",
   "dependencies": {},
