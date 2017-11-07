@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       firefox: { files: [ {
         expand: true,
         cwd: 'build/unpacked-dev/',
-        src: ['**', '!Info.plist'],
+        src: ['**', '!Info.plist', '!js/chrome/background.js'],
         dest: 'build/firefox-unpacked-dev/'
       } ] },
       safari: { files: [ {

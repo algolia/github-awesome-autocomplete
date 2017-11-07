@@ -1,9 +1,6 @@
 {
   "name": "Awesome Autocomplete for GitHub",
   "description": "Add instant search capability to GitHub.",
-  "background": {
-    "scripts": ["js/chrome/background.js"]
-  },
   "manifest_version": 2,
   "browser_action": {
     "default_title": "Awesome Autocomplete for GitHub",
