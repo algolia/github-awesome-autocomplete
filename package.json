@@ -7,6 +7,7 @@
   "dependencies": {},
   "devDependencies": {
     "browserify": "~12.0.1",
+    "chrome-webstore-upload-cli": "^1.1.1",
     "eventemitter2": "^0.4.14",
     "grunt": "^1.0.1",
     "grunt-browserify": "~4.0.1",
