@@ -5,7 +5,7 @@ Make sure you are on a clean `master` branch.
 Run & follow the instructions:
 
 ```bash
-bin/release.sh
+scripts/release.sh
 ```
 This will do several things:
 - Ask for the new version
