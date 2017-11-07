@@ -1,5 +1,9 @@
 CHANGELOG
 
+2017-11-07 1.4.2
+      * Add release dependencies
+      * Add application ID to Firefox WebExtension manifest
+
 2017-11-07 1.4.1
       * Make sure we use an unmodified version of jQuery
 
