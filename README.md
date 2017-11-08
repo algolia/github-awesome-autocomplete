@@ -30,7 +30,7 @@ This extension replaces GitHub's search bar and add auto-completion (instant-sea
 
 From version 1.6.0, you can now also find GitHub repositories directly from the address bar, by typing `aa<space>`.
 
-![find GitHub repositories from the address bar](https://raw.githubusercontent.com/algolia/github-awesome-autocomplete/master/search-github-repositories-address-bar.png)
+![find GitHub repositories from the address bar](search-github-repositories-address-bar.png)
 
 *Address bar autocompletion does not work on Safari.*
 
@@ -90,7 +90,7 @@ The `.crx` packed version is created from `unpacked-prod` sources.
 
 #### Firefox
 
-The `xpi` archive is created from `build/firefox`.
+The `.zip` archive is created from `build/firefox-unpacked-prod`.
 
 #### Safari
 
@@ -104,3 +104,7 @@ The `safariextz` archive is created from Safari.
 * default: `clean`, `test`, build step (copy all necessary files to `build`
   directory, browserify JS sources, prepare production version (using uglify),
   pack the `crx` and `xpi`
+
+### Publishing
+
+All publishing instructions can be found in the [CONTRIBUTING.md file](CONTRIBUTING.md).
