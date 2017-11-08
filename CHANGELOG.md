@@ -1,3 +1,13 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/algolia/github-awesome-autocomplete/compare/1.5.0...1.6.0) (2017-11-08)
+
+
+### Features
+
+* **omnibox:** allow searching repositories from the address bar ([0661fb0](https://github.com/algolia/github-awesome-autocomplete/commit/0661fb0))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/algolia/github-awesome-autocomplete/compare/1.4.3...1.5.0) (2017-11-08)
 
