@@ -1,3 +1,18 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/algolia/github-awesome-autocomplete/compare/1.4.3...1.5.0) (2017-11-08)
+
+
+### Bug Fixes
+
+* **autocomplete:** ensure autocomplete is displayed above header actions ([847356a](https://github.com/algolia/github-awesome-autocomplete/commit/847356a))
+
+
+### Features
+
+* **assets:** update icons ([28999ad](https://github.com/algolia/github-awesome-autocomplete/commit/28999ad))
+
+
+
 <a name="1.4.3"></a>
 ## [1.4.3](https://github.com/algolia/github-awesome-autocomplete/compare/1.4.2...1.4.3) (2017-11-07)
 
