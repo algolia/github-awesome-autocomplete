@@ -20,6 +20,8 @@ All archives are ready in the `build` directory.
 
 ### Release Chrome extension
 
+**By leveraging the Chrome WebStore API endpoints (recommended):**
+
 ```bash
 yarn run webstore upload \
     --source "build/unpacked-prod" \
@@ -29,6 +31,12 @@ yarn run webstore upload \
     --refresh-token "to-be-filled" \
     --auto-publish
 ```
+
+**Manually:**
+
+You need to be invited to the Google Group owning the extension.
+
+You can then send a new version from: https://chrome.google.com/webstore/developer/dashboard/u58fa06d3b25b4f42f07dbb3900b3ceb5
 
 ### Release Firefox extension
 
