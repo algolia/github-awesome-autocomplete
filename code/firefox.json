@@ -7,6 +7,19 @@
   },
   "description": "Add instant search capability to GitHub.",
   "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "js/libs/algoliasearch.js",
+      "js/chrome/omnibox.js"
+    ]
+  },
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "64": "images/icon-64.png",
+    "128": "images/icon.png"
+  },
+  "omnibox": { "keyword" : "aa" },
   "browser_action": {
     "default_title": "Awesome Autocomplete for GitHub",
     "default_popup": "html/chrome.html",
