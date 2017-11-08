@@ -2,11 +2,19 @@
   "name": "Awesome Autocomplete for GitHub",
   "description": "Add instant search capability to GitHub.",
   "background": {
-    "scripts": ["js/chrome/background.js"],
+    "scripts": [
+      "js/chrome/background.js",
+      "js/libs/algoliasearch.js",
+      "js/chrome/omnibox.js"
+    ],
     "persistent": false
   },
+  "omnibox": { "keyword" : "aa" },
   "manifest_version": 2,
   "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "64": "images/icon-64.png",
     "128": "images/icon.png"
   },
   "page_action": {
@@ -31,7 +39,8 @@
     "activeTab",
     "storage",
     "declarativeContent",
-    "https://github.algolia.com/*"
+    "https://github.algolia.com/*",
+    "*://*.algolia.net/*"
   ],
   "web_accessible_resources": [ "images/*" ]
 }
