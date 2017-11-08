@@ -1,3 +1,14 @@
+## Development
+
+### Styling
+
+If you need to change the appearance of the dropdown, you can easily make it so that autocomplete dropdown doesn't close so that you can inspect it.
+
+To do so, simply comment out the three lines here: https://github.com/algolia/github-awesome-autocomplete/blob/master/code/js/libs/typeahead.bundle.js#L1523.L1525
+
+Make sure you re-build after making the change.
+Also, do not forget to remove the commented lines when committing the changes.
+
 ## RELEASING
 
 Make sure you are on a clean `master` branch.
