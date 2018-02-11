@@ -346,7 +346,9 @@ $(document).ready(function() {
             '<span class="aa-query-default">search for "<em>' + sanitize(data.query) + '</em>"' +
               (isRepository() ? ' in this repository' : '') +
               (isOrganization() ? ' in this organization' : '') +
-            '</span>' +
+            '</span>' + '<br>Press <em>&lt;Shift+Enter&gt;</em> to ' +
+              '<span class="aa-query-default">search for "<em>' + sanitize(data.query) + '</em>"' +' in all repositories'+
+              '</span>' +
             '<span class="aa-query-cursor"></span>' +
             '</div>';
         }
@@ -568,7 +570,13 @@ $(document).ready(function() {
       $scopedSearch.addClass('org-scope');
     }
     if (e.keyCode === 13) { // enter
-      submit($(this).val());
+      if (e.shiftKey) {
+        submit($(this).val(), $('.js-site-search-form').data('unscoped-search-url'))
+        e.preventDefault();
+      }
+       else {
+        submit($(this).val());
+      }
     }
   });
 });
