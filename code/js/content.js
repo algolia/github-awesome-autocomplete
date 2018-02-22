@@ -571,7 +571,7 @@ $(document).ready(function() {
     }
     if (e.keyCode === 13) { // enter
       if (e.shiftKey) {
-        submit($(this).val(), $('.js-site-search-form').data('unscoped-search-url'))
+        submit($(this).val(), $('.js-site-search-form').data('unscoped-search-url'));
         e.preventDefault();
       }
        else {
