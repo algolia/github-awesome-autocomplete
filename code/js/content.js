@@ -371,6 +371,23 @@ $(document).ready(function() {
         }
       }
     },
+    // global search
+    {
+      source: function(q, cb) {
+        var hits = [];
+        if (isRepository() || isOrganization()) {
+          hits.push({ query: q });
+        }
+        cb(hits);
+      },
+      name: 'all-repos',
+      displayKey: 'query',
+      templates: {
+        suggestion: function(hit) {
+          return '<div class="aa-query">' + octiconRepo + '&nbsp; Search "' + sanitize(hit.query) + '" in all repositories</div>';
+        }
+      }
+    },
     // private repositories
     {
       source: function(q, cb) {
@@ -534,7 +551,9 @@ $(document).ready(function() {
     }
   ]).on('typeahead:selected', function(event, suggestion, dataset) {
     if (dataset === 'current-repo') {
-      submit(suggestion.query, $('.js-site-search-form').data('data-scoped-search-url'));
+      submit(suggestion.query, $('.js-site-search-form').data('scoped-search-url'));
+    } else if (dataset === 'all-repos') {
+      submit(suggestion.query, $('.js-site-search-form').data('unscoped-search-url'));
     } else if (dataset === 'users') {
       location.href = 'https://github.com/' + suggestion.login;
     } else if (dataset === 'repos' || dataset === 'private') {
