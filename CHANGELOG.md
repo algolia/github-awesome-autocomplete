@@ -1,3 +1,13 @@
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/algolia/github-awesome-autocomplete/compare/1.6.0...1.7.0) (2018-02-22)
+
+
+### Features
+
+* **autocomplete:** add an key binding to search globally ([ee0cddf](https://github.com/algolia/github-awesome-autocomplete/commit/ee0cddf))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/algolia/github-awesome-autocomplete/compare/1.5.0...1.6.0) (2017-11-08)
 
